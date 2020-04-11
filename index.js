@@ -24,5 +24,5 @@ app.use('/proptit/userGroupRole', userGroupRoleRoute);
 app.use('/proptit/posts', postRoute);
 
 dotenv.config();
-const port = process.env.NODE_ENV === 'production' ? 80 : 8080;
+const port = process.env.NODE_ENV === 'production' ? 80 : 8123;
 app.listen(port, () => console.log(`App listening on port ${port}!`));
