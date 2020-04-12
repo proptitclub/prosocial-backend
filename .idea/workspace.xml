@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="faf9ec57-bb3d-4487-ae1d-e55dacc12bb2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/prosocial/migrations/0003_auto_20200412_1316.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prosocial/migrations/0004_auto_20200412_1330.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prosocial/migrations/0005_poll_tick.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prosocial/migrations/0006_auto_20200412_1501.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prosocial/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prosocial/enums.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/enums.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prosocial/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prosocial/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prosocial/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prosocial_backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial_backend/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +76,7 @@
       <updated>1586622370335</updated>
       <workItem from="1586622373186" duration="3335000" />
       <workItem from="1586628074222" duration="392000" />
-      <workItem from="1586628476672" duration="15502000" />
+      <workItem from="1586628476672" duration="18548000" />
     </task>
     <servers />
   </component>
