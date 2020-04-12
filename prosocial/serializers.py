@@ -12,13 +12,23 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MemberSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(source='assigned_user.id', read_only=True)
-    username = serializers.CharField(source='assigned_user.username', read_only=True)
+    id = serializers.CharField(source="assigned_user.id", read_only=True)
+    username = serializers.CharField(source="assigned_user.username", read_only=True)
 
     class Meta:
         model = Member
-        fields = ["url", "id", "username", "display_name", "phone_number", "facebook", "role", "date_of_birth",
-                  "description", "email"]
+        fields = [
+            "url",
+            "id",
+            "username",
+            "display_name",
+            "phone_number",
+            "facebook",
+            "role",
+            "date_of_birth",
+            "description",
+            "email",
+        ]
 
     def create(self, validated_data):
         validated_data["validate_data"] = False
@@ -39,7 +49,15 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["url", "id", "content", "time", "type", "assigned_user", "assigned_group"]
+        fields = [
+            "url",
+            "id",
+            "content",
+            "time",
+            "type",
+            "assigned_user",
+            "assigned_group",
+        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
