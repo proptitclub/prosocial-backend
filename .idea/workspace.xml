@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="faf9ec57-bb3d-4487-ae1d-e55dacc12bb2" name="Default Changelist" comment="" />
+    <list default="true" id="faf9ec57-bb3d-4487-ae1d-e55dacc12bb2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prosocial/enums.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prosocial/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prosocial/migrations/0002_auto_20200411_1906.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prosocial/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial_backend/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial_backend/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial_backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial_backend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial_backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial_backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prosocial_backend/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/prosocial_backend/wsgi.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -14,14 +35,22 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1aP1MyY6BM6kWRk3UZZ8684xXdp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
@@ -60,11 +89,26 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586622370335</updated>
-      <workItem from="1586622373186" duration="1100000" />
+      <workItem from="1586622373186" duration="3335000" />
+      <workItem from="1586628074222" duration="392000" />
+      <workItem from="1586628476672" duration="5443000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="588" y="214" width="800" height="677" key="#Plugins" timestamp="1586628465635">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="588" y="214" width="800" height="677" key="#Plugins/67.27.1853.1053@67.27.1853.1053" timestamp="1586628465635" />
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1586628457754">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1586628457754" />
   </component>
 </project>

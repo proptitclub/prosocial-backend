@@ -1,4 +1,7 @@
 from django.contrib import admin
+from .models import Post, GroupPro, Comment, Member
 
-# Register your models here.
-admin.site.register()
+admin.site.register(Member)
+admin.site.register(Post)
+admin.site.register(GroupPro)
+admin.site.register(Comment)
