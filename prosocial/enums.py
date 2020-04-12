@@ -8,6 +8,16 @@ class PostType(Enum):
 
 
 @unique
-class UserGroupRole(Enum):
-    ADMIN = 0
-    USER = 1
+class ReactionType(Enum):
+    LIKE = 0
+    HEART = 1
+    HAHA = 2
+    WOW = 3
+    ANGRY = 4
+
+    @staticmethod
+    def get_name(value):
+        for react in ReactionType:
+            if value == react.value:
+                return react.name
+        return ReactionType.LIKE.name

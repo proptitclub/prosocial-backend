@@ -9,6 +9,12 @@ from prosocial import views
 ROUTER = routers.DefaultRouter()
 # router.register(r"users", UserViewSet)
 ROUTER.register(r"accounts", views.AccountViewSet)
+ROUTER.register(r"groups", views.GroupViewSet)
+ROUTER.register(r"posts", views.PostViewSet)
+ROUTER.register(r"comments", views.CommentViewSet)
+ROUTER.register(r"reactions", views.ReactionViewSet)
+ROUTER.register(r"polls", views.PollViewSet)
+ROUTER.register(r"ticks", views.TickViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
