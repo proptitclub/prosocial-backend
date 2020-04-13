@@ -4,6 +4,10 @@ from django.urls import path, include
 from rest_framework import routers
 
 from prosocial import views
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView
+)
 
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
@@ -20,4 +24,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(ROUTER.urls)),
     url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    url(r"^api-auth/token/obtain/$", TokenObtainPairView.as_view(), name='token_obtain'),
+    url(r"^api-auth/token/refresh/$", TokenRefreshView.as_view(), name='token_refresh'),
 ]
