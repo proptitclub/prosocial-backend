@@ -1,6 +1,42 @@
-# django_jwt
-- cách lấy token: POST request vào url "/api-auth/token/obtain/" kèm theo header có chứa "Content-Type: application/json",
-POST request bao gồm body gồm có "username" và "password"
-- token trả về gồm 2 phần: một là "access", token này tồn tại 5 phút, hai là "refresh" tồn tại trong 1 ngày
-- khi access hết hạn thì request vào url "/api-auth/token/refresh/" kèm theo header có chứa "Content-Type: application/json", POST request bao gồm body có "refresh" token, nó sẽ trả về "access" token để tiếp tục sử dụng
-- khi request vào một url yêu cầu authentication thì kèm theo header có chứa "Authorization: Bearer {}".format(access_token)
+# How the APIs works
+
+## Posts, reactions, comments
+
+- Get all Posts
+
+  - Post
+  - Reaction count
+  - Comment count
+
+- Get Posts with Id
+
+  - Post
+  - Reaction
+  - Comment
+
+- Post Post
+
+  - Auth with user-group-role
+  - Save Post
+
+- Config Post
+
+  - Save Post
+
+- Delete Post
+
+  - Delete all Reaction by Post Id
+  - Delete all Reaction by Post Id
+  - Delete Post
+
+- Post Reaction with Post Id
+- Post Comment with Post Id
+- Config, Delete Reaction
+- Config, Delete Comment
+
+## How the authentication work
+- how to get token: POST request to "/api-auth/token/obtain/" with a header contain "Content-Type: application/json",
+POST request body include "username" and "password"
+- returned token include 2 token: "access" token exist in 5 minutes, "refresh" token exist in 1 day
+- when access token is expried, POST request to "/api-auth/token/refresh/" with header contain "Content-Type: application/json", POST request body include "refresh" token, it gonna return "access" token back
+- when request to url with authentication, put "Authorization: Bearer {}".format(access_token) to the request header
