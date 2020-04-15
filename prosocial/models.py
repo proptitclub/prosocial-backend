@@ -13,7 +13,7 @@ class CustomMember(AbstractUser):
     email = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return 'custom_user: {}'.format(self.display_name)
+        return 'custom_user: {}'.format(self.username)
 
 
 class GroupPro(models.Model):
