@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
 # router.register(r"users", UserViewSet)
-ROUTER.register(r"accounts", views.AccountViewSet)
+ROUTER.register(r"accounts", views.UserViewSet)
 ROUTER.register(r"groups", views.GroupViewSet)
 ROUTER.register(r"posts", views.PostViewSet)
 ROUTER.register(r"comments", views.CommentViewSet)

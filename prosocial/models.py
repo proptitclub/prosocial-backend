@@ -1,12 +1,8 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from .enums import PostType, ReactionType
 
-
-class Member(models.Model):
-    assigned_user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=False, blank=False, default=None
-    )
+class CustomMember(AbstractUser):
     class_name = models.CharField(max_length=15, null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     display_name = models.CharField(max_length=100, null=True, blank=True)
@@ -17,15 +13,15 @@ class Member(models.Model):
     email = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return self.assigned_user.username
+        return 'custom_user: {}'.format(self.display_name)
 
 
 class GroupPro(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
     description = models.CharField(max_length=1024, null=True, blank=True)
-    admins = models.ManyToManyField(Member, related_name="admins")
+    admins = models.ManyToManyField(CustomMember, related_name="admins")
     members = models.ManyToManyField(
-        Member, related_name="members", null=True, blank=True, default=None
+        CustomMember, related_name="members", null=True, blank=True, default=None
     )
 
     def __str__(self):
@@ -34,7 +30,7 @@ class GroupPro(models.Model):
 
 class Post(models.Model):
     assigned_user = models.ForeignKey(
-        Member, on_delete=models.CASCADE, default=None, null=False
+        CustomMember, on_delete=models.CASCADE, default=None, null=False
     )
     assigned_group = models.ForeignKey(
         GroupPro, on_delete=models.CASCADE, null=True, default=None
@@ -63,7 +59,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     assigned_user = models.ForeignKey(
-        Member, on_delete=models.CASCADE, null=False, default=None
+        CustomMember, on_delete=models.CASCADE, null=False, default=None
     )
     assigned_post = models.ForeignKey(
         Post, on_delete=models.CASCADE, null=False, default=None
@@ -76,7 +72,7 @@ class Comment(models.Model):
 
 class Reaction(models.Model):
     assigned_user = models.ForeignKey(
-        Member, on_delete=models.CASCADE, null=False, default=None
+        CustomMember, on_delete=models.CASCADE, null=False, default=None
     )
     assigned_post = models.ForeignKey(
         Post, on_delete=models.CASCADE, null=False, default=None
@@ -115,7 +111,7 @@ class Tick(models.Model):
     assigned_poll = models.ForeignKey(
         Poll, on_delete=models.CASCADE, null=False, default=None
     )
-    users = models.ManyToManyField(Member, null=True, blank=True, default=None)
+    users = models.ManyToManyField(CustomMember, null=True, blank=True, default=None)
     answer = models.CharField(max_length=1024)
 
     def __str__(self):
