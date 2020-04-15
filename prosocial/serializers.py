@@ -2,21 +2,21 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import Member, GroupPro, Post, Comment, Reaction, Poll, Tick
+from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+# class UserSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ["url", "username", "email", "is_staff"]
+
+
+class CustomMemberSerializer(serializers.ModelSerializer):
+    # id = serializers.CharField(source="assigned_user.id", read_only=True)
+    # username = serializers.CharField(source="assigned_user.username", read_only=True)
+
     class Meta:
-        model = User
-        fields = ["url", "username", "email", "is_staff"]
-
-
-class MemberSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(source="assigned_user.id", read_only=True)
-    username = serializers.CharField(source="assigned_user.username", read_only=True)
-
-    class Meta:
-        model = Member
+        model = CustomMember
         fields = [
             "url",
             "id",
@@ -34,9 +34,32 @@ class MemberSerializer(serializers.ModelSerializer):
         validated_data["validate_data"] = False
 
 
+# class MemberSerializer(serializers.ModelSerializer):
+#     # id = serializers.CharField(source="assigned_user.id", read_only=True)
+#     # username = serializers.CharField(source="assigned_user.username", read_only=True)
+
+#     class Meta:
+#         model = Member
+#         fields = [
+#             "url",
+#             "id",
+#             "username",
+#             "display_name",
+#             "phone_number",
+#             "facebook",
+#             "role",
+#             "date_of_birth",
+#             "description",
+#             "email",
+#         ]
+
+#     def create(self, validated_data):
+#         validated_data["validate_data"] = False
+
+
 class GroupSerializer(serializers.ModelSerializer):
-    members = MemberSerializer(many=True)
-    admins = MemberSerializer(many=True)
+    members = CustomMemberSerializer(many=True)
+    admins = CustomMemberSerializer(many=True)
 
     class Meta:
         model = GroupPro
@@ -79,7 +102,7 @@ class PollSerializer(serializers.ModelSerializer):
 
 
 class TickSerializer(serializers.ModelSerializer):
-    users = MemberSerializer(many=True)
+    users = CustomMemberSerializer(many=True)
 
     class Meta:
         model = Tick

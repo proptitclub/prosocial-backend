@@ -2,29 +2,30 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import (
-    UserSerializer,
-    MemberSerializer,
+    # UserSerializer,
+    # MemberSerializer,
     GroupSerializer,
     PostSerializer,
     CommentSerializer,
     ReactionSerializer,
     PollSerializer,
     TickSerializer,
+    CustomMemberSerializer
 )
 
-from .models import Member, GroupPro, Post, Comment, Reaction, Poll, Tick
+from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
 
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = CustomMember.objects.all()
+    serializer_class = CustomMemberSerializer
 
 
-class AccountViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Member.objects.all()
-    serializer_class = MemberSerializer
+# class AccountViewSet(viewsets.ModelViewSet):
+#     permission_classes = (IsAuthenticated,)
+#     queryset = Member.objects.all()
+#     serializer_class = MemberSerializer
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -61,3 +62,20 @@ class TickViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Tick.objects.all()
     serializer_class = TickSerializer
+
+# custom TokenObtain view
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        # print(user)
+        token = super().get_token(user)
+        # print(type(token))
+        token['id'] = user.id
+        # print(token)
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

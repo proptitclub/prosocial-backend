@@ -9,3 +9,4 @@ psycopg2==2.8.5
 pylint==2.4.4
 requests==2.23.0
 djangorestframework-simplejwt==4.4.0
+djoser==2.0.3
