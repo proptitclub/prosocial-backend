@@ -73,3 +73,5 @@ fabric.properties
 
 
 .idea/
+
+prosocial/__pycache__/

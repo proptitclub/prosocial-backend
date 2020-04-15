@@ -26,7 +26,7 @@
 - Delete Post
 
   - Delete all Reaction by Post Id
-  - Delete all Reaction by Post Id
+  - Delete all Comment by Post Id
   - Delete Post
 
 - Post Reaction with Post Id
