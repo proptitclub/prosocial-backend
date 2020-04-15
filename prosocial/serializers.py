@@ -69,7 +69,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     # id = serializers.CharField(source='assigned_user', read_only=True)
     # username = serializers.CharField(source='assigned_group.id', read_only=True)
-
+    
     class Meta:
         model = Post
         fields = [

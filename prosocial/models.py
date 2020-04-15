@@ -49,7 +49,7 @@ class Post(models.Model):
 
     def __str__(self):
         return (
-            self.assigned_user.assigned_user.username
+            self.assigned_user.username
             + " - "
             + self.content
             + " - "
@@ -67,7 +67,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=2048)
 
     def __str__(self):
-        return self.assigned_user.assigned_user.username + " - " + self.content
+        return self.assigned_user.username + " - " + self.content
 
 
 class Reaction(models.Model):
@@ -91,7 +91,7 @@ class Reaction(models.Model):
 
     def __str__(self):
         return (
-            self.assigned_user.assigned_user.username
+            self.assigned_user.username
             + " - "
             + ReactionType.get_name(self.type)
         )

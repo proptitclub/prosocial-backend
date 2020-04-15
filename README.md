@@ -2,37 +2,37 @@
 
 ## Posts, reactions, comments
 
-- Get all Posts
+- Get all Posts(Done)
 
-  - Post
-  - Reaction count
-  - Comment count
+  - Post(Done)
+  - Reaction count(Done)
+  - Comment count(Done)
 
-- Get Posts with Id
+- Get Posts with Id (Done)
 
-  - Post
-  - Reaction
-  - Comment
+  - Post(Done)
+  - Reaction(Done)
+  - Comment(Done)
 
-- Post Post
+- Post Post(Done)
 
-  - Auth with user-group-role
-  - Save Post
+  - Auth with user-group-role (Done)
+  - Save Post (Done)
 
-- Config Post
+- Config Post (Done)
 
-  - Save Post
+  - Save Post(Done)
 
-- Delete Post
+- Delete Post (Done)
 
   - Delete all Reaction by Post Id
   - Delete all Comment by Post Id
   - Delete Post
 
-- Post Reaction with Post Id
-- Post Comment with Post Id
-- Config, Delete Reaction
-- Config, Delete Comment
+- Post Reaction with Post Id(Done)
+- Post Comment with Post Id(Done)
+- Config, Delete Reaction(Done)
+- Config, Delete Comment(Done)
 
 ## How the authentication work
 - how to get token: POST request to "/auth/jwt/create/" with a header contain "Content-Type: application/json",
