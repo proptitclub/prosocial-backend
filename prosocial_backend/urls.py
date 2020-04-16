@@ -4,10 +4,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from prosocial import views
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView
-)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
@@ -23,6 +20,6 @@ ROUTER.register(r"ticks", views.TickViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(ROUTER.urls)),
-    path("auth/", include('djoser.urls')),
-    path("auth/", include('djoser.urls.jwt'))
+    path("auth/", include("djoser.urls")),
+    path("auth/", include("djoser.urls.jwt")),
 ]

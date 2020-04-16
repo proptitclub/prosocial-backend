@@ -75,3 +75,7 @@ fabric.properties
 .idea/
 
 prosocial/__pycache__/
+
+prosocial_backend/__pycache__/
+
+prosocial/migrations/__pycache__/
