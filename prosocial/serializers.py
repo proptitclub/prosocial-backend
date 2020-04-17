@@ -18,6 +18,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomMember
         fields = [
+            "avatar",
             "url",
             "id",
             "username",
