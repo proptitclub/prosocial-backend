@@ -1,10 +1,15 @@
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from .enums import PostType, ReactionType
+from django.conf import settings
+import uuid
 
+def custom_media_path(instance, filename):
+    file_ext = filename.split('.')[-1]
+    return str(uuid.uuid4()) + '.' + file_ext
 
 class CustomMember(AbstractUser):
-    avatar = models.CharField(max_length=1024, null=True, blank=True)
+    avatar = models.FileField(upload_to=custom_media_path, max_length=100, default='default.jpg')
     class_name = models.CharField(max_length=15, null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     display_name = models.CharField(max_length=100, null=True, blank=True)
