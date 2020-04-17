@@ -2,7 +2,9 @@ from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 from .enums import PostType, ReactionType
 
+
 class CustomMember(AbstractUser):
+    avatar = models.CharField(max_length=1024, null=True, blank=True)
     class_name = models.CharField(max_length=15, null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
     display_name = models.CharField(max_length=100, null=True, blank=True)
@@ -13,7 +15,7 @@ class CustomMember(AbstractUser):
     email = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return 'custom_user: {}'.format(self.username)
+        return "custom_user: {}".format(self.username)
 
 
 class GroupPro(models.Model):
@@ -48,12 +50,8 @@ class Post(models.Model):
     )
 
     def __str__(self):
-        return (
-            self.assigned_user.assigned_user.username
-            + " - "
-            + self.content
-            + " - "
-            + self.assigned_group.name
+        return "{} - {} - {}".format(
+            self.assigned_user.username, self.content, self.assigned_group.name
         )
 
 
@@ -67,7 +65,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=2048)
 
     def __str__(self):
-        return self.assigned_user.assigned_user.username + " - " + self.content
+        return self.assigned_user.username + " - " + self.content
 
 
 class Reaction(models.Model):
@@ -90,11 +88,7 @@ class Reaction(models.Model):
     )
 
     def __str__(self):
-        return (
-            self.assigned_user.assigned_user.username
-            + " - "
-            + ReactionType.get_name(self.type)
-        )
+        return self.assigned_user.username + " - " + ReactionType.get_name(self.type)
 
 
 class Poll(models.Model):

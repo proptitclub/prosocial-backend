@@ -1,13 +1,11 @@
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
 from prosocial import views
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView
-)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
@@ -20,9 +18,13 @@ ROUTER.register(r"reactions", views.ReactionViewSet)
 ROUTER.register(r"polls", views.PollViewSet)
 ROUTER.register(r"ticks", views.TickViewSet)
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include(ROUTER.urls)),
-    path("auth/", include('djoser.urls')),
-    path("auth/", include('djoser.urls.jwt'))
-]
+urlpatterns = (
+    [
+        path("admin/", admin.site.urls),
+        path("", include(ROUTER.urls)),
+        path("auth/", include("djoser.urls")),
+        path("auth/", include("djoser.urls.jwt")),
+    ]
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
