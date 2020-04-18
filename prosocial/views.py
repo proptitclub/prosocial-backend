@@ -51,7 +51,7 @@ class PostViewSet(viewsets.ModelViewSet):
             info = {
                 "content": post.content,
                 "assigned_user_id": post.assigned_user.id,
-                "assigned_user_avatar": post.assigned_user.avatar.__str__(),
+                "assigned_user_avatar": post.assigned_user.avatar.url,
                 "assigned_user_display_name": post.assigned_user.display_name,
                 "assigned_group": post.assigned_group.id,
                 "assigned_group_name": post.assigned_group.name,
