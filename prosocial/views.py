@@ -45,11 +45,13 @@ class PostViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         posts = Post.objects.all()
         response_info = []
+        
         for post in posts:
+            print(post.assigned_user.avatar)
             info = {
                 "content": post.content,
                 "assigned_user_id": post.assigned_user.id,
-                "assigned_user_avatar": post.assigned_user.avatar,
+                "assigned_user_avatar": post.assigned_user.avatar.__str__(),
                 "assigned_user_display_name": post.assigned_user.display_name,
                 "assigned_group": post.assigned_group.id,
                 "assigned_group_name": post.assigned_group.name,
@@ -57,6 +59,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 "comment_number": len(Reaction.objects.filter(assigned_post=post)),
             }
             response_info.append(info)
+            # print(response_info)
         return Response({"posts": response_info})
 
     def retrieve(self, request, *args, **kwargs):
