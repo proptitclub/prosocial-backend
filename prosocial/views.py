@@ -5,8 +5,6 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import (
-    # UserSerializer,
-    # MemberSerializer,
     GroupSerializer,
     PostSerializer,
     CommentSerializer,
@@ -17,6 +15,10 @@ from .serializers import (
 )
 from datetime import datetime
 from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Image
+
+# custom TokenObtain view
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -42,21 +44,22 @@ class GroupViewSet(viewsets.ModelViewSet):
         posts = Post.objects.filter(assigned_group=group)
         for post in posts:
             post_info = {
-                'assigned_user': post.assigned_user,
-                'content': post.content,
-                'time': post.time,
-                'type': post.type
+                "assigned_user": post.assigned_user,
+                "content": post.content,
+                "time": post.time,
+                "type": post.type,
             }
             posts_info.append(post_info)
-    
+
         info = {
-            'name': group.name,
-            'description': group.description,
-            'admins': group.admins,
-            'members': group.members,
-            'posts': posts_info,
+            "name": group.name,
+            "description": group.description,
+            "admins": group.admins,
+            "members": group.members,
+            "posts": posts_info,
         }
-        return Response({'group': info}) 
+        return Response({"group": info})
+
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -66,7 +69,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         posts = Post.objects.all()
         response_info = []
-        
+
         for post in posts:
             print(post.assigned_user.avatar)
             info = {
@@ -139,17 +142,19 @@ class PostViewSet(viewsets.ModelViewSet):
         )
         new_post.save()
         for count, x in enumerate(request.FILES.get_list("files")):
+
             def process(f):
                 image = Image(img_url=f)
                 image.save()
                 new_post.photos.add(image)
+
             process(f)
-        
-        print('this post has {} files'.format(count))
+
+        print("this post has {} files".format(count))
         new_post.save()
 
         time_create = datetime.now()
-        
+
         return Response({"status": "DONE"})
 
     def update(self, request, *args, **kwargs):
@@ -240,11 +245,6 @@ class TickViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Tick.objects.all()
     serializer_class = TickSerializer
-
-
-# custom TokenObtain view
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

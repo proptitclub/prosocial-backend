@@ -17,7 +17,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
     participating_group = serializers.SerializerMethodField()
 
     def get_participating_group(self, obj):
-        return GroupPro.objects.filter(members=obj).values('id')
+        return GroupPro.objects.filter(members=obj).values("id")
 
     class Meta:
         model = CustomMember
@@ -33,7 +33,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
             "date_of_birth",
             "description",
             "email",
-            "participating_group"
+            "participating_group",
         ]
 
     def create(self, validated_data):
