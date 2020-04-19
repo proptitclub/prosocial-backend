@@ -75,10 +75,13 @@ class PostViewSet(viewsets.ModelViewSet):
                 "assigned_user_id": post.assigned_user.id,
                 "assigned_user_avatar": post.assigned_user.avatar.url,
                 "assigned_user_display_name": post.assigned_user.display_name,
-                "assigned_group": post.assigned_group.id,
+                "assigned_group_id": post.assigned_group.id,
                 "assigned_group_name": post.assigned_group.name,
                 "reaction_number": len(Reaction.objects.filter(assigned_post=post)),
                 "comment_number": len(Reaction.objects.filter(assigned_post=post)),
+                "time": post.time,
+                "type": post.type,
+                "photos": list(map(lambda x: x.img_url.url, post.photos.all()))
             }
             response_info.append(info)
             # print(response_info)
