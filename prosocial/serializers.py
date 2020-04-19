@@ -14,6 +14,10 @@ from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
 class CustomMemberSerializer(serializers.ModelSerializer):
     # id = serializers.CharField(source="assigned_user.id", read_only=True)
     # username = serializers.CharField(source="assigned_user.username", read_only=True)
+    participating_group = serializers.SerializerMethodField()
+
+    def get_participating_group(self, obj):
+        return GroupPro.objects.filter(members=obj).values('id')
 
     class Meta:
         model = CustomMember
@@ -29,6 +33,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
             "date_of_birth",
             "description",
             "email",
+            "participating_group"
         ]
 
     def create(self, validated_data):
