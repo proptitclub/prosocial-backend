@@ -7,13 +7,15 @@ import prosocial.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('prosocial', '0002_custommember_avatar'),
+        ("prosocial", "0002_custommember_avatar"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='custommember',
-            name='avatar',
-            field=models.FileField(default='default.jpg', upload_to=prosocial.models.custom_media_path),
+            model_name="custommember",
+            name="avatar",
+            field=models.FileField(
+                default="default.jpg", upload_to=prosocial.models.custom_media_path
+            ),
         ),
     ]

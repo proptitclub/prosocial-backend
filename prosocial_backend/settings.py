@@ -160,8 +160,8 @@ SIMPLE_JWT = {
 
 
 DJOSER = {
-    'SERIALIZERS': {
-        'user': 'prosocial.serializers.CustomMemberSerializer',
-        'current_user': 'prosocial.serializers.CustomMemberSerializer',
+    "SERIALIZERS": {
+        "user": "prosocial.serializers.CustomMemberSerializer",
+        "current_user": "prosocial.serializers.CustomMemberSerializer",
     }
 }
