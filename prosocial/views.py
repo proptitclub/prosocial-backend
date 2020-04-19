@@ -20,7 +20,7 @@ from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = CustomMember.objects.all()
     serializer_class = CustomMemberSerializer
 
@@ -36,6 +36,27 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = GroupPro.objects.all()
     serializer_class = GroupSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        group = GroupPro.objects.get(id=kwargs["pk"])
+        groups_info = []
+        posts = Post.objects.filter(assigned_group=group)
+        for post in posts:
+            post_info = {
+                'assigned_user': post.assigned_user,
+                'content': post.content,
+                'time': post.time,
+                'type': post.type
+            }
+            posts_info.append(post_info)
+    
+        info = {
+            'name': group.name,
+            'description': group.description,
+            'admins': group.admins,
+            'members': group.members,
+            'posts': posts_info,
+        }
+        return Response({'group': info}) 
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
