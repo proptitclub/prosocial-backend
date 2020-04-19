@@ -16,7 +16,7 @@ from .serializers import (
     CustomMemberSerializer,
 )
 from datetime import datetime
-from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
+from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Image
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -70,6 +70,7 @@ class PostViewSet(viewsets.ModelViewSet):
         for post in posts:
             print(post.assigned_user.avatar)
             info = {
+                "id": post.id,
                 "content": post.content,
                 "assigned_user_id": post.assigned_user.id,
                 "assigned_user_avatar": post.assigned_user.avatar.url,
@@ -81,7 +82,7 @@ class PostViewSet(viewsets.ModelViewSet):
             }
             response_info.append(info)
             # print(response_info)
-        return Response({"posts": response_info})
+        return Response(response_info)
 
     def retrieve(self, request, *args, **kwargs):
         post = Post.objects.get(id=kwargs["pk"])
@@ -90,12 +91,14 @@ class PostViewSet(viewsets.ModelViewSet):
         comments = Comment.objects.filter(assigned_post=post)
         reactions_info = []
         comments_info = []
+        # print(post.photos.all())
         post_info = {
             "assigned_user_id": post.assigned_user.id,
-            "assigned_user_avatar": post.assigned_user.avatar,
+            "assigned_user_avatar": post.assigned_user.avatar.url,
             "assigned_user_display_name": post.assigned_user.display_name,
-            "assigned_group": post.assigned_group.id,
+            "assigned_group_id": post.assigned_group.id,
             "assigned_group_name": post.assigned_group.name,
+            "photos": list(map(lambda x: x.img_url.url, post.photos.all())),
             "content": post.content,
             "time": post.time,
             "type": post.type,
@@ -127,7 +130,6 @@ class PostViewSet(viewsets.ModelViewSet):
         group_id = request.data.get("group_id")
         content = request.data.get("content")
         post_type = request.data.get("type")
-        time_create = datetime.now()
         new_post = Post(
             assigned_user=request.user,
             assigned_group=GroupPro.objects.get(id=group_id),
@@ -136,6 +138,18 @@ class PostViewSet(viewsets.ModelViewSet):
             type=post_type,
         )
         new_post.save()
+        for count, x in enumerate(request.FILES.get_list("files")):
+            def process(f):
+                image = Image(img_url=f)
+                image.save()
+                new_post.photos.add(image)
+            process(f)
+        
+        print('this post has {} files'.format(count))
+        new_post.save()
+
+        time_create = datetime.now()
+        
         return Response({"status": "DONE"})
 
     def update(self, request, *args, **kwargs):
