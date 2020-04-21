@@ -25,7 +25,6 @@ urlpatterns = (
         path("", include(ROUTER.urls)),
         path("auth/", include("djoser.urls")),
         path("auth/", include("djoser.urls.jwt")),
-        path("web/", lambda req: render(req, "web/index.html")),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
