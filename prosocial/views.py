@@ -136,6 +136,7 @@ class PostViewSet(viewsets.ModelViewSet):
         group_id = request.data.get("group_id")
         content = request.data.get("content")
         post_type = request.data.get("type")
+        time_create = datetime.now()
         new_post = Post(
             assigned_user=request.user,
             assigned_group=GroupPro.objects.get(id=group_id),
@@ -156,7 +157,6 @@ class PostViewSet(viewsets.ModelViewSet):
         print("this post has {} files".format(count))
         new_post.save()
 
-        time_create = datetime.now()
 
         return Response({"status": "DONE"})
 
