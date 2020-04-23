@@ -4,18 +4,22 @@ from .enums import PostType, ReactionType
 from django.conf import settings
 import uuid
 
+
 def custom_media_path(instance, filename):
-    file_ext = filename.split('.')[-1]
-    return str(uuid.uuid4()) + '.' + file_ext
+    file_ext = filename.split(".")[-1]
+    return str(uuid.uuid4()) + "." + file_ext
+
 
 class Image(models.Model):
     img_url = models.FileField(
-        upload_to=custom_media_path, max_length=100,
-        default='default.jpg'
+        upload_to=custom_media_path, max_length=100, default="default.jpg"
     )
 
+
 class CustomMember(AbstractUser):
-    avatar = models.FileField(upload_to=custom_media_path, max_length=100, default='default.jpg')
+    avatar = models.FileField(
+        upload_to=custom_media_path, max_length=100, default="default.jpg"
+    )
     # avatar = models.ForeignKey(Image, on_delete=models.CASCADE)
     class_name = models.CharField(max_length=15, null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
@@ -52,7 +56,7 @@ class Post(models.Model):
     content = models.CharField(max_length=3000)
     time = models.DateTimeField(auto_now=True)
     photos = models.ManyToManyField(
-        Image, related_name='images', null=True, blank=True, default=None
+        Image, related_name="images", null=True, blank=True, default=None
     )
     type = models.SmallIntegerField(
         null=False,
@@ -68,8 +72,6 @@ class Post(models.Model):
         return "{} - {} - {}".format(
             self.assigned_user.username, self.content, self.assigned_group.name
         )
-
-
 
 
 class Comment(models.Model):

@@ -7,25 +7,43 @@ import prosocial.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('prosocial', '0003_auto_20200417_0244'),
+        ("prosocial", "0003_auto_20200417_0244"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Image',
+            name="Image",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('img_url', models.FileField(default='default.jpg', upload_to=prosocial.models.custom_media_path)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "img_url",
+                    models.FileField(
+                        default="default.jpg",
+                        upload_to=prosocial.models.custom_media_path,
+                    ),
+                ),
             ],
         ),
         migrations.AlterField(
-            model_name='post',
-            name='time',
-            field=models.DateTimeField(auto_now=True),
+            model_name="post", name="time", field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='post',
-            name='photos',
-            field=models.ManyToManyField(blank=True, default=None, null=True, related_name='images', to='prosocial.Image'),
+            model_name="post",
+            name="photos",
+            field=models.ManyToManyField(
+                blank=True,
+                default=None,
+                null=True,
+                related_name="images",
+                to="prosocial.Image",
+            ),
         ),
     ]
