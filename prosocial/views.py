@@ -145,16 +145,18 @@ class PostViewSet(viewsets.ModelViewSet):
             type=post_type,
         )
         new_post.save()
-        for count, x in enumerate(request.FILES.get_list("files")):
+        print(request.FILES.getlist("files"))
+        count_ = 0
+        for count, x in enumerate(request.FILES.getlist("files")):
 
             def process(f):
                 image = Image(img_url=f)
                 image.save()
                 new_post.photos.add(image)
-
+            count_ = count
             process(f)
-
-        print("this post has {} files".format(count))
+        # print(count)
+        print("this post has {} files".format(count_))
         new_post.save()
 
 
