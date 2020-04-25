@@ -93,7 +93,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 "comment_number": len(Reaction.objects.filter(assigned_post=post)),
                 "time": post.time,
                 "type": post.type,
-                "photos": list(map(lambda x: x.img_url.url, post.photos.all())),
+                "photos": list(map(lambda x: 'http://' + request.get_host() + x.img_url.url, post.photos.all())),
                 "is_liked": True if len(Reaction.objects.filter(assigned_post=post)) > 0 else False
             }
             response_info.append(info)
@@ -116,11 +116,11 @@ class PostViewSet(viewsets.ModelViewSet):
         # print(post.photos.all())
         post_info = {
             "assigned_user_id": post.assigned_user.id,
-            "assigned_user_avatar": post.assigned_user.avatar.url,
+            "assigned_user_avatar":'http://' + request.get_host() + post.assigned_user.avatar.url,
             "assigned_user_display_name": post.assigned_user.display_name,
             "assigned_group_id": post.assigned_group.id,
             "assigned_group_name": post.assigned_group.name,
-            "photos": list(map(lambda x: x.img_url.url, post.photos.all())),
+            "photos": list(map(lambda x: 'http://' + request.get_host() + x.img_url.url, post.photos.all())),
             "content": post.content,
             "time": post.time,
             "type": post.type,
