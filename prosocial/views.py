@@ -62,21 +62,28 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
     def list(self, request, *args, **kwargs):
         posts = Post.objects.all()
+        filtered_posts = posts
         response_info = []
+        params = dict(request.query_params)
+        method = params.get('method')[0]
+        print(method)
+        if method == 'byUser':
+            user = CustomMember.objects.get(id=params.get('id')[0])
+            filtered_posts = Post.objects.filter(assigned_user=user)
 
-        for post in posts:
-            print(post.assigned_user.avatar)
+        for post in filtered_posts:
+            # print(post.assigned_user.avatar)
             info = {
                 "id": post.id,
                 "content": post.content,
                 "assigned_user_id": post.assigned_user.id,
-                "assigned_user_avatar": post.assigned_user.avatar.url,
+                # "assigned_user_avatar": post.assigned_user.avatar.url,
                 "assigned_user_display_name": post.assigned_user.display_name,
                 "assigned_group_id": post.assigned_group.id,
                 "assigned_group_name": post.assigned_group.name,
@@ -84,10 +91,17 @@ class PostViewSet(viewsets.ModelViewSet):
                 "comment_number": len(Reaction.objects.filter(assigned_post=post)),
                 "time": post.time,
                 "type": post.type,
-                "photos": list(map(lambda x: x.img_url.url, post.photos.all()))
+                "photos": list(map(lambda x: x.img_url.url, post.photos.all())),
+                "is_liked": True if len(Reaction.objects.filter(assigned_post=post)) > 0 else False
             }
             response_info.append(info)
-            # print(response_info)
+        def by_id_method(obj):
+            return obj['id']
+        if params.get('order_by') == ['reversed']:
+            response_info.sort(key=by_id_method)
+        else:
+            response_info.sort(key=by_id_method, reverse=True)
+        # print(response_info)
         return Response(response_info)
 
     def retrieve(self, request, *args, **kwargs):
@@ -108,6 +122,7 @@ class PostViewSet(viewsets.ModelViewSet):
             "content": post.content,
             "time": post.time,
             "type": post.type,
+            "is_liked": True if len(Reaction.objects.filter(assigned_post=post)) > 0 else False
         }
         for reaction in reactions:
             info = {

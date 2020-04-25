@@ -54,7 +54,7 @@ class Post(models.Model):
         GroupPro, on_delete=models.CASCADE, null=True, default=None
     )
     content = models.CharField(max_length=3000)
-    time = models.DateTimeField(auto_now=True)
+    time = models.DateTimeField(auto_now_add=True)
     photos = models.ManyToManyField(
         Image, related_name="images", null=True, blank=True, default=None
     )
