@@ -76,6 +76,8 @@ class PostViewSet(viewsets.ModelViewSet):
         if method == 'byUser':
             user = CustomMember.objects.get(id=params.get('id')[0])
             filtered_posts = Post.objects.filter(assigned_user=user)
+        
+        print()
 
         for post in filtered_posts:
             # print(post.assigned_user.avatar)
@@ -83,7 +85,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 "id": post.id,
                 "content": post.content,
                 "assigned_user_id": post.assigned_user.id,
-                # "assigned_user_avatar": post.assigned_user.avatar.url,
+                "assigned_user_avatar": request.get_host() + post.assigned_user.avatar.url,
                 "assigned_user_display_name": post.assigned_user.display_name,
                 "assigned_group_id": post.assigned_group.id,
                 "assigned_group_name": post.assigned_group.name,

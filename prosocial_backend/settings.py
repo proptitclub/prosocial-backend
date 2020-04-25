@@ -170,3 +170,5 @@ DJOSER = {
         "current_user": "prosocial.serializers.CustomMemberSerializer",
     }
 }
+
+ROOT_URL = 'http://apis.aiforce.xyz/'
