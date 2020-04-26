@@ -4,7 +4,6 @@ from rest_framework import serializers
 
 from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
 
-
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = User
@@ -90,9 +89,16 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    assigned_user_avatar = serializers.SerializerMethodField()
+
+    def get_assigned_user_avatar(self, obj):
+        request = self.context.get('request')
+        
+        return request.build_absolute_uri(obj.assigned_user.avatar.url)
+
     class Meta:
         model = Comment
-        fields = ["url", "id", "content", "assigned_post", "assigned_user"]
+        fields = ["url", "id", "content", "assigned_post", "assigned_user", "assigned_user_avatar"]
 
 
 class ReactionSerializer(serializers.ModelSerializer):
