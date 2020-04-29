@@ -129,7 +129,7 @@ class PostViewSet(viewsets.ModelViewSet):
             info = {
                 "choice": reaction.type,
                 "assigned_user": reaction.assigned_user.id,
-                "assigned_username": reaction.assigned_user.username,
+                "assigned_user_display_name": reaction.assigned_user.username,
             }
             reactions_info.append(info)
         for comment in comments:
@@ -138,8 +138,9 @@ class PostViewSet(viewsets.ModelViewSet):
                 "content": comment.content,
                 "assigned_post": comment.assigned_post.id,
                 "assigned_user": comment.assigned_user.id,
-                "assigned_username": comment.assigned_user.username,
-                "assigned_user_avatar": request.build_absolute_uri(comment.assigned_user.avatar.url)
+                "assigned_user_display_name": comment.assigned_user.username,
+                "assigned_user_avatar": request.build_absolute_uri(comment.assigned_user.avatar.url),
+                "time": comment.time
             }
             comments_info.append(info)
 

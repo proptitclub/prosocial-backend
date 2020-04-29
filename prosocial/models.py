@@ -82,6 +82,7 @@ class Comment(models.Model):
         Post, on_delete=models.CASCADE, null=False, default=None
     )
     content = models.CharField(max_length=2048)
+    time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.assigned_user.username + " - " + self.content
