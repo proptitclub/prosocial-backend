@@ -209,6 +209,17 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+    def get_queryset(self):
+        super().get_queryset()
+        # print("it reached here" + "!"*10)
+        # print(self.kwargs)
+        post_id = self.request.query_params.get('post_id', None)
+        if post_id != None:
+            post = Post.objects.get(id=post_id)
+            return Comment.objects.filter(assigned_post=post)
+        else:
+            return Comment.objects.all()
+
     def update(self, request, *args, **kwargs):
         comment = Comment.objects.get(id=kwargs["pk"])
         content = request.data.get("content")
