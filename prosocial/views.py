@@ -71,13 +71,12 @@ class PostViewSet(viewsets.ModelViewSet):
         filtered_posts = posts
         response_info = []
         params = dict(request.query_params)
-        method = params.get('method')[0]
-        print(method)
-        if method == 'byUser':
-            user = CustomMember.objects.get(id=params.get('id')[0])
-            filtered_posts = Post.objects.filter(assigned_user=user)
-        
-        print()
+        method = params.get('method')
+        # print(method)
+        if method is not None:
+            if method == 'byUser':
+                user = CustomMember.objects.get(id=params.get('id')[0])
+                filtered_posts = Post.objects.filter(assigned_user=user)
 
         for post in filtered_posts:
             # print(post.assigned_user.avatar)
@@ -85,15 +84,15 @@ class PostViewSet(viewsets.ModelViewSet):
                 "id": post.id,
                 "content": post.content,
                 "assigned_user_id": post.assigned_user.id,
-                "assigned_user_avatar": 'http://' + request.get_host() + post.assigned_user.avatar.url,
+                "assigned_user_avatar": request.build_absolute_uri(post.assigned_user.avatar.url),
                 "assigned_user_display_name": post.assigned_user.display_name,
                 "assigned_group_id": post.assigned_group.id,
                 "assigned_group_name": post.assigned_group.name,
                 "reaction_number": len(Reaction.objects.filter(assigned_post=post)),
-                "comment_number": len(Reaction.objects.filter(assigned_post=post)),
+                "comment_number": len(Comment.objects.filter(assigned_post=post)),
                 "time": post.time,
                 "type": post.type,
-                "photos": list(map(lambda x: 'http://' + request.get_host() + x.img_url.url, post.photos.all())),
+                "photos": list(map(lambda x: request.build_absolute_uri(x.img_url.url), post.photos.all())),
                 "is_liked": True if len(Reaction.objects.filter(assigned_post=post)) > 0 else False
             }
             response_info.append(info)
@@ -135,9 +134,12 @@ class PostViewSet(viewsets.ModelViewSet):
             reactions_info.append(info)
         for comment in comments:
             info = {
+                "id": comment.id,
                 "content": comment.content,
+                "assigned_post": comment.assigned_post.id,
                 "assigned_user": comment.assigned_user.id,
                 "assigned_username": comment.assigned_user.username,
+                "assigned_user_avatar": request.build_absolute_uri(comment.assigned_user.avatar.url)
             }
             comments_info.append(info)
 
