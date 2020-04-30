@@ -90,15 +90,21 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     assigned_user_avatar = serializers.SerializerMethodField()
+    assigned_user_display_name = serializers.SerializerMethodField()
 
     def get_assigned_user_avatar(self, obj):
         request = self.context.get('request')
         
         return request.build_absolute_uri(obj.assigned_user.avatar.url)
 
+    def get_assigned_user_display_name(self, obj):
+        return obj.assigned_user.display_name
+    
+
+
     class Meta:
         model = Comment
-        fields = ["url", "id", "content", "assigned_post", "assigned_user", "assigned_user_avatar"]
+        fields = ["url", "id", "content", "assigned_post", "assigned_user", "assigned_user_avatar", "assigned_user_display_name"]
 
 
 class ReactionSerializer(serializers.ModelSerializer):
