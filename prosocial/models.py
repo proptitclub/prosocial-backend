@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
-from .enums import PostType, ReactionType
+from .enums import PostType, ReactionType, GenderType
 from django.conf import settings
 import uuid
 
@@ -18,6 +18,19 @@ class Image(models.Model):
 
 class CustomMember(AbstractUser):
     avatar = models.FileField(
+        upload_to=custom_media_path, max_length=100, default="default.jpg"
+    )
+    user_gender = models.SmallIntegerField(
+        null=False,
+        blank=False,
+        default=GenderType.MALE.value,
+        choices=[
+            (GenderType.MALE.value, GenderType.MALE.name),
+            (GenderType.FEMALE.value, GenderType.FEMALE.name),
+            (GenderType.OTHER.value, GenderType.OTHER.name),
+        ],
+    )
+    cover = models.FileField(
         upload_to=custom_media_path, max_length=100, default="default.jpg"
     )
     # avatar = models.ForeignKey(Image, on_delete=models.CASCADE)

@@ -1,6 +1,7 @@
 from abc import ABC
 
 from django.contrib.auth.models import User
+from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -67,6 +68,7 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     def list(self, request, *args, **kwargs):
+        user = request.user
         posts = Post.objects.all()
         filtered_posts = posts
         response_info = []
@@ -93,7 +95,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 "time": post.time,
                 "type": post.type,
                 "photos": list(map(lambda x: request.build_absolute_uri(x.img_url.url), post.photos.all())),
-                "is_liked": True if len(Reaction.objects.filter(assigned_post=post)) > 0 else False
+                "reaction_id": Reaction.objects.get(assigned_post=post, assigned_user=user).id if len(Reaction.objects.filter(assigned_post=post, assigned_user=user)) > 0 else -1,
             }
             response_info.append(info)
         def by_id_method(obj):
@@ -264,7 +266,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
         content = request.data.get("type")
         new_reaction = Reaction(assigned_user=user, assigned_post=post, type=content)
         new_reaction.save()
-        return Response({"status": "Done"})
+        return Response({"reaction_id": new_reaction.id})
 
     def delete(self, request, *args, **kwargs):
         reaction = Reaction.objects.get(id=kwargs["pk"])

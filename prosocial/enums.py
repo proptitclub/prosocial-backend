@@ -21,3 +21,9 @@ class ReactionType(Enum):
             if value == react.value:
                 return react.name
         return ReactionType.LIKE.name
+
+@unique
+class GenderType(Enum):
+    MALE = 1
+    FEMALE = 0
+    OTHER = 2
