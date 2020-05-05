@@ -42,3 +42,8 @@ POST request body include "username" and "password"
 - when request to url with authentication, put "Authorization: Bearer {}".format(access_token) to the request header
 - get auth user:
     - access "auth/users/me/" for auth user information
+
+## Update Authenticated User
+- PATCH -> /auth/users/me/ : update non-sercured infomation, include avatar, url, id, username, display_name, phone_number, facebook, role, date_of_birth, description, email, user_gender, cover
+
+- POST -> /auth/users/set_password/ : update pass word, body: new_password, re_new_password, current_password
