@@ -39,37 +39,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = GroupPro.objects.all()
     serializer_class = GroupSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        group = GroupPro.objects.get(id=kwargs["pk"])
-        posts_info = []
-        admins = group.admins.all()
-        members = group.members.all()
-        admins_info = []
-        members_info = []
-        for admin in admins:
-            admin_info = {
-                "display_name": admin.display_name,
-                "avatar": request.build_absolute_uri(admin.avatar.url)
-            }
-            admins_info.append(admin_info)
-        
-        for member in members:
-            member_info = {
-                "display_name": member.display_name,
-                "avatar": request.build_absolute_uri(member.avatar.url)
-            }
-            members_info.append(member_info)
-        print(group.members.all())
-        for mem in group.members.all():
-            print(mem.id)
-        info = {
-            "name": group.name,
-            "description": group.description,
-            "admins": admins_info,
-            "members": members_info,
-            "posts": posts_info,
-        }
-        return Response({"group": info})
 
 
 class PostViewSet(viewsets.ModelViewSet):
