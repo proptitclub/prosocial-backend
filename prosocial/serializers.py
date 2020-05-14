@@ -126,4 +126,4 @@ class TickSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tick
-        fields = ["url", "id", "assigned_poll", "users", "answer"]
+        fields = ["url", "id", "assigned_poll", "users"]

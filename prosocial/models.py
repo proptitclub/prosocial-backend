@@ -139,7 +139,6 @@ class Tick(models.Model):
         Poll, on_delete=models.CASCADE, null=False, default=None
     )
     users = models.ManyToManyField(CustomMember, null=True, blank=True, default=None)
-    answer = models.CharField(max_length=1024)
 
     def __str__(self):
-        return self.answer + " - " + self.assigned_poll.question
+        return self.assigned_poll.question
