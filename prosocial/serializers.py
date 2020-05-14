@@ -116,9 +116,26 @@ class ReactionSerializer(serializers.ModelSerializer):
 
 
 class PollSerializer(serializers.ModelSerializer):
+    ticks = serializers.SerializerMethodField()
+    
+
+    def get_ticks(self, obj):
+        request = self.context.get('request')
+        ticks = Tick.objects.filter(assigned_poll=obj).values('users')
+        
+        ticks_info = []
+        for user_id in ticks:
+            user = CustomMember.objects.get(id=user_id.get('users'))
+            user_info = {}
+            user_info['avatar'] = request.build_absolute_uri(user.avatar.url)
+            user_info['display_name'] = user.display_name
+            user_info['id'] = user.id
+            ticks_info.append(user_info)
+        return ticks_info
+
     class Meta:
         model = Poll
-        fields = ["url", "id", "assigned_post", "question"]
+        fields = ["url", "id", "assigned_post", "question", "ticks"]
 
 
 class TickSerializer(serializers.ModelSerializer):

@@ -135,6 +135,7 @@ class Poll(models.Model):
 
 
 class Tick(models.Model):
+    
     assigned_poll = models.ForeignKey(
         Poll, on_delete=models.CASCADE, null=False, default=None
     )

@@ -263,6 +263,13 @@ class TickViewSet(viewsets.ModelViewSet):
     queryset = Tick.objects.all()
     serializer_class = TickSerializer
 
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        poll_id = request.data.get('poll_id')
+        new_tick = Tick(users=[user], assigned_poll=Poll.objects.get(id=poll_id))
+        new_tick.save()
+        return Response({'tick_id': new_tick.id})
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
