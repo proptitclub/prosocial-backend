@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
-from .enums import PostType, ReactionType, GenderType
+from .enums import PostType, ReactionType, GenderType, NotificationType
 from django.conf import settings
 import uuid
 
@@ -54,7 +54,9 @@ class GroupPro(models.Model):
     members = models.ManyToManyField(
         CustomMember, related_name="members", null=True, blank=True, default=None
     )
-
+    cover = models.FileField(
+        upload_to=custom_media_path, max_length=100, default="default.jpg"
+    )
     def __str__(self):
         return self.name
 
@@ -135,7 +137,6 @@ class Poll(models.Model):
 
 
 class Tick(models.Model):
-    
     assigned_poll = models.ForeignKey(
         Poll, on_delete=models.CASCADE, null=False, default=None
     )
@@ -143,3 +144,54 @@ class Tick(models.Model):
 
     def __str__(self):
         return self.assigned_poll.question
+
+
+class UserDevice(models.Model):
+    assigned_user = models.ForeignKey(
+        CustomMember, on_delete=models.CASCADE, null=False, default=None
+    )
+    device_id = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.assigned_user.first_name + ' ' + self.assigned_user.last_name
+
+class Notification(models.Model):
+    assigned_user = models.ForeignKey(
+        CustomMember, on_delete=models.CASCADE, null=False, default=None
+    )
+    
+    assigned_post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, null=False, default=None
+    )
+
+    type = models.SmallIntegerField(
+        null=False,
+        blank=False,
+        default=NotificationType.INIT.value,
+        choices=[
+            (NotificationType.INIT.value, NotificationType.INIT.name),
+            (NotificationType.LIKE.value, NotificationType.LIKE.name),
+            (NotificationType.COMMENT.value, NotificationType.COMMENT.name)
+        ],
+    )
+
+    # def __str__(self):
+    #     return self.assigned_user.first_name + ' ' + self.assigned_user.last_name + '/' + self.assigned_post.id
+
+
+class NotificationMember(models.Model):
+    assigned_user = models.ForeignKey(
+        CustomMember, on_delete=models.CASCADE, null=False, default=None
+    )
+
+    assigned_notification = models.ForeignKey(
+        Notification, on_delete=models.CASCADE, null=False, default=None
+    )
+
+    is_seen = models.BooleanField(null=False, default=False)
+
+    # def __str__(self):
+    #     return self.assigned_user.first_name + ' ' + self.assigned_user.last_name + '/' + self.notification.assigned_post.id
+
+
+

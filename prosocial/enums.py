@@ -27,3 +27,10 @@ class GenderType(Enum):
     MALE = 1
     FEMALE = 0
     OTHER = 2
+
+
+@unique
+class NotificationType(Enum):
+    INIT = 0
+    LIKE = 1
+    COMMENT = 2

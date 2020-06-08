@@ -15,12 +15,28 @@ from .serializers import (
     CustomMemberSerializer,
 )
 from datetime import datetime
-from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Image
+from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Image, Notification, NotificationMember, UserDevice
 
 # custom TokenObtain view
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+import requests
+import json
 
+APP_ID = '913dba2c-9869-4355-a68e-5be7321465c9'
+REST_API_ONESIGNAL_ID = 'ZDg4NTNmNmItYzYxNi00ZjhiLWJmYmQtM2RiOGQ2ZjJhN2Iy'
+
+def send_to_onesignal_worker(app_id, include_player_ids, contents):
+    header = {"Content-Type": "application/json; charset=utf-8"}
+
+    payload = {"app_id": app_id,
+            "include_player_ids": include_player_ids,
+            "contents": {"en": contents}}
+    print(payload)
+    
+    req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+    
+    print(req.status_code, req.reason)
 
 class UserViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
@@ -35,7 +51,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = GroupPro.objects.all()
     serializer_class = GroupSerializer
 
@@ -157,11 +173,51 @@ class PostViewSet(viewsets.ModelViewSet):
             count_ = count
             process(x)
         # print(count)
+
         print("this post has {} files".format(count_))
         new_post.save()
+        post_response = {
+                "id": new_post.id,
+                "content": new_post.content,
+                "assigned_user_id": new_post.assigned_user.id,
+                "assigned_user_avatar": 'http://' + request.get_host() + new_post.assigned_user.avatar.url,
+                "assigned_user_display_name": new_post.assigned_user.display_name,
+                "assigned_group_id": new_post.assigned_group.id,
+                "assigned_group_name": new_post.assigned_group.name,
+                "reaction_number": 0,
+                "comment_number": 0,
+                "time": str(new_post.time),
+                "type": new_post.type,
+                "photos": list(map(lambda x: 'http://' + request.get_host() + x.img_url.url, new_post.photos.all())),
+                "reaction_id": -1
+            }
 
+        print(post_response)
 
-        return Response({"status": "DONE"})
+        new_notification = Notification(
+            assigned_post=new_post,
+            assigned_user=request.user,
+            type=0
+        )
+        new_notification.save()
+        user_list = new_post.assigned_group.members
+        
+        relation_device_id_list = []
+        for user in user_list.all():
+            print('{} == {}'.format(user.id, request.user.id))
+            if user.id == request.user.id:
+                continue
+            new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
+            new_notification_member.save()
+            user_device_list = UserDevice.objects.filter(assigned_user=user)
+            for user_device in user_device_list:
+                relation_device_id_list.append(user_device.device_id)
+        
+
+        print(relation_device_id_list)
+        send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
+        
+        return Response(post_response)
 
     def update(self, request, *args, **kwargs):
         user = request.user
@@ -269,6 +325,11 @@ class TickViewSet(viewsets.ModelViewSet):
         new_tick = Tick(users=[user], assigned_poll=Poll.objects.get(id=poll_id))
         new_tick.save()
         return Response({'tick_id': new_tick.id})
+
+class CommentViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
