@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
@@ -174,3 +176,12 @@ DJOSER = {
 }
 
 ROOT_URL = 'http://apis.aiforce.xyz/'
+
+sentry_sdk.init(
+    dsn="https://988770b86f7649f0b6f1d3a3ccc955dd@o404403.ingest.sentry.io/5268077",
+    integrations=[DjangoIntegration()],
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

@@ -17,13 +17,20 @@ class CustomMemberSerializer(serializers.ModelSerializer):
 
     def get_participating_group(self, obj):
         result_set = GroupPro.objects.filter(members=obj).values("id", "cover", "name")
+        # result_set = GroupPro.objects.filter(members=obj)
+        group_admin_set = GroupPro.objects.filter(admins=obj)
         response_list = list()
         for result in result_set:
             response = dict(result)
+            response['is_admin'] = False
+            for group_obj in group_admin_set:
+                if group_obj.id == response['id']:
+                    response['is_admin'] = True
             response['cover'] = "http://103.130.218.26:6960/media/" + result['cover']
             response_list.append(response)
         # return id, "http://103.130.218.26:6960/media/" + cover, name
         return response_list
+        
 
     class Meta:
         model = CustomMember
@@ -42,7 +49,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
             "participating_group",
             "user_gender",
             "cover",
-            "class_name"
+            "class_name",
         ]
 
     def create(self, validated_data):

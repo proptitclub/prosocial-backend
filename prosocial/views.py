@@ -213,8 +213,6 @@ class PostViewSet(viewsets.ModelViewSet):
             for user_device in user_device_list:
                 relation_device_id_list.append(user_device.device_id)
         
-
-        print(relation_device_id_list)
         send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
         
         return Response(post_response)

@@ -19,6 +19,8 @@ ROUTER.register(r"reactions", views.ReactionViewSet)
 ROUTER.register(r"polls", views.PollViewSet)
 ROUTER.register(r"ticks", views.TickViewSet)
 
+
+
 urlpatterns = (
     [
         path("admin/", admin.site.urls),
