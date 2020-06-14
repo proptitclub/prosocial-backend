@@ -80,12 +80,42 @@ class CustomMemberSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    members = CustomMemberSerializer(many=True)
-    admins = CustomMemberSerializer(many=True)
+    cover = serializers.SerializerMethodField()
+    members = serializers.SerializerMethodField()
+    admins = serializers.SerializerMethodField()
+    def get_cover(self, obj):
+        request = self.context.get('request')
+        return request.build_absolute_uri(obj.cover.url)
+
+    def get_members(self, obj):
+        request = self.context.get('request')
+        members = list(obj.members.all())
+        
+        members_info = []
+        for member in members:
+            user_info = {}
+            user_info['avatar'] = request.build_absolute_uri(member.avatar.url)
+            user_info['display_name'] = member.display_name
+            user_info['id'] = member.id
+            members_info.append(user_info)
+        return members_info
+
+    def get_admins(self, obj):
+        request = self.context.get('request')
+        admins = list(obj.admins.all())
+        
+        admins_info = []
+        for member in admins:
+            user_info = {}
+            user_info['avatar'] = request.build_absolute_uri(member.avatar.url)
+            user_info['display_name'] = member.display_name
+            user_info['id'] = member.id
+            admins_info.append(user_info)
+        return admins_info
 
     class Meta:
         model = GroupPro
-        fields = ["url", "id", "name", "description", "members", "admins"]
+        fields = ["url", "id", "name", "description", "members", "admins", "cover"]
 
 
 class PostSerializer(serializers.ModelSerializer):
