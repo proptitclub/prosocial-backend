@@ -61,20 +61,44 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+    def get_poll_info(self, request, post):
+        response = list()
+        polls = Poll.objects.filter(assigned_post=post)
+        for poll in polls:
+            poll_info = dict()
+            poll_info['content'] = poll.question
+            poll_info['ticks'] = list()
+            ticks = Tick.objects.filter(assigned_poll=poll)
+            for tick in ticks:
+                tick_info = list()
+                users = tick.users.all()
+                for user in users:
+                    user_info = dict()
+                    user_info['avatar'] = request.build_absolute_uri(user.avatar.url)
+                    user_info['display_name'] = user.display_name
+                    user_info['id'] = user.id
+                    tick_info.append(user_info)
+
+                poll_info['ticks'].append(tick_info)
+            
+            response.append(poll_info)
+
+        return response
+
     def list(self, request, *args, **kwargs):
         user = request.user
         posts = Post.objects.all()
         filtered_posts = posts
         response_info = []
         params = dict(request.query_params)
-        method = params.get('method')[0]
+        method = params.get('method')
         print(method)
         # print(method)
         if method is not None:
-            if method == 'byUser':
+            if method[0] == 'byUser':
                 user = CustomMember.objects.get(id=params.get('id')[0])
                 filtered_posts = Post.objects.filter(assigned_user=user)
-            if method == 'byGroup':
+            if method[0] == 'byGroup':
                 group = GroupPro.objects.get(id=params.get('id')[0])
                 filtered_posts = Post.objects.filter(assigned_group=group)
 
@@ -120,6 +144,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 comments_info.append(comment_info)
             info['comments_info'] = comments_info
             info['reactions_info'] = reactions_info
+            info['polls_info'] = self.get_poll_info(request, post)
             response_info.append(info)
 
         def by_id_method(obj):
@@ -176,6 +201,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 "post": post_info,
                 "reactions_info": reactions_info,
                 "comments_info": comments_info,
+                "polls_info": self.get_poll_info(request, post)
             }
         )
 
