@@ -67,15 +67,23 @@ class PostViewSet(viewsets.ModelViewSet):
         filtered_posts = posts
         response_info = []
         params = dict(request.query_params)
-        method = params.get('method')
+        method = params.get('method')[0]
+        print(method)
         # print(method)
         if method is not None:
             if method == 'byUser':
                 user = CustomMember.objects.get(id=params.get('id')[0])
                 filtered_posts = Post.objects.filter(assigned_user=user)
+            if method == 'byGroup':
+                group = GroupPro.objects.get(id=params.get('id')[0])
+                filtered_posts = Post.objects.filter(assigned_group=group)
 
         for post in filtered_posts:
             # print(post.assigned_user.avatar)
+            reactions = Reaction.objects.filter(assigned_post = post)
+            comments = Comment.objects.filter(assigned_post = post)
+            reactions_info = []
+            comments_info = []
             info = {
                 "id": post.id,
                 "content": post.content,
@@ -91,7 +99,29 @@ class PostViewSet(viewsets.ModelViewSet):
                 "photos": list(map(lambda x: request.build_absolute_uri(x.img_url.url), post.photos.all())),
                 "reaction_id": Reaction.objects.get(assigned_post=post, assigned_user=user).id if len(Reaction.objects.filter(assigned_post=post, assigned_user=user)) > 0 else -1,
             }
+            # response_info.append(info)
+            for reaction in reactions:
+                reaction_info = {
+                    "choice": reaction.type,
+                    "assigned_user": reaction.assigned_user.id,
+                    "assigned_user_display_name": reaction.assigned_user.display_name,
+                }
+                reactions_info.append(reaction_info)
+            for comment in comments:
+                comment_info = {
+                    "id": comment.id,
+                    "content": comment.content,
+                    "assigned_post": comment.assigned_post.id,
+                    "assigned_user": comment.assigned_user.id,
+                    "assigned_user_display_name": comment.assigned_user.display_name,
+                    "assigned_user_avatar": request.build_absolute_uri(comment.assigned_user.avatar.url),
+                    "time": comment.time
+                }
+                comments_info.append(comment_info)
+            info['comments_info'] = comments_info
+            info['reactions_info'] = reactions_info
             response_info.append(info)
+
         def by_id_method(obj):
             return obj['id']
         if params.get('order_by') == ['reversed']:
@@ -103,6 +133,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         post = Post.objects.get(id=kwargs["pk"])
+        user = request.user
         # print(post)
         reactions = Reaction.objects.filter(assigned_post=post)
         comments = Comment.objects.filter(assigned_post=post)
@@ -119,7 +150,7 @@ class PostViewSet(viewsets.ModelViewSet):
             "content": post.content,
             "time": post.time,
             "type": post.type,
-            "is_liked": True if len(Reaction.objects.filter(assigned_post=post)) > 0 else False
+            "reaction_id": Reaction.objects.get(assigned_post=post, assigned_user=user).id if len(Reaction.objects.filter(assigned_post=post, assigned_user=user)) > 0 else -1,
         }
         for reaction in reactions:
             info = {
