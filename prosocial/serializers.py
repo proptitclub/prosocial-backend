@@ -192,6 +192,28 @@ class TickSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
+    assigned_user = serializers.SerializerMethodField()
+    assigned_post = serializers.SerializerMethodField()
+    def get_assigned_user(self, obj):
+        request = self.context.get('request')
+        user = obj.assigned_user
+        user_info = {
+            "avatar": request.build_absolute_uri(user.avatar.url),
+            "id": user.id,
+            "display_name": user.display_name,
+        }
+        return user_info
+
+    def get_assigned_post(self, obj):
+        request = self.context.get('request')
+        post_info = {
+            "assigned_group": {
+                "group_id": obj.assigned_post.assigned_group.id,
+                "group_name": obj.assigned_post.assigned_group.name,
+            }
+        }
+        return post_info
+        
 
     class Meta:
         model = Notification

@@ -213,20 +213,32 @@ class PostViewSet(viewsets.ModelViewSet):
         print("this post has {} files".format(count_))
         new_post.save()
         post_response = {
-                "id": new_post.id,
-                "content": new_post.content,
-                "assigned_user_id": new_post.assigned_user.id,
-                "assigned_user_avatar": 'http://' + request.get_host() + new_post.assigned_user.avatar.url,
-                "assigned_user_display_name": new_post.assigned_user.display_name,
-                "assigned_group_id": new_post.assigned_group.id,
-                "assigned_group_name": new_post.assigned_group.name,
-                "reaction_number": 0,
-                "comment_number": 0,
-                "time": str(new_post.time),
-                "type": new_post.type,
-                "photos": list(map(lambda x: 'http://' + request.get_host() + x.img_url.url, new_post.photos.all())),
-                "reaction_id": -1
-            }
+            "id": new_post.id,
+            "content": new_post.content,
+            "assigned_user_id": new_post.assigned_user.id,
+            "assigned_user_avatar": 'http://' + request.get_host() + new_post.assigned_user.avatar.url,
+            "assigned_user_display_name": new_post.assigned_user.display_name,
+            "assigned_group_id": new_post.assigned_group.id,
+            "assigned_group_name": new_post.assigned_group.name,
+            "reaction_number": 0,
+            "comment_number": 0,
+            "time": str(new_post.time),
+            "type": new_post.type,
+            "photos": list(map(lambda x: 'http://' + request.get_host() + x.img_url.url, new_post.photos.all())),
+            "reaction_id": -1
+        }
+
+        if new_post.type == 1:
+            json_polls_string = request.POST['polls']
+            polls = json.loads(json_polls_string)
+            poll_list = []
+            for poll in polls:
+                new_poll = Poll(assigned_post=new_post,question=poll)
+                new_poll.save()
+                poll_list.append(poll)
+
+            response_poll_list = json.dumps(poll)
+            post_response.update({'polls': response_poll_list})
 
         new_notification = Notification(
             assigned_post=new_post,
