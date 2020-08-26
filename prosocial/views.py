@@ -33,7 +33,6 @@ def send_to_onesignal_worker(app_id, include_player_ids, contents):
     payload = {"app_id": app_id,
             "include_player_ids": include_player_ids,
             "contents": {"vi": contents}}
-    print(payload)
     
     req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
     
