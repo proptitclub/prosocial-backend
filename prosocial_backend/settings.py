@@ -146,6 +146,9 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"), "/")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+FRONTEND_ROOT = '/var/prosocial-frontend/web/build/'
+FRONTEND_URL = '/front_end/'
+
 AUTH_USER_MODEL = "prosocial.CustomMember"
 
 SIMPLE_JWT = {
