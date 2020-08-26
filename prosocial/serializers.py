@@ -207,10 +207,9 @@ class NotificationSerializer(serializers.ModelSerializer):
     def get_assigned_post(self, obj):
         request = self.context.get('request')
         post_info = {
-            "assigned_group": {
-                "group_id": obj.assigned_post.assigned_group.id,
-                "group_name": obj.assigned_post.assigned_group.name,
-            }
+            "id": obj.assigned_post.id,
+            "assigned_group_id": obj.assigned_post.assigned_group.id,
+            "assigned_group_name": obj.assigned_post.assigned_group.name,
         }
         return post_info
         
