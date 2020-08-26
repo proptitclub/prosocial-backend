@@ -13,6 +13,7 @@ from .serializers import (
     PollSerializer,
     TickSerializer,
     CustomMemberSerializer,
+    NotificationSerializer,
 )
 from datetime import datetime
 from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Image, Notification, NotificationMember, UserDevice
@@ -228,8 +229,6 @@ class PostViewSet(viewsets.ModelViewSet):
                 "reaction_id": -1
             }
 
-        print(post_response)
-
         new_notification = Notification(
             assigned_post=new_post,
             assigned_user=request.user,
@@ -379,3 +378,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Notification.objects.filter(assigned_user=user)

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember
+from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Notification, NotificationMember
 
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
@@ -189,3 +189,25 @@ class TickSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tick
         fields = ["url", "id", "assigned_poll", "users"]
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = [
+            "assigned_user", 
+            "assigned_post", 
+            "type",
+            "created_time",
+        ]
+
+class NotificationMemberSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = NotificationMember
+        fields = [
+            "assigned_user",
+            "assigned_notification",
+            "is_seen",
+        ]

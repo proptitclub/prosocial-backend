@@ -175,6 +175,8 @@ class Notification(models.Model):
         ],
     )
 
+    created_time = models.DateTimeField(auto_now_add=True)
+
     # def __str__(self):
     #     return self.assigned_user.first_name + ' ' + self.assigned_user.last_name + '/' + self.assigned_post.id
 
@@ -192,6 +194,4 @@ class NotificationMember(models.Model):
 
     # def __str__(self):
     #     return self.assigned_user.first_name + ' ' + self.assigned_user.last_name + '/' + self.notification.assigned_post.id
-
-
 
