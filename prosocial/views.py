@@ -17,7 +17,7 @@ from .serializers import (
 )
 from datetime import datetime
 from .models import GroupPro, Post, Comment, Reaction, Poll, Tick, CustomMember, Image, Notification, NotificationMember, UserDevice
-
+from django.db.models import QuerySet
 # custom TokenObtain view
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -399,3 +399,17 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Notification.objects.filter(assigned_user=user)
+
+class NewsFeedViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        attended_group = GroupPro.objects.filter(members__in=[user])
+        list_post = Post.objects.none()
+        for group in attended_group:
+            list_post = list_post | Post.objects.filter(assigned_group=group)
+        
+        return list_post
+

@@ -34,3 +34,9 @@ class NotificationType(Enum):
     INIT = 0
     LIKE = 1
     COMMENT = 2
+
+@unique
+class TargetStatusType(Enum):
+    NOT_SCORED = 0
+    SCORED = 1
+    CONFIRM = 2

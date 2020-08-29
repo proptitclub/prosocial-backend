@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
-from .enums import PostType, ReactionType, GenderType, NotificationType
+from .enums import *
 from django.conf import settings
 import uuid
 
@@ -194,4 +194,38 @@ class NotificationMember(models.Model):
 
     # def __str__(self):
     #     return self.assigned_user.first_name + ' ' + self.assigned_user.last_name + '/' + self.notification.assigned_post.id
+
+class Point(models.Model):
+    score = models.IntegerField(default=0)
+    description = models.CharField(max_length=256)
+
+class Target(models.Model):
+    assigned_user = models.ForeignKey(
+        CustomMember, null=False, default=None, on_delete=models.CASCADE
+    )
+
+    name = models.CharField(max_length=256, default="")
+    is_done = models.BooleanField()
+    point = models.ForeignKey(
+        Point, null=False, default=None, on_delete=models.CASCADE
+    )
+
+    status = models.SmallIntegerField(
+        null=False,
+        blank=False,
+        default=TargetStatusType.NOT_SCORED.value,
+        choices=[
+            (TargetStatusType.NOT_SCORED.value, TargetStatusType.NOT_SCORED.name),
+            (TargetStatusType.SCORED.value, TargetStatusType.SCORED.name),
+            (TargetStatusType.CONFIRM.value, TargetStatusType.CONFIRM.name)
+        ],
+    )
+
+class BonusPoint(models.Model):
+    assigned_user = models.ForeignKey(
+        CustomMember, null=False, default=None, on_delete=models.CASCADE
+    )
+    score = models.IntegerField(default=0)
+    description = models.CharField(max_length=256)
+    created_time = models.DateTimeField(auto_now_add=True)
 
