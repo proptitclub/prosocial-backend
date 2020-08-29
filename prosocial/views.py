@@ -85,14 +85,14 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return response
 
-    def list(self, request, *args, **kwargs):
+    def get_queryset(self):
+        request = self.request
         user = request.user
         posts = Post.objects.all()
         filtered_posts = posts
         response_info = []
         params = dict(request.query_params)
         method = params.get('method')
-        print(method)
         # print(method)
         if method is not None:
             if method[0] == 'byUser':
@@ -102,38 +102,55 @@ class PostViewSet(viewsets.ModelViewSet):
                 group = GroupPro.objects.get(id=params.get('id')[0])
                 filtered_posts = Post.objects.filter(assigned_group=group)
 
-        for post in filtered_posts:
-            # print(post.assigned_user.avatar)
-            reactions = Reaction.objects.filter(assigned_post = post)
-            comments = Comment.objects.filter(assigned_post = post)
-            reactions_info = []
-            comments_info = []
-            info = {
-                "id": post.id,
-                "content": post.content,
-                "assigned_user_id": post.assigned_user.id,
-                "assigned_user_avatar": request.build_absolute_uri(post.assigned_user.avatar.url),
-                "assigned_user_display_name": post.assigned_user.display_name,
-                "assigned_group_id": post.assigned_group.id,
-                "assigned_group_name": post.assigned_group.name,
-                "reaction_number": len(Reaction.objects.filter(assigned_post=post)),
-                "comment_number": len(Comment.objects.filter(assigned_post=post)),
-                "time": post.time,
-                "type": post.type,
-                "photos": list(map(lambda x: request.build_absolute_uri(x.img_url.url), post.photos.all())),
-                "reaction_id": Reaction.objects.get(assigned_post=post, assigned_user=user).id if len(Reaction.objects.filter(assigned_post=post, assigned_user=user)) > 0 else -1,
-            }
-            info['polls_info'] = self.get_poll_info(request, post)
-            response_info.append(info)
+        return filtered_posts
 
-        def by_id_method(obj):
-            return obj['id']
-        if params.get('order_by') == ['reversed']:
-            response_info.sort(key=by_id_method)
-        else:
-            response_info.sort(key=by_id_method, reverse=True)
-        # print(response_info)
-        return Response(response_info)
+    # def list(self, request, *args, **kwargs):
+    #     user = request.user
+    #     posts = Post.objects.all()
+    #     filtered_posts = posts
+    #     response_info = []
+    #     params = dict(request.query_params)
+    #     method = params.get('method')
+    #     if method is not None:
+    #         if method[0] == 'byUser':
+    #             user = CustomMember.objects.get(id=params.get('id')[0])
+    #             filtered_posts = Post.objects.filter(assigned_user=user)
+    #         if method[0] == 'byGroup':
+    #             group = GroupPro.objects.get(id=params.get('id')[0])
+    #             filtered_posts = Post.objects.filter(assigned_group=group)
+
+    #     for post in filtered_posts:
+    #         # print(post.assigned_user.avatar)
+    #         reactions = Reaction.objects.filter(assigned_post = post)
+    #         comments = Comment.objects.filter(assigned_post = post)
+    #         reactions_info = []
+    #         comments_info = []
+    #         info = {
+    #             "id": post.id,
+    #             "content": post.content,
+    #             "assigned_user_id": post.assigned_user.id,
+    #             "assigned_user_avatar": request.build_absolute_uri(post.assigned_user.avatar.url),
+    #             "assigned_user_display_name": post.assigned_user.display_name,
+    #             "assigned_group_id": post.assigned_group.id,
+    #             "assigned_group_name": post.assigned_group.name,
+    #             "reaction_number": len(Reaction.objects.filter(assigned_post=post)),
+    #             "comment_number": len(Comment.objects.filter(assigned_post=post)),
+    #             "time": post.time,
+    #             "type": post.type,
+    #             "photos": list(map(lambda x: request.build_absolute_uri(x.img_url.url), post.photos.all())),
+    #             "reaction_id": Reaction.objects.get(assigned_post=post, assigned_user=user).id if len(Reaction.objects.filter(assigned_post=post, assigned_user=user)) > 0 else -1,
+    #         }
+    #         info['polls_info'] = self.get_poll_info(request, post)
+    #         response_info.append(info)
+
+    #     def by_id_method(obj):
+    #         return obj['id']
+    #     if params.get('order_by') == ['reversed']:
+    #         response_info.sort(key=by_id_method)
+    #     else:
+    #         response_info.sort(key=by_id_method, reverse=True)
+    #     # print(response_info)
+    #     return Response(response_info)
 
     def retrieve(self, request, *args, **kwargs):
         post = Post.objects.get(id=kwargs["pk"])
@@ -412,4 +429,6 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
             list_post = list_post | Post.objects.filter(assigned_group=group)
         
         return list_post
+
+
 
