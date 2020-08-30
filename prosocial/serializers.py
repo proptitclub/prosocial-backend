@@ -11,25 +11,12 @@ from .models import *
 
 
 class CustomMemberSerializer(serializers.ModelSerializer):
-    # id = serializers.CharField(source="assigned_user.id", read_only=True)
-    # username = serializers.CharField(source="assigned_user.username", read_only=True)
     participating_group = serializers.SerializerMethodField()
 
     def get_participating_group(self, obj):
-        result_set = GroupPro.objects.filter(members=obj).values("id", "cover", "name")
-        # result_set = GroupPro.objects.filter(members=obj)
-        group_admin_set = GroupPro.objects.filter(admins=obj)
-        response_list = list()
-        for result in result_set:
-            response = dict(result)
-            response['is_admin'] = False
-            for group_obj in group_admin_set:
-                if group_obj.id == response['id']:
-                    response['is_admin'] = True
-            response['cover'] = "http://103.130.218.26:6960/media/" + result['cover']
-            response_list.append(response)
-        # return id, "http://103.130.218.26:6960/media/" + cover, name
-        return response_list
+        request = self.context.get('request')
+        result_set = GroupPro.objects.filter(members=obj)
+        return AssignedGroupSummary(result_set, many=True, context={"request": request}).data
         
 
     class Meta:
@@ -210,18 +197,21 @@ class TickSummary(serializers.ModelSerializer):
 
 
 class AssignedGroupSummary(serializers.ModelSerializer):
+    cover = serializers.FileField()
+
     class Meta:
         model = GroupPro
         fields = [
             'id',
-            'name'
+            'name',
+            'cover',
         ]
 
 class AssignedPostSummary(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'id'
+            'id',
         ]
 
 class NotificationSerializer(serializers.ModelSerializer):
