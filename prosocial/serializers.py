@@ -56,39 +56,21 @@ class CustomMemberSerializer(serializers.ModelSerializer):
         validated_data["validate_data"] = False
 
 
+class AssignedUserSummary(serializers.ModelSerializer):
+    avatar = serializers.FileField()
+
+    class Meta:
+        model = CustomMember
+        fields = [
+            'id',
+            'avatar',
+            'display_name'
+        ]
+
 class GroupSerializer(serializers.ModelSerializer):
-    cover = serializers.SerializerMethodField()
-    members = serializers.SerializerMethodField()
-    admins = serializers.SerializerMethodField()
-    def get_cover(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.cover.url)
-
-    def get_members(self, obj):
-        request = self.context.get('request')
-        members = list(obj.members.all())
-        
-        members_info = []
-        for member in members:
-            user_info = {}
-            user_info['avatar'] = request.build_absolute_uri(member.avatar.url)
-            user_info['display_name'] = member.display_name
-            user_info['id'] = member.id
-            members_info.append(user_info)
-        return members_info
-
-    def get_admins(self, obj):
-        request = self.context.get('request')
-        admins = list(obj.admins.all())
-        
-        admins_info = []
-        for member in admins:
-            user_info = {}
-            user_info['avatar'] = request.build_absolute_uri(member.avatar.url)
-            user_info['display_name'] = member.display_name
-            user_info['id'] = member.id
-            admins_info.append(user_info)
-        return admins_info
+    cover = serializers.FileField()
+    members = AssignedUserSummary(many=True)
+    admins = AssignedUserSummary(many=True)
 
     class Meta:
         model = GroupPro
@@ -119,34 +101,11 @@ class PostSerializer(serializers.ModelSerializer):
             "assigned_group",
         ]
 
-class AssignedUserSummary(serializers.ModelSerializer):
-    avatar = serializers.FileField()
 
-    def get_avatar(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.avatar.url)
-
-    class Meta:
-        model = CustomMember
-        fields = [
-            'id',
-            'avatar',
-            'display_name'
-        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    assigned_user_avatar = serializers.SerializerMethodField()
-    assigned_user_display_name = serializers.SerializerMethodField()
-
-    def get_assigned_user_avatar(self, obj):
-        request = self.context.get('request')
-        
-        return request.build_absolute_uri(obj.assigned_user.avatar.url)
-
-    def get_assigned_user_display_name(self, obj):
-        return obj.assigned_user.display_name
-    
+    assigned_user = AssignedUserSummary()
 
 
     class Meta:
@@ -156,9 +115,18 @@ class CommentSerializer(serializers.ModelSerializer):
             "id", 
             "content", 
             "assigned_post", 
-            "assigned_user", 
-            "assigned_user_avatar", 
-            "assigned_user_display_name",
+            "assigned_user",
+        ]
+
+class CommentSummary(serializers.ModelSerializer):
+    assigned_user = AssignedUserSummary()
+
+    class Meta:
+        model = Comment
+        fields = [
+            "id",
+            "content",
+            "assigned_user",
         ]
 
 
@@ -171,6 +139,15 @@ class ReactionSerializer(serializers.ModelSerializer):
             "assigned_user", 
             "assigned_post", 
             "type",
+        ]
+
+class ReactionSummary(serializers.ModelSerializer):
+    class Meta:
+        model = Reaction
+        fields = [
+            "id",
+            "type",
+            "assigned_user",
         ]
 
 
@@ -191,21 +168,11 @@ class TickSerializer(serializers.ModelSerializer):
 
 class PollSerializer(serializers.ModelSerializer):
     ticks = serializers.SerializerMethodField()
-    
 
     def get_ticks(self, obj):
         request = self.context.get('request')
-        ticks = Tick.objects.filter(assigned_poll=obj).values('users')
-        
-        ticks_info = []
-        for user_id in ticks:
-            user = CustomMember.objects.get(id=user_id.get('users'))
-            user_info = {}
-            user_info['avatar'] = request.build_absolute_uri(user.avatar.url)
-            user_info['display_name'] = user.display_name
-            user_info['id'] = user.id
-            ticks_info.append(user_info)
-        return ticks_info
+        tick_query = Tick.objects.filter(assigned_poll=obj)
+        return TickSummary(tick_query, many=True, context={'request':request}).data
 
     class Meta:
         model = Poll
@@ -214,12 +181,12 @@ class PollSerializer(serializers.ModelSerializer):
             "id", 
             "assigned_post", 
             "question", 
-            "ticks"
+            "ticks",
         ]
 
 
 class TickSerializer(serializers.ModelSerializer):
-    users = CustomMemberSerializer(many=True)
+    users = AssignedUserSummary(many=True)
 
     class Meta:
         model = Tick
@@ -227,9 +194,18 @@ class TickSerializer(serializers.ModelSerializer):
             "url", 
             "id", 
             "assigned_poll", 
-            "users"
+            "users",
         ]
 
+class TickSummary(serializers.ModelSerializer):
+    users = AssignedUserSummary(many=True)
+
+    class Meta:
+        model = Tick
+        fields = [
+            "id",
+            "users",
+        ]
 
 
 
@@ -279,10 +255,7 @@ class NotificationMemberSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    img_url = serializers.SerializerMethodField()
-    def get_img_url(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.img_url.url)
+    img_url = serializers.FileField()
 
     class Meta:
         model = Image
@@ -315,7 +288,7 @@ class ReactionSerializerSummary(serializers.ModelSerializer):
         depth = 1
 
 
-class PostSerializer(serializers.ModelSerializer):
+class PostSummary(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary()
     assigned_group = AssignedGroupSummary()
     reaction_number = serializers.SerializerMethodField()
@@ -331,10 +304,12 @@ class PostSerializer(serializers.ModelSerializer):
         return len(Comment.objects.filter(assigned_post=obj))
     
     def get_reactions(self, obj):
-        return ReactionSerializerSummary(Reaction.objects.filter(assigned_post=obj), many=True).data
+        request = self.context.get('request')
+        return ReactionSerializerSummary(Reaction.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
     
     def get_polls(self, obj):
-        return PollSerializer(Poll.objects.filter(assigned_post=obj), many=True).data
+        request = self.context.get('request')
+        return PollSerializer(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
 
 
     class Meta:
@@ -346,6 +321,44 @@ class PostSerializer(serializers.ModelSerializer):
             'assigned_group',
             'reaction_number',
             'comment_number',
+            'time', # in post model
+            'type', # in post model
+            'photos',
+            'reactions',
+            'polls',
+        ]
+
+class PostSerializer(serializers.ModelSerializer):
+    assigned_user = AssignedUserSummary()
+    assigned_group = AssignedGroupSummary()
+    comments = serializers.SerializerMethodField()
+    photos = ImageSerializer(many=True, read_only=True)
+    reactions = serializers.SerializerMethodField()
+    polls = serializers.SerializerMethodField()
+
+    
+    def get_comments(self, obj):
+        request = self.context.get('request')
+        return CommentSummary(Comment.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
+    
+    
+    def get_reactions(self, obj):
+        request = self.context.get('request')
+        return ReactionSerializerSummary(Reaction.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
+    
+    def get_polls(self, obj):
+        request = self.context.get('request')
+        return PollSerializer(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
+
+
+    class Meta:
+        model = Post
+        fields = [
+            'id', # in post model
+            'content', # in post model
+            'assigned_user',
+            'assigned_group',
+            'comments',
             'time', # in post model
             'type', # in post model
             'photos',
