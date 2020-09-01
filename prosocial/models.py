@@ -70,6 +70,7 @@ class Post(models.Model):
     )
     content = models.CharField(max_length=3000)
     time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now_add=True)
     photos = models.ManyToManyField(
         Image, related_name="images", null=True, blank=True, default=None
     )
@@ -176,6 +177,7 @@ class Notification(models.Model):
     )
 
     created_time = models.DateTimeField(auto_now_add=True)
+
 
     # def __str__(self):
     #     return self.assigned_user.first_name + ' ' + self.assigned_user.last_name + '/' + self.assigned_post.id

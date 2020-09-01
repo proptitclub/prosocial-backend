@@ -311,8 +311,9 @@ class PostSummary(serializers.ModelSerializer):
             'assigned_group',
             'reaction_number',
             'comment_number',
-            'time', # in post model
-            'type', # in post model
+            'time',
+            'update_time', # in post model
+            'type', # in ,post model
             'photos',
             'reactions',
             'polls',
@@ -349,7 +350,8 @@ class PostSerializer(serializers.ModelSerializer):
             'assigned_user',
             'assigned_group',
             'comments',
-            'time', # in post model
+            'time',
+            'update_time', # in post model
             'type', # in post model
             'photos',
             'reactions',
