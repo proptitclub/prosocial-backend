@@ -172,6 +172,22 @@ class PollSerializer(serializers.ModelSerializer):
         ]
         depth = 1
 
+class PollSummary(serializers.ModelSerializer):
+    ticks = serializers.SerializerMethodField()
+
+    def get_ticks(self, obj):
+        request = self.context.get('request')
+        tick_query = Tick.objects.filter(assigned_poll=obj)
+        return TickSummary(tick_query, many=True, context={'request': request}).data
+    
+    class Meta:
+        model = Poll
+        fields = [
+            "id",
+            "question",
+            "ticks",
+        ]
+
 
 class TickSerializer(serializers.ModelSerializer):
     user = AssignedUserSummary(many=True)
@@ -309,7 +325,7 @@ class PostSummary(serializers.ModelSerializer):
     
     def get_polls(self, obj):
         request = self.context.get('request')
-        return PollSerializer(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
+        return PollSummary(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
 
 
     class Meta:
@@ -349,7 +365,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_polls(self, obj):
         request = self.context.get('request')
-        return PollSerializer(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
+        return PollSummary(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
 
 
     class Meta:
