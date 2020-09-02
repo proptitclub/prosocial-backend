@@ -246,7 +246,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     assigned_group = serializers.SerializerMethodField()
 
     def get_assigned_group(self, obj):
-        return AssignedGroupSummary(obj.assigned_post.assigned_group).data
+        return AssignedGroupSummary(obj.assigned_post.assigned_group, context=self.context).data
 
     class Meta:
         model = Notification
@@ -260,11 +260,11 @@ class NotificationSerializer(serializers.ModelSerializer):
         depth = 1
 
 class NotificationMemberSerializer(serializers.ModelSerializer):
+    assigned_notification = NotificationSerializer()
 
     class Meta:
         model = NotificationMember
         fields = [
-            "assigned_user",
             "assigned_notification",
             "is_seen",
         ]

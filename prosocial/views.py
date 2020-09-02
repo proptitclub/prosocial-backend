@@ -14,6 +14,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import requests
 import json
+from .notification_sender import *
 
 APP_ID = '913dba2c-9869-4355-a68e-5be7321465c9'
 REST_API_ONESIGNAL_ID = 'ZDg4NTNmNmItYzYxNi00ZjhiLWJmYmQtM2RiOGQ2ZjJhN2Iy'
@@ -213,6 +214,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
         content = request.data.get("type")
         new_reaction = Reaction(assigned_user=user, assigned_post=post, type=content)
         new_reaction.save()
+        ReactionSender.create_noti(new_reaction)
         return Response({"reaction_id": new_reaction.id})
 
 
@@ -265,6 +267,15 @@ class NotificationViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Notification.objects.filter(assigned_user=user)
 
+
+class NotificationMemberViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = NotificationMemberSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return NotificationMember.objects.filter(assigned_user=user)
+
 class NewsFeedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSummary
@@ -280,6 +291,7 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
             list_post = list_post | Post.objects.filter(assigned_group=group)
         list_post = list_post.distinct()
         return list_post
+
 
 
 

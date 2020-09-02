@@ -20,6 +20,7 @@ ROUTER.register(r"polls", views.PollViewSet)
 ROUTER.register(r"ticks", views.TickViewSet)
 ROUTER.register(r"notifications", views.NotificationViewSet, basename="notifications")
 ROUTER.register(r"newsfeed", views.NewsFeedViewSet, basename="newsfeed")
+ROUTER.register(r"notificationmember", views.NotificationMemberViewSet, basename='notificationmember')
 
 
 
