@@ -267,7 +267,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
 class NewsFeedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    serializer_class = PostSerializer
+    serializer_class = PostSummary
 
     def get_queryset(self):
         user = self.request.user
