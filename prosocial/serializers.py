@@ -15,7 +15,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
 
     def get_participating_group(self, obj):
         request = self.context.get('request')
-        result_set = GroupPro.objects.filter(members=obj)
+        result_set = (GroupPro.objects.filter(members__in=[obj]) | GroupPro.objects.filter(admins__in=[obj])).distinct()
         return AssignedGroupSummary(result_set, many=True, context={"request": request}).data
         
 
@@ -170,10 +170,11 @@ class PollSerializer(serializers.ModelSerializer):
             "question", 
             "ticks",
         ]
+        depth = 1
 
 
 class TickSerializer(serializers.ModelSerializer):
-    users = AssignedUserSummary(many=True)
+    user = AssignedUserSummary(many=True)
 
     class Meta:
         model = Tick
@@ -181,7 +182,7 @@ class TickSerializer(serializers.ModelSerializer):
             "url", 
             "id", 
             "assigned_poll", 
-            "users",
+            "user",
         ]
 
 class TickSummary(serializers.ModelSerializer):
@@ -198,6 +199,14 @@ class TickSummary(serializers.ModelSerializer):
 
 class AssignedGroupSummary(serializers.ModelSerializer):
     cover = serializers.FileField()
+    is_admin = serializers.SerializerMethodField()
+
+    def get_is_admin(self, obj):
+        user = self.context.get('request').user
+        print(obj.admins)
+        if user in obj.admins.all():
+            return True
+        return False
 
     class Meta:
         model = GroupPro
@@ -205,6 +214,7 @@ class AssignedGroupSummary(serializers.ModelSerializer):
             'id',
             'name',
             'cover',
+            'is_admin'
         ]
 
 class AssignedPostSummary(serializers.ModelSerializer):
@@ -255,15 +265,15 @@ class ImageSerializer(serializers.ModelSerializer):
         ]
 
 
-class TickSummary(serializers.ModelSerializer):
-    users = AssignedUserSummary(many=True, read_only=True)
+# class TickSummary(serializers.ModelSerializer):
+#     users = AssignedUserSummary(many=True, read_only=True)
 
-    class Meta:
-        model = Tick
-        fields = [
-            'id',
-            'users'
-        ]
+#     class Meta:
+#         model = Tick
+#         fields = [
+#             'id',
+#             'users'
+#         ]
 
 class ReactionSerializerSummary(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary()

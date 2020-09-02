@@ -271,11 +271,14 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        attended_group = GroupPro.objects.filter(members__in=[user])
+        attended_group_as_member = GroupPro.objects.filter(members__in=[user])
+        attended_group_as_admin = GroupPro.objects.filter(admins__in=[user])
+        attended_group = (attended_group_as_admin | attended_group_as_member).distinct()
+
         list_post = Post.objects.none()
         for group in attended_group:
             list_post = list_post | Post.objects.filter(assigned_group=group)
-        
+        list_post = list_post.distinct()
         return list_post
 
 
