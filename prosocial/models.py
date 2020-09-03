@@ -223,6 +223,8 @@ class Target(models.Model):
         ],
     )
 
+    created_time = models.DateTimeField()
+
 class BonusPoint(models.Model):
     assigned_user = models.ForeignKey(
         CustomMember, null=False, default=None, on_delete=models.CASCADE

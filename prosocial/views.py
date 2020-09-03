@@ -292,6 +292,37 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
         list_post = list_post.distinct()
         return list_post
 
+class PointViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PointSerializer
+
+    def get_queryset(self):
+        return Point.objects.all()
+
+class TargetViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = TargetSerializer
+
+    def get_queryset(self):
+        request = self.request
+        user = self.request.user
+        params = dict(request.query_params)
+        method = params.get('method')
+        query_set = Target.objects.all()
+        # print(method)
+        if method is not None:
+            if method[0] == 'currentMonth':
+                cur_month = datetime.today().replace(day=1)
+                print(user)
+                query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
+        return query_set
+
+class BonusPointViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = BonusPointSerializer
+
+    def get_queryset(self):
+        return BonusPoint.objects.all()
 
 
 

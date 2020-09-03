@@ -21,6 +21,9 @@ ROUTER.register(r"ticks", views.TickViewSet)
 ROUTER.register(r"notifications", views.NotificationViewSet, basename="notifications")
 ROUTER.register(r"newsfeed", views.NewsFeedViewSet, basename="newsfeed")
 ROUTER.register(r"notificationmember", views.NotificationMemberViewSet, basename='notificationmember')
+ROUTER.register(r"point", views.PointViewSet, basename='point')
+ROUTER.register(r'bonuspoint', views.BonusPointViewSet, basename='bonuspoint')
+ROUTER.register(r'target', views.TargetViewSet, basename='target')
 
 
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, GroupPro, Comment, CustomMember, Reaction, Poll, Tick, Image, Notification, NotificationMember, UserDevice
+from .models import *
 
 admin.site.register(CustomMember)
 admin.site.register(Post)
@@ -12,3 +12,6 @@ admin.site.register(Image)
 admin.site.register(Notification)
 admin.site.register(NotificationMember)
 admin.site.register(UserDevice)
+admin.site.register(Point)
+admin.site.register(Target)
+admin.site.register(BonusPoint)

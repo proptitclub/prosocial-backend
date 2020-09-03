@@ -383,3 +383,35 @@ class PostSerializer(serializers.ModelSerializer):
             'reactions',
             'polls',
         ]
+
+class PointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Point
+        fields = "__all__"
+
+class TargetSerializer(serializers.ModelSerializer):
+    assigned_user = AssignedUserSummary()
+    point = PointSerializer()
+
+    class Meta:
+        model = Target
+        fields = [
+            "assigned_user",
+            "name",
+            "is_done",
+            "point",
+            "status",
+            "created_time",
+        ]
+
+class BonusPointSerializer(serializers.ModelSerializer):
+    assigned_user = AssignedUserSummary()
+
+    class Meta:
+        model = BonusPoint
+        fields = [
+            "assgined_user",
+            "score",
+            "description",
+            "created_time",
+        ]
