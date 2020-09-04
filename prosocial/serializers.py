@@ -190,7 +190,7 @@ class PollSummary(serializers.ModelSerializer):
 
 
 class TickSerializer(serializers.ModelSerializer):
-    user = AssignedUserSummary(many=True)
+    user = AssignedUserSummary()
 
     class Meta:
         model = Tick
@@ -390,8 +390,8 @@ class PointSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class TargetSerializer(serializers.ModelSerializer):
-    assigned_user = AssignedUserSummary()
-    point = PointSerializer()
+    assigned_user = AssignedUserSummary(read_only=True)
+    point = PointSerializer(read_only=True)
 
     class Meta:
         model = Target
@@ -405,12 +405,12 @@ class TargetSerializer(serializers.ModelSerializer):
         ]
 
 class BonusPointSerializer(serializers.ModelSerializer):
-    assigned_user = AssignedUserSummary()
+    assigned_user = AssignedUserSummary(read_only=True)
 
     class Meta:
         model = BonusPoint
         fields = [
-            "assgined_user",
+            "assigned_user",
             "score",
             "description",
             "created_time",

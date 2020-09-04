@@ -15,6 +15,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import requests
 import json
 from .notification_sender import *
+from rest_framework.decorators import action
 
 APP_ID = '913dba2c-9869-4355-a68e-5be7321465c9'
 REST_API_ONESIGNAL_ID = 'ZDg4NTNmNmItYzYxNi00ZjhiLWJmYmQtM2RiOGQ2ZjJhN2Iy'
@@ -322,7 +323,29 @@ class BonusPointViewSet(viewsets.ModelViewSet):
     serializer_class = BonusPointSerializer
 
     def get_queryset(self):
-        return BonusPoint.objects.all()
+        request = self.request
+        user = self.request.user
+        params = dict(request.query_params)
+        method = params.get('method')
+        query_set = BonusPoint.objects.all()
+        if method is not None:
+            if method[0] == 'currentMonth':
+                cur_month = datetime.today().replace(day=1)
+                query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
+        return query_set
+
+    @action(detail=False, methods=['get'])
+    def current_month(self, request, pk=None):
+        request = request
+        user = request.user
+        params = dict(request.query_params)
+        method = params.get('method')
+        query_set = BonusPoint.objects.all()
+        if method is not None:
+            if method[0] == 'currentMonth':
+                cur_month = datetime.today().replace(day=1)
+                query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
+        return Response(BonusPointSerializer(query_set, many=True).data)
 
 
 
