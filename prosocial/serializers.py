@@ -351,7 +351,6 @@ class PostSerializer(serializers.ModelSerializer):
     photos = ImageSerializer(many=True, read_only=True)
     reactions = serializers.SerializerMethodField()
     polls = serializers.SerializerMethodField()
-    reaction_id = serializers.SerializerMethodField()
 
     
     def get_comments(self, obj):
@@ -367,15 +366,6 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return PollSummary(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
 
-    def get_reaction_id(self, obj):
-        request = self.context.get('request')
-        user = request.user
-        try:
-            reaction = Reaction.objects.get(assigned_post=obj, assigned_user=user)[0]
-            return reaction.id
-        except:
-            return -1
-        
     class Meta:
         model = Post
         fields = [
@@ -390,7 +380,6 @@ class PostSerializer(serializers.ModelSerializer):
             'photos',
             'reactions',
             'polls',
-            'reaction_id'
         ]
 
 class PointSerializer(serializers.ModelSerializer):
