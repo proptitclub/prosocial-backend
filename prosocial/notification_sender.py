@@ -73,7 +73,7 @@ class CreatingPostSender(NotificationSender):
         for member in members_take_noti:
             new_member_noti = NotificationMember(assigned_member=member, assigned_notification=new_noti)
             new_member_noti.save()
-            CreatingPostSender.serialize_and_send(new_member_noti, CreatingPostSender.message_template)
+            CreatingPostSender.serialize_and_send(new_member_noti)
         
         return
 
@@ -92,7 +92,7 @@ class ReactionSender(NotificationSender):
             print(member.id, member.display_name, member.username)
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             new_member_noti.save()
-            ReactionSender.serialize_and_send(new_member_noti, ReactionSender.message_template)
+            ReactionSender.serialize_and_send(new_member_noti)
 
         return
 
@@ -112,6 +112,6 @@ class CommentSender(NotificationSender):
             print(member.id, member.display_name, member.username)
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             new_member_noti.save()
-            ReactionSender.serialize_and_send(new_member_noti, CommentSender.message_template)
+            ReactionSender.serialize_and_send(new_member_noti)
 
         return
