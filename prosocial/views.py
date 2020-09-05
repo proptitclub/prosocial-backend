@@ -215,7 +215,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
         content = request.data.get("type")
         new_reaction = Reaction(assigned_user=user, assigned_post=post, type=content)
         new_reaction.save()
-        ReactionSender.create_noti(new_reaction)
+        ReactionSender.create_noti(request, new_reaction)
         return Response({"reaction_id": new_reaction.id})
 
 
