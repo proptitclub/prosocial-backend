@@ -190,7 +190,7 @@ class TickSerializer(serializers.ModelSerializer):
         ]
 
 class TickSummary(serializers.ModelSerializer):
-    user = AssignedUserSummary()
+    assigned_user = AssignedUserSummary()
 
     class Meta:
         model = Tick
