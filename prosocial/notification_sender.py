@@ -51,7 +51,7 @@ class NotificationSender:
             "app_id": APP_ID,
             "include_player_ids": [user_device.device_id],
             "contents": {
-                "vi": message,
+                "vi": 'đéo thích cho message đấy như loèn',
             },
             "data": content
         }
