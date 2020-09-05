@@ -24,8 +24,8 @@ class NotificationSender:
     serializer = NotificationSerializer
     
     @staticmethod
-    def serialize_and_send(noti_mem) -> None:
-        payload = NotificationSender.create_payload(noti_mem)
+    def serialize_and_send(request, noti_mem) -> None:
+        payload = NotificationSender.create_payload(request, noti_mem)
         if payload == None:
             print("User device is not exist for this user")
             return
