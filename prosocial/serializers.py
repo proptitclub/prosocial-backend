@@ -139,18 +139,6 @@ class ReactionSummary(serializers.ModelSerializer):
 
 
 
-class TickSerializer(serializers.ModelSerializer):
-    users = AssignedUserSummary(read_only=True)
-    
-    class Meta:
-        model = Tick
-        fields = [
-            'id',
-            'user',
-            'assigned_poll',
-        ]
-
-
 
 
 class PollSerializer(serializers.ModelSerializer):
@@ -190,7 +178,7 @@ class PollSummary(serializers.ModelSerializer):
 
 
 class TickSerializer(serializers.ModelSerializer):
-    user = AssignedUserSummary()
+    assigned_user = AssignedUserSummary()
 
     class Meta:
         model = Tick
@@ -198,7 +186,7 @@ class TickSerializer(serializers.ModelSerializer):
             "url", 
             "id", 
             "assigned_poll", 
-            "user",
+            "assigned_user",
         ]
 
 class TickSummary(serializers.ModelSerializer):
@@ -208,7 +196,7 @@ class TickSummary(serializers.ModelSerializer):
         model = Tick
         fields = [
             "id",
-            "user",
+            "assigned_user",
         ]
 
 

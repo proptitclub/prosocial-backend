@@ -141,7 +141,7 @@ class Tick(models.Model):
     assigned_poll = models.ForeignKey(
         Poll, on_delete=models.CASCADE, null=False, default=None
     )
-    user = models.ForeignKey(CustomMember, null=True, blank=True, default=None, on_delete=models.CASCADE)
+    assigned_user = models.ForeignKey(CustomMember, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.assigned_poll.question

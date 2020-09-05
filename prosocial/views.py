@@ -234,7 +234,7 @@ class TickViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         user = request.user
         poll_id = request.data.get('poll_id')
-        new_tick = Tick(user=user, assigned_poll=Poll.objects.get(id=poll_id))
+        new_tick = Tick(assigned_user=user, assigned_poll=Poll.objects.get(id=poll_id))
         new_tick.save()
         return Response({'tick_id': new_tick.id})
 
