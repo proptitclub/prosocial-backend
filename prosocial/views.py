@@ -266,7 +266,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Notification.objects.filter(assigned_user=user)
+        return Notification.objects.filter(assigned_user=user).order_by('created_time')
 
 
 class NotificationMemberViewSet(viewsets.ModelViewSet):

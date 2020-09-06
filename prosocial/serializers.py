@@ -239,6 +239,7 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = [
+            "id",
             "assigned_user", 
             "assigned_post", 
             "assigned_group",
