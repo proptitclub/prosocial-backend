@@ -10,6 +10,20 @@ from .models import *
 #         fields = ["url", "username", "email", "is_staff"]
 
 
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomMember
+        fields = ('username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = CustomMember(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+
 class CustomMemberSerializer(serializers.ModelSerializer):
     participating_group = serializers.SerializerMethodField()
 
@@ -72,21 +86,21 @@ class GroupSerializer(serializers.ModelSerializer):
         ]
 
 
-class PostSerializer(serializers.ModelSerializer):
-    # id = serializers.CharField(source='assigned_user', read_only=True)
-    # username = serializers.CharField(source='assigned_group.id', read_only=True)
+# class PostSerializer(serializers.ModelSerializer):
+#     # id = serializers.CharField(source='assigned_user', read_only=True)
+#     # username = serializers.CharField(source='assigned_group.id', read_only=True)
 
-    class Meta:
-        model = Post
-        fields = [
-            "url",
-            "id",
-            "content",
-            "time",
-            "type",
-            "assigned_user",
-            "assigned_group",
-        ]
+#     class Meta:
+#         model = Post
+#         fields = [
+#             "url",
+#             "id",
+#             "content",
+#             "time",
+#             "type",
+#             "assigned_user",
+#             "assigned_group",
+#         ]
 
 
 
@@ -348,9 +362,9 @@ class PostSummary(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary()
     assigned_group = AssignedGroupSummary()
-    comments = serializers.SerializerMethodField()
-    photos = ImageSerializer(many=True, read_only=True)
-    reactions = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField(read_only=True)
+    photos = ImageSerializer(many=True)
+    reactions = serializers.SerializerMethodField(read_only=True)
     polls = serializers.SerializerMethodField()
 
     
@@ -382,6 +396,8 @@ class PostSerializer(serializers.ModelSerializer):
             'reactions',
             'polls',
         ]
+
+
 
 class PointSerializer(serializers.ModelSerializer):
     class Meta:

@@ -3,10 +3,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
+from django.conf.urls import url
 from rest_framework import routers
 
 from prosocial import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.views.generic import TemplateView
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
 
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
@@ -25,7 +30,18 @@ ROUTER.register(r"point", views.PointViewSet, basename='point')
 ROUTER.register(r'bonuspoint', views.BonusPointViewSet, basename='bonuspoint')
 ROUTER.register(r'target', views.TargetViewSet, basename='target')
 
-
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Snippets API",
+        default_version="v1",
+        description="Test description",
+        terms_of_services="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD Licence")
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = (
     [
@@ -33,6 +49,10 @@ urlpatterns = (
         path("", include(ROUTER.urls)),
         path("auth/", include("djoser.urls")),
         path("auth/", include("djoser.urls.jwt")),
+        path("users/create/", views.create_user),
+        url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+        url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

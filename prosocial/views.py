@@ -3,7 +3,7 @@ from abc import ABC
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from .serializers import *
 from datetime import datetime
@@ -12,10 +12,15 @@ from django.db.models import QuerySet
 # custom TokenObtain view
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics
 import requests
 import json
 from .notification_sender import *
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
+from drf_yasg.utils import swagger_auto_schema
+
+
+
 
 APP_ID = '913dba2c-9869-4355-a68e-5be7321465c9'
 REST_API_ONESIGNAL_ID = 'ZDg4NTNmNmItYzYxNi00ZjhiLWJmYmQtM2RiOGQ2ZjJhN2Iy'
@@ -50,6 +55,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+
 class PostViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
@@ -80,7 +86,23 @@ class PostViewSet(viewsets.ModelViewSet):
                 filtered_posts = Post.objects.filter(assigned_group=group)
 
         return filtered_posts
+    
+    @action(detail=False, methods=['get'], url_path='by_user/(?P<user_id>[^/.]+)')
+    def by_user(self, request, user_id, pk=None):
+        user = CustomMember.objects.get(id=user_id)
+        query_set = Post.objects.filter(assigned_user=user)
+        print(query_set)
+        return Response(PostSerializer(query_set, many=True, context={'request': request}).data)
 
+    @action(detail=False, methods=['get'], url_path='by_group/(?P<group_id>[^/.]+)')
+    def by_group(self, request, group_id, pk=None):
+        group = GroupPro.objects.get(id=group_id)
+        query_set = Post.objects.filter(assigned_group=group)
+        print(query_set)
+
+        return Response(PostSerializer(query_set, many=True, context={'request': request}).data)
+
+    @swagger_auto_schema(request_body={"a": "b"})
     def create(self, request, *args, **kwargs):
         group_id = request.data.get("group_id")
         content = request.data.get("content")
@@ -107,7 +129,6 @@ class PostViewSet(viewsets.ModelViewSet):
             process(x)
         # print(count)
 
-        print("this post has {} files".format(count_))
         new_post.save()
 
         new_notification = Notification(
@@ -348,4 +369,24 @@ class BonusPointViewSet(viewsets.ModelViewSet):
         return Response(BonusPointSerializer(query_set, many=True).data)
 
 
-
+@api_view(['GET','POST'])
+@permission_classes((AllowAny,))
+def create_user(request):
+    print(request.method)
+    if request.method == 'GET':
+        return Response({
+            'error': "method is not allowed",
+        })
+    # print(request.data['username'])
+    # return Response({"status": "Accepted Request"})
+    username = request.POST['username']
+    password = request.POST['password']
+    check_queryset = CustomMember.objects.filter(username=username)
+    print(check_queryset)
+    if len(check_queryset) > 0:
+        return Response({
+            "error": "username has already existed"
+        })
+    new_mem = CustomMember(username=username, password=password)
+    new_mem.save()
+    return Response(CustomMemberSerializer(new_mem, context={'request': request}).data)
