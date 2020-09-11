@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import *
 from datetime import datetime
 from .models import *
@@ -16,8 +17,9 @@ from rest_framework import generics
 import requests
 import json
 from .notification_sender import *
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes, parser_classes
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 
@@ -60,7 +62,8 @@ class PostViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    
+    # parser_classes = (FormParser, )
+
     def get_serializer_class(self):
         if self.action == 'list':
             return PostSummary
@@ -101,8 +104,9 @@ class PostViewSet(viewsets.ModelViewSet):
         print(query_set)
 
         return Response(PostSerializer(query_set, many=True, context={'request': request}).data)
-
-    @swagger_auto_schema(request_body={"a": "b"})
+    
+    
+    # @action(detail=False, methods=['post'])
     def create(self, request, *args, **kwargs):
         group_id = request.data.get("group_id")
         content = request.data.get("content")
@@ -174,6 +178,8 @@ class PostViewSet(viewsets.ModelViewSet):
         for comment in comments_list:
             comment.delete()
         post.delete()
+
+
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -368,9 +374,31 @@ class BonusPointViewSet(viewsets.ModelViewSet):
                 query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
         return Response(BonusPointSerializer(query_set, many=True).data)
 
-
+@swagger_auto_schema(
+    method='POST',
+    operation_description='Create a basic user',
+    operation_id='Create User',
+    manual_parameters=[
+        openapi.Parameter(
+            name='username',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_STRING,
+            description='Username',
+        ),
+        openapi.Parameter(
+            name='password',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_STRING,
+            description='Password'
+        )
+    ],
+    responses={
+        '200': openapi.Response('Response Description', CustomMemberSerializer),
+    }
+)
 @api_view(['GET','POST'])
 @permission_classes((AllowAny,))
+@parser_classes([MultiPartParser, ])
 def create_user(request):
     print(request.method)
     if request.method == 'GET':
@@ -390,3 +418,104 @@ def create_user(request):
     new_mem = CustomMember(username=username, password=password)
     new_mem.save()
     return Response(CustomMemberSerializer(new_mem, context={'request': request}).data)
+
+
+# self define swagger field
+
+@swagger_auto_schema(
+    method='post',
+    operation_description='Create a post, post has 2 type',
+    operation_id='Create a post',
+    manual_parameters=[
+        openapi.Parameter(
+            name='files',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_FILE,
+            required=False,
+            description="Images that's pinned to Post",
+        ),
+        openapi.Parameter(
+            name='content',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_STRING,
+            requried=True,
+            description="Content of the post",
+        ),
+        openapi.Parameter(
+            name='group_id',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_NUMBER,
+            required=True,
+            description="Id of group that the post belong to",
+        ),
+        openapi.Parameter(
+            name='polls',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_OBJECT,
+            required=False,
+            description="A list of Poll content you want to post"
+        ),
+        openapi.Parameter(
+            name='type',
+            in_=openapi.IN_FORM,
+            type=openapi.TYPE_INTEGER,
+            required=True,
+            description="Type of Post: '0' is normal post, '1' is polls with post",
+        )
+    ],
+    responses={
+        '200': openapi.Response('Response Description', PostSerializer),
+    }
+)
+@api_view(['POST'])
+@parser_classes([MultiPartParser, ])
+def create_post(request):
+    group_id = request.data.get("group_id")
+    content = request.data.get("content")
+    post_type = request.data.get("type")
+    time_create = datetime.now()
+    new_post = Post(
+        assigned_user=request.user,
+        assigned_group=GroupPro.objects.get(id=group_id),
+        content=content,
+        time=time_create,
+        type=post_type,
+    )
+    new_post.save()
+    print(request.FILES)
+    print(request.FILES.getlist("files"))
+    count_ = 0
+    for count, x in enumerate(request.FILES.getlist("files")):
+
+        def process(f):
+            image = Image(img_url=f)
+            image.save()
+            new_post.photos.add(image)
+        count_ = count
+        process(x)
+    # print(count)
+
+    new_post.save()
+
+    new_notification = Notification(
+        assigned_post=new_post,
+        assigned_user=request.user,
+        type=0
+    )
+    new_notification.save()
+    user_list = new_post.assigned_group.members
+    
+    relation_device_id_list = []
+    for user in user_list.all():
+        print('{} == {}'.format(user.id, request.user.id))
+        if user.id == request.user.id:
+            continue
+        new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
+        new_notification_member.save()
+        user_device_list = UserDevice.objects.filter(assigned_user=user)
+        for user_device in user_device_list:
+            relation_device_id_list.append(user_device.device_id)
+    
+    send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
+    
+    return PostSerializer(new_post, context={'request': request}).data

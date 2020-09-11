@@ -359,6 +359,19 @@ class PostSummary(serializers.ModelSerializer):
             'reaction_id',
         ]
 
+class CreatePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'content',
+            'assigned_user',
+            'assigned_group',
+            'type',
+            'photos',
+            'polls',
+        ]
+
 class PostSerializer(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary()
     assigned_group = AssignedGroupSummary()

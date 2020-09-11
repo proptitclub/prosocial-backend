@@ -121,12 +121,13 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
+    # Renderer: define dạng form đầu ra của response
     'DEFAULT_RENDERER_CLASSES': (
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
         # Any other renders
     ),
-
+    # Parser: define dạng form đầu vào của request
     'DEFAULT_PARSER_CLASSES': (
         # If you use MultiPartFormParser or FormParser, we also have a camel case version
         'djangorestframework_camel_case.parser.CamelCaseFormParser',
