@@ -111,6 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
+
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'prosocial_backend.urls.api_info',
+}
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.

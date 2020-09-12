@@ -85,6 +85,41 @@ class GroupSerializer(serializers.ModelSerializer):
             "cover"
         ]
 
+class CreateGroupSerializer(serializers.ModelSerializer):
+    cover = serializers.FileField()
+    
+    class Meta:
+        model = GroupPro
+        fields = [
+            "members",
+            "admins",
+            "name",
+            "description",
+            "members",
+            "cover",
+        ]
+    
+    def create(self, validated_data):
+        user = self.context.get('request').user
+        instance = GroupPro(**validated_data)
+        instance.admins.add(user)
+        instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        for key, value in validated_data.items():
+            if key == 'members':
+                member_list = CustomMember.objects.filter(id__in=value)
+                instance.update(members=member_list)
+            elif key == 'admins':
+                admin_list = CustomMember.objects.filter(id__in=value)
+                instance.update(admins=admin_list)
+            else:
+                setattr(instance, attr, value)
+        
+        instance.save()
+        return instance
+
 
 # class PostSerializer(serializers.ModelSerializer):
 #     # id = serializers.CharField(source='assigned_user', read_only=True)
@@ -130,6 +165,37 @@ class CommentSummary(serializers.ModelSerializer):
             "assigned_user",
         ]
 
+class CreateCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            "content",
+        ]
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    assigned_post = serializers.IntegerField()
+
+    class Meta:
+        model = Comment
+        fields = [
+            "assigned_post",
+            "content",
+            "id",
+        ]
+
+class UpdateCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+            "content",
+        ]
+    
+    def update(self, instance, validated_data):
+        content = validated_data.get('content')
+        instance.__dict__.update({"content": content})
+        instance.save()
+        return instance
+
 
 class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -151,6 +217,13 @@ class ReactionSummary(serializers.ModelSerializer):
             "assigned_user",
         ]
 
+
+class CreateUpdateReactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reaction
+        fields = [
+            "type",
+        ]
 
 
 
@@ -190,6 +263,20 @@ class PollSummary(serializers.ModelSerializer):
             "ticks",
         ]
 
+class CreatePollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poll
+        fields = [
+            "assigned_post",
+            "question",
+        ]
+
+class UpdatePollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poll
+        fields = [
+            'question'
+        ]
 
 class TickSerializer(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary()
@@ -213,7 +300,13 @@ class TickSummary(serializers.ModelSerializer):
             "assigned_user",
         ]
 
-
+class CreateTickSerializer(serializers.ModelSerializer):
+    poll_id = serializers.IntegerField(write_only=True)
+    class Meta:
+        model = Tick
+        fields = [
+            "poll_id"
+        ]
 
 class AssignedGroupSummary(serializers.ModelSerializer):
     cover = serializers.FileField()
@@ -243,8 +336,8 @@ class AssignedPostSummary(serializers.ModelSerializer):
         ]
 
 class NotificationSerializer(serializers.ModelSerializer):
-    assigned_user = AssignedUserSummary(read_only=True)
-    assigned_post = AssignedPostSummary(read_only=True)
+    assigned_user = AssignedUserSummary()
+    assigned_post = AssignedPostSummary()
     assigned_group = serializers.SerializerMethodField()
 
     def get_assigned_group(self, obj):
@@ -410,12 +503,25 @@ class PostSerializer(serializers.ModelSerializer):
             'polls',
         ]
 
-
+class UpdatePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = [
+            'content',
+        ]
 
 class PointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Point
         fields = "__all__"
+
+class CreatePointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Point
+        fields = [
+            'score',
+            'description'
+        ]
 
 class TargetSerializer(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary(read_only=True)
@@ -432,6 +538,52 @@ class TargetSerializer(serializers.ModelSerializer):
             "created_time",
         ]
 
+class CreateTargetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Target
+        fields = [
+            "assigned_user",
+            "name",
+            "point",
+        ]
+
+    def create(self, validated_data):
+        assigned_user_id = validated_data.get('assigned_user')
+        name = validated_data.get('name')
+        
+        instance = Point(assigned_user=CustomMember.objects.get(id=assigned_user_id), name=name)
+        instance.save()
+        return instance
+
+class UpdateTargetSerializer(serializers.ModelSerializer):
+    point = serializers.IntegerField()
+    
+    class Meta:
+        model = Target
+        fields = [
+            "name",
+            "is_done",
+            "point",
+            "status"
+        ]
+
+    def update(self, instance, validated_data):
+        name = validated_data.get('name')
+        is_done = validated_data.get('is_done')
+        point = Point.objects.get(id=validated_data.get('point'))
+        status = validated_data.get('status')
+
+        instance.__dict__.update(
+            {
+                'name': name,
+                'is_done': is_done,
+                'point': point,
+                'status': status
+            }
+        )
+        instance.save()
+        return instance
+
 class BonusPointSerializer(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary(read_only=True)
 
@@ -443,3 +595,40 @@ class BonusPointSerializer(serializers.ModelSerializer):
             "description",
             "created_time",
         ]
+
+class CreateBonusPointSerializer(serializers.ModelSerializer):
+    assigned_user = serializers.IntegerField()
+    class Meta:
+        model = BonusPoint
+        fields = [
+            "assigned_user",
+            "score",
+            "description",
+        ]
+    
+    def create(self, validated_data):
+        assigned_user = CustomMember.objects.get(id=assigned_user)
+        score = validated_data.get('score')
+        description = validated_data.get('description')
+
+        instance = BonusPoint(assigned_user=assigned_user, score=score, description=description)
+        instance.save()
+        return instance
+    
+class UpdateBonusPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BonusPoint
+        fields = [
+            "score",
+            "description",
+        ]
+
+    def update(self, instance, validated_data):
+        score = validated_data.get('score')
+        description = validated_data.get('description')
+        instance.__dict__.update({
+            'score': score,
+            'description': description,
+        })
+        instance.save()
+        return instance

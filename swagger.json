@@ -1,0 +1,3426 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Snippets API",
+        "description": "Test description",
+        "termsOfService": "https://www.google.com/policies/terms/",
+        "contact": {
+            "email": "contact@snippets.local"
+        },
+        "license": {
+            "name": "BSD License"
+        },
+        "version": "v1"
+    },
+    "basePath": "/",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Basic": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "Basic": []
+        }
+    ],
+    "paths": {
+        "/accounts/": {
+            "get": {
+                "operationId": "accounts_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CustomMember"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "accounts"
+                ]
+            },
+            "post": {
+                "operationId": "accounts_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "accounts"
+                ]
+            },
+            "parameters": []
+        },
+        "/accounts/{id}/": {
+            "get": {
+                "operationId": "accounts_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "accounts"
+                ]
+            },
+            "put": {
+                "operationId": "accounts_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "accounts"
+                ]
+            },
+            "patch": {
+                "operationId": "accounts_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "accounts"
+                ]
+            },
+            "delete": {
+                "operationId": "accounts_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "accounts"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this user.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/auth/jwt/create/": {
+            "post": {
+                "operationId": "auth_jwt_create_create",
+                "description": "Takes a set of user credentials and returns an access and refresh JSON web\ntoken pair to prove the authentication of those credentials.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TokenObtainPair"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TokenObtainPair"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/jwt/refresh/": {
+            "post": {
+                "operationId": "auth_jwt_refresh_create",
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TokenRefresh"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TokenRefresh"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/jwt/verify/": {
+            "post": {
+                "operationId": "auth_jwt_verify_create",
+                "description": "Takes a token and indicates if it is valid.  This view provides no\ninformation about a token's fitness for a particular use.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TokenVerify"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TokenVerify"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/": {
+            "get": {
+                "operationId": "auth_users_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CustomMember"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "post": {
+                "operationId": "auth_users_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UserCreate"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/activation/": {
+            "post": {
+                "operationId": "auth_users_activation",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Activation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Activation"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/me/": {
+            "get": {
+                "operationId": "auth_users_me_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CustomMember"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "put": {
+                "operationId": "auth_users_me_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "patch": {
+                "operationId": "auth_users_me_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "delete": {
+                "operationId": "auth_users_me_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/resend_activation/": {
+            "post": {
+                "operationId": "auth_users_resend_activation",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SendEmailReset"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SendEmailReset"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/reset_password/": {
+            "post": {
+                "operationId": "auth_users_reset_password",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SendEmailReset"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SendEmailReset"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/reset_password_confirm/": {
+            "post": {
+                "operationId": "auth_users_reset_password_confirm",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PasswordResetConfirm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PasswordResetConfirm"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/reset_username/": {
+            "post": {
+                "operationId": "auth_users_reset_username",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SendEmailReset"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SendEmailReset"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/reset_username_confirm/": {
+            "post": {
+                "operationId": "auth_users_reset_username_confirm",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UsernameResetConfirm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UsernameResetConfirm"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/set_password/": {
+            "post": {
+                "operationId": "auth_users_set_password",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetPassword"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SetPassword"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/set_username/": {
+            "post": {
+                "operationId": "auth_users_set_username",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SetUsername"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SetUsername"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": []
+        },
+        "/auth/users/{id}/": {
+            "get": {
+                "operationId": "auth_users_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "put": {
+                "operationId": "auth_users_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "patch": {
+                "operationId": "auth_users_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "delete": {
+                "operationId": "auth_users_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this user.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/bonuspoint/": {
+            "get": {
+                "operationId": "bonuspoint_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BonusPoint"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "post": {
+                "operationId": "bonuspoint_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "parameters": []
+        },
+        "/bonuspoint/current_month/": {
+            "get": {
+                "operationId": "bonuspoint_current_month",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BonusPoint"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "parameters": []
+        },
+        "/bonuspoint/{id}/": {
+            "get": {
+                "operationId": "bonuspoint_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "put": {
+                "operationId": "bonuspoint_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "patch": {
+                "operationId": "bonuspoint_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/BonusPoint"
+                        }
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "delete": {
+                "operationId": "bonuspoint_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "bonuspoint"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/comments/": {
+            "get": {
+                "operationId": "comments_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Comment"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "comments"
+                ]
+            },
+            "post": {
+                "operationId": "comments_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                },
+                "tags": [
+                    "comments"
+                ]
+            },
+            "parameters": []
+        },
+        "/comments/{id}/": {
+            "get": {
+                "operationId": "comments_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                },
+                "tags": [
+                    "comments"
+                ]
+            },
+            "put": {
+                "operationId": "comments_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                },
+                "tags": [
+                    "comments"
+                ]
+            },
+            "patch": {
+                "operationId": "comments_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    }
+                },
+                "tags": [
+                    "comments"
+                ]
+            },
+            "delete": {
+                "operationId": "comments_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "comments"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this comment.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/groups/": {
+            "get": {
+                "operationId": "groups_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Group"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "groups"
+                ]
+            },
+            "post": {
+                "operationId": "groups_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                },
+                "tags": [
+                    "groups"
+                ]
+            },
+            "parameters": []
+        },
+        "/groups/{id}/": {
+            "get": {
+                "operationId": "groups_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                },
+                "tags": [
+                    "groups"
+                ]
+            },
+            "put": {
+                "operationId": "groups_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                },
+                "tags": [
+                    "groups"
+                ]
+            },
+            "patch": {
+                "operationId": "groups_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Group"
+                        }
+                    }
+                },
+                "tags": [
+                    "groups"
+                ]
+            },
+            "delete": {
+                "operationId": "groups_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "groups"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this group pro.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/newsfeed/": {
+            "get": {
+                "operationId": "newsfeed_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PostSummary"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "newsfeed"
+                ]
+            },
+            "post": {
+                "operationId": "newsfeed_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                },
+                "tags": [
+                    "newsfeed"
+                ]
+            },
+            "parameters": []
+        },
+        "/newsfeed/{id}/": {
+            "get": {
+                "operationId": "newsfeed_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                },
+                "tags": [
+                    "newsfeed"
+                ]
+            },
+            "put": {
+                "operationId": "newsfeed_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                },
+                "tags": [
+                    "newsfeed"
+                ]
+            },
+            "patch": {
+                "operationId": "newsfeed_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/PostSummary"
+                        }
+                    }
+                },
+                "tags": [
+                    "newsfeed"
+                ]
+            },
+            "delete": {
+                "operationId": "newsfeed_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "newsfeed"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/notificationmember/": {
+            "get": {
+                "operationId": "notificationmember_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/NotificationMember"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "notificationmember"
+                ]
+            },
+            "post": {
+                "operationId": "notificationmember_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "notificationmember"
+                ]
+            },
+            "parameters": []
+        },
+        "/notificationmember/{id}/": {
+            "get": {
+                "operationId": "notificationmember_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "notificationmember"
+                ]
+            },
+            "put": {
+                "operationId": "notificationmember_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "notificationmember"
+                ]
+            },
+            "patch": {
+                "operationId": "notificationmember_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/NotificationMember"
+                        }
+                    }
+                },
+                "tags": [
+                    "notificationmember"
+                ]
+            },
+            "delete": {
+                "operationId": "notificationmember_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "notificationmember"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/notifications/": {
+            "get": {
+                "operationId": "notifications_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Notification"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ]
+            },
+            "post": {
+                "operationId": "notifications_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ]
+            },
+            "parameters": []
+        },
+        "/notifications/{id}/": {
+            "get": {
+                "operationId": "notifications_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ]
+            },
+            "put": {
+                "operationId": "notifications_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ]
+            },
+            "patch": {
+                "operationId": "notifications_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ]
+            },
+            "delete": {
+                "operationId": "notifications_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/point/": {
+            "get": {
+                "operationId": "point_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Point"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "point"
+                ]
+            },
+            "post": {
+                "operationId": "point_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                },
+                "tags": [
+                    "point"
+                ]
+            },
+            "parameters": []
+        },
+        "/point/{id}/": {
+            "get": {
+                "operationId": "point_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                },
+                "tags": [
+                    "point"
+                ]
+            },
+            "put": {
+                "operationId": "point_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                },
+                "tags": [
+                    "point"
+                ]
+            },
+            "patch": {
+                "operationId": "point_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Point"
+                        }
+                    }
+                },
+                "tags": [
+                    "point"
+                ]
+            },
+            "delete": {
+                "operationId": "point_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "point"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/polls/": {
+            "get": {
+                "operationId": "polls_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Poll"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "polls"
+                ]
+            },
+            "post": {
+                "operationId": "polls_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                },
+                "tags": [
+                    "polls"
+                ]
+            },
+            "parameters": []
+        },
+        "/polls/{id}/": {
+            "get": {
+                "operationId": "polls_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                },
+                "tags": [
+                    "polls"
+                ]
+            },
+            "put": {
+                "operationId": "polls_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                },
+                "tags": [
+                    "polls"
+                ]
+            },
+            "patch": {
+                "operationId": "polls_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Poll"
+                        }
+                    }
+                },
+                "tags": [
+                    "polls"
+                ]
+            },
+            "delete": {
+                "operationId": "polls_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "polls"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this poll.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/posts/": {
+            "get": {
+                "operationId": "posts_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PostSummary"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "post": {
+                "operationId": "posts_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "parameters": []
+        },
+        "/posts/by_group/{group_id}/": {
+            "get": {
+                "operationId": "posts_by_group",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Post"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "group_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/posts/by_user/{user_id}/": {
+            "get": {
+                "operationId": "posts_by_user",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Post"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/posts/create/": {
+            "post": {
+                "operationId": "Create a post",
+                "description": "Create a post, post has 2 type",
+                "parameters": [
+                    {
+                        "name": "files",
+                        "in": "formData",
+                        "description": "Images that's pinned to Post",
+                        "required": false,
+                        "type": "file"
+                    },
+                    {
+                        "name": "content",
+                        "in": "formData",
+                        "description": "Content of the post",
+                        "type": "string",
+                        "requried": true
+                    },
+                    {
+                        "name": "group_id",
+                        "in": "formData",
+                        "description": "Id of group that the post belong to",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "polls",
+                        "in": "formData",
+                        "description": "A list of Poll content you want to post",
+                        "required": false,
+                        "type": "object"
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "description": "Type of Post: '0' is normal post, '1' is polls with post",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Description",
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                },
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "posts"
+                ]
+            },
+            "parameters": []
+        },
+        "/posts/{id}/": {
+            "get": {
+                "operationId": "posts_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "put": {
+                "operationId": "posts_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "patch": {
+                "operationId": "posts_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "delete": {
+                "operationId": "posts_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "posts"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this post.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/reactions/": {
+            "get": {
+                "operationId": "reactions_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Reaction"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "reactions"
+                ]
+            },
+            "post": {
+                "operationId": "reactions_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                },
+                "tags": [
+                    "reactions"
+                ]
+            },
+            "parameters": []
+        },
+        "/reactions/{id}/": {
+            "get": {
+                "operationId": "reactions_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                },
+                "tags": [
+                    "reactions"
+                ]
+            },
+            "put": {
+                "operationId": "reactions_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                },
+                "tags": [
+                    "reactions"
+                ]
+            },
+            "patch": {
+                "operationId": "reactions_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Reaction"
+                        }
+                    }
+                },
+                "tags": [
+                    "reactions"
+                ]
+            },
+            "delete": {
+                "operationId": "reactions_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "reactions"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this reaction.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/target/": {
+            "get": {
+                "operationId": "target_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Target"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "target"
+                ]
+            },
+            "post": {
+                "operationId": "target_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                },
+                "tags": [
+                    "target"
+                ]
+            },
+            "parameters": []
+        },
+        "/target/{id}/": {
+            "get": {
+                "operationId": "target_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                },
+                "tags": [
+                    "target"
+                ]
+            },
+            "put": {
+                "operationId": "target_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                },
+                "tags": [
+                    "target"
+                ]
+            },
+            "patch": {
+                "operationId": "target_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Target"
+                        }
+                    }
+                },
+                "tags": [
+                    "target"
+                ]
+            },
+            "delete": {
+                "operationId": "target_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "target"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/ticks/": {
+            "get": {
+                "operationId": "ticks_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Tick"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "ticks"
+                ]
+            },
+            "post": {
+                "operationId": "ticks_create",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                },
+                "tags": [
+                    "ticks"
+                ]
+            },
+            "parameters": []
+        },
+        "/ticks/{id}/": {
+            "get": {
+                "operationId": "ticks_read",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                },
+                "tags": [
+                    "ticks"
+                ]
+            },
+            "put": {
+                "operationId": "ticks_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                },
+                "tags": [
+                    "ticks"
+                ]
+            },
+            "patch": {
+                "operationId": "ticks_partial_update",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Tick"
+                        }
+                    }
+                },
+                "tags": [
+                    "ticks"
+                ]
+            },
+            "delete": {
+                "operationId": "ticks_delete",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "ticks"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this tick.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        },
+        "/users/create/": {
+            "get": {
+                "operationId": "users_create_list",
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "users"
+                ]
+            },
+            "post": {
+                "operationId": "Create User",
+                "description": "Create a basic user",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "Username",
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "Password",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response Description",
+                        "schema": {
+                            "$ref": "#/definitions/CustomMember"
+                        }
+                    }
+                },
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "users"
+                ]
+            },
+            "parameters": []
+        }
+    },
+    "definitions": {
+        "CustomMember": {
+            "required": [
+                "username"
+            ],
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "title": "Avatar",
+                    "type": "string",
+                    "readOnly": true,
+                    "format": "uri"
+                },
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "username": {
+                    "title": "Username",
+                    "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                    "type": "string",
+                    "pattern": "^[\\w.@+-]+$",
+                    "maxLength": 150,
+                    "minLength": 1
+                },
+                "displayName": {
+                    "title": "Display name",
+                    "type": "string",
+                    "maxLength": 100,
+                    "x-nullable": true
+                },
+                "phoneNumber": {
+                    "title": "Phone number",
+                    "type": "string",
+                    "maxLength": 15,
+                    "x-nullable": true
+                },
+                "facebook": {
+                    "title": "Facebook",
+                    "type": "string",
+                    "maxLength": 50,
+                    "x-nullable": true
+                },
+                "role": {
+                    "title": "Role",
+                    "type": "integer",
+                    "maximum": 32767,
+                    "minimum": -32768,
+                    "x-nullable": true
+                },
+                "dateOfBirth": {
+                    "title": "Date of birth",
+                    "type": "string",
+                    "format": "date-time",
+                    "x-nullable": true
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "maxLength": 1024,
+                    "x-nullable": true
+                },
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "maxLength": 50,
+                    "x-nullable": true
+                },
+                "participatingGroup": {
+                    "title": "Participating group",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "userGender": {
+                    "title": "User gender",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        0,
+                        2
+                    ]
+                },
+                "cover": {
+                    "title": "Cover",
+                    "type": "string",
+                    "readOnly": true,
+                    "format": "uri"
+                },
+                "className": {
+                    "title": "Class name",
+                    "type": "string",
+                    "maxLength": 15,
+                    "x-nullable": true
+                }
+            }
+        },
+        "TokenObtainPair": {
+            "required": [
+                "username",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "username": {
+                    "title": "Username",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "password": {
+                    "title": "Password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "TokenRefresh": {
+            "required": [
+                "refresh"
+            ],
+            "type": "object",
+            "properties": {
+                "refresh": {
+                    "title": "Refresh",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "TokenVerify": {
+            "required": [
+                "token"
+            ],
+            "type": "object",
+            "properties": {
+                "token": {
+                    "title": "Token",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "UserCreate": {
+            "required": [
+                "username",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "maxLength": 50,
+                    "x-nullable": true
+                },
+                "username": {
+                    "title": "Username",
+                    "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                    "type": "string",
+                    "pattern": "^[\\w.@+-]+$",
+                    "maxLength": 150,
+                    "minLength": 1
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "password": {
+                    "title": "Password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "Activation": {
+            "required": [
+                "uid",
+                "token"
+            ],
+            "type": "object",
+            "properties": {
+                "uid": {
+                    "title": "Uid",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "token": {
+                    "title": "Token",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "SendEmailReset": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "email": {
+                    "title": "Email",
+                    "type": "string",
+                    "format": "email",
+                    "minLength": 1
+                }
+            }
+        },
+        "PasswordResetConfirm": {
+            "required": [
+                "uid",
+                "token",
+                "newPassword"
+            ],
+            "type": "object",
+            "properties": {
+                "uid": {
+                    "title": "Uid",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "token": {
+                    "title": "Token",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "newPassword": {
+                    "title": "New password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "UsernameResetConfirm": {
+            "required": [
+                "newUsername"
+            ],
+            "type": "object",
+            "properties": {
+                "newUsername": {
+                    "title": "Username",
+                    "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                    "type": "string",
+                    "pattern": "^[\\w.@+-]+$",
+                    "maxLength": 150,
+                    "minLength": 1
+                }
+            }
+        },
+        "SetPassword": {
+            "required": [
+                "newPassword",
+                "currentPassword"
+            ],
+            "type": "object",
+            "properties": {
+                "newPassword": {
+                    "title": "New password",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "currentPassword": {
+                    "title": "Current password",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "SetUsername": {
+            "required": [
+                "newUsername"
+            ],
+            "type": "object",
+            "properties": {
+                "newUsername": {
+                    "title": "Username",
+                    "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                    "type": "string",
+                    "pattern": "^[\\w.@+-]+$",
+                    "maxLength": 150,
+                    "minLength": 1
+                }
+            }
+        },
+        "AssignedUserSummary": {
+            "title": "Assigned user",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "avatar": {
+                    "title": "Avatar",
+                    "type": "string",
+                    "readOnly": true,
+                    "format": "uri"
+                },
+                "displayName": {
+                    "title": "Display name",
+                    "type": "string",
+                    "maxLength": 100,
+                    "x-nullable": true
+                }
+            }
+        },
+        "BonusPoint": {
+            "required": [
+                "description"
+            ],
+            "type": "object",
+            "properties": {
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                },
+                "score": {
+                    "title": "Score",
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": -2147483648
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "maxLength": 256,
+                    "minLength": 1
+                },
+                "createdTime": {
+                    "title": "Created time",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                }
+            }
+        },
+        "Comment": {
+            "required": [
+                "content",
+                "assignedUser"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "content": {
+                    "title": "Content",
+                    "type": "string",
+                    "maxLength": 2048,
+                    "minLength": 1
+                },
+                "assignedPost": {
+                    "title": "Assigned post",
+                    "type": "integer"
+                },
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                }
+            }
+        },
+        "Group": {
+            "required": [
+                "name",
+                "members",
+                "admins"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "maxLength": 1024,
+                    "x-nullable": true
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AssignedUserSummary"
+                    }
+                },
+                "admins": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AssignedUserSummary"
+                    }
+                },
+                "cover": {
+                    "title": "Cover",
+                    "type": "string",
+                    "readOnly": true,
+                    "format": "uri"
+                }
+            }
+        },
+        "AssignedGroupSummary": {
+            "title": "Assigned group",
+            "required": [
+                "name"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                },
+                "cover": {
+                    "title": "Cover",
+                    "type": "string",
+                    "readOnly": true,
+                    "format": "uri"
+                },
+                "isAdmin": {
+                    "title": "Is admin",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Image": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "imgUrl": {
+                    "title": "Img url",
+                    "type": "string",
+                    "readOnly": true,
+                    "format": "uri"
+                }
+            }
+        },
+        "PostSummary": {
+            "required": [
+                "content",
+                "assignedUser",
+                "assignedGroup"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "content": {
+                    "title": "Content",
+                    "type": "string",
+                    "maxLength": 3000,
+                    "minLength": 1
+                },
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                },
+                "assignedGroup": {
+                    "$ref": "#/definitions/AssignedGroupSummary"
+                },
+                "reactionNumber": {
+                    "title": "Reaction number",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "commentNumber": {
+                    "title": "Comment number",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "time": {
+                    "title": "Time",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "updateTime": {
+                    "title": "Update time",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "type": {
+                    "title": "Type",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Image"
+                    },
+                    "readOnly": true
+                },
+                "reactions": {
+                    "title": "Reactions",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "polls": {
+                    "title": "Polls",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "reactionId": {
+                    "title": "Reaction id",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "AssignedPostSummary": {
+            "title": "Assigned post",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                }
+            }
+        },
+        "Notification": {
+            "title": "Assigned notification",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                },
+                "assignedPost": {
+                    "$ref": "#/definitions/AssignedPostSummary"
+                },
+                "assignedGroup": {
+                    "title": "Assigned group",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "type": {
+                    "title": "Type",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+                "createdTime": {
+                    "title": "Created time",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                }
+            }
+        },
+        "NotificationMember": {
+            "required": [
+                "assignedNotification"
+            ],
+            "type": "object",
+            "properties": {
+                "assignedNotification": {
+                    "$ref": "#/definitions/Notification"
+                },
+                "isSeen": {
+                    "title": "Is seen",
+                    "type": "boolean"
+                }
+            }
+        },
+        "Point": {
+            "required": [
+                "description"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "score": {
+                    "title": "Score",
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": -2147483648
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string",
+                    "maxLength": 256,
+                    "minLength": 1
+                }
+            }
+        },
+        "Poll": {
+            "required": [
+                "question"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "assignedPost": {
+                    "required": [
+                        "content"
+                    ],
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "title": "ID",
+                            "type": "integer",
+                            "readOnly": true
+                        },
+                        "content": {
+                            "title": "Content",
+                            "type": "string",
+                            "maxLength": 3000,
+                            "minLength": 1
+                        },
+                        "time": {
+                            "title": "Time",
+                            "type": "string",
+                            "format": "date-time",
+                            "readOnly": true
+                        },
+                        "updateTime": {
+                            "title": "Update time",
+                            "type": "string",
+                            "format": "date-time",
+                            "readOnly": true
+                        },
+                        "type": {
+                            "title": "Type",
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        },
+                        "assignedUser": {
+                            "title": "Assigned user",
+                            "type": "integer"
+                        },
+                        "assignedGroup": {
+                            "title": "Assigned group",
+                            "type": "integer",
+                            "x-nullable": true
+                        },
+                        "photos": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "x-nullable": true
+                            },
+                            "uniqueItems": true
+                        }
+                    },
+                    "readOnly": true
+                },
+                "question": {
+                    "title": "Question",
+                    "type": "string",
+                    "maxLength": 1024,
+                    "minLength": 1
+                },
+                "ticks": {
+                    "title": "Ticks",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Post": {
+            "required": [
+                "content",
+                "assignedUser",
+                "assignedGroup",
+                "photos"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "content": {
+                    "title": "Content",
+                    "type": "string",
+                    "maxLength": 3000,
+                    "minLength": 1
+                },
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                },
+                "assignedGroup": {
+                    "$ref": "#/definitions/AssignedGroupSummary"
+                },
+                "comments": {
+                    "title": "Comments",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "time": {
+                    "title": "Time",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "updateTime": {
+                    "title": "Update time",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true
+                },
+                "type": {
+                    "title": "Type",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "photos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Image"
+                    }
+                },
+                "reactions": {
+                    "title": "Reactions",
+                    "type": "string",
+                    "readOnly": true
+                },
+                "polls": {
+                    "title": "Polls",
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Reaction": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "assignedUser": {
+                    "title": "Assigned user",
+                    "type": "integer"
+                },
+                "assignedPost": {
+                    "title": "Assigned post",
+                    "type": "integer"
+                },
+                "type": {
+                    "title": "Type",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4
+                    ],
+                    "x-nullable": true
+                }
+            }
+        },
+        "Target": {
+            "required": [
+                "isDone",
+                "createdTime"
+            ],
+            "type": "object",
+            "properties": {
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 256,
+                    "minLength": 1
+                },
+                "isDone": {
+                    "title": "Is done",
+                    "type": "boolean"
+                },
+                "point": {
+                    "$ref": "#/definitions/Point"
+                },
+                "status": {
+                    "title": "Status",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2
+                    ]
+                },
+                "createdTime": {
+                    "title": "Created time",
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "Tick": {
+            "required": [
+                "assignedUser"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "id": {
+                    "title": "ID",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "assignedPoll": {
+                    "title": "Assigned poll",
+                    "type": "integer"
+                },
+                "assignedUser": {
+                    "$ref": "#/definitions/AssignedUserSummary"
+                }
+            }
+        }
+    }
+}

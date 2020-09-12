@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, DjangoMultiPartParser, JSONParser
 from .serializers import *
 from datetime import datetime
 from .models import *
@@ -56,6 +56,20 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = GroupPro.objects.all()
     serializer_class = GroupSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateGroupSerializer
+        else:
+            return GroupSerializer
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', GroupSerializer)})
+    @parser_classes((MultiPartParser, ))
+    def create(self, *args, **kwargs):
+        return super().create(*args, **kwargs)
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', GroupSerializer)})
+    def update(self, *args, **kwargs):
+        return super().create(*args, **kwagrs)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -69,6 +83,8 @@ class PostViewSet(viewsets.ModelViewSet):
             return PostSummary
         if self.action == 'retrieve':
             return PostSerializer
+        if self.action == 'update':
+            return UpdatePostSerializer
         return PostSerializer
 
     def get_queryset(self):
@@ -105,59 +121,10 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return Response(PostSerializer(query_set, many=True, context={'request': request}).data)
     
-    
-    # @action(detail=False, methods=['post'])
-    def create(self, request, *args, **kwargs):
-        group_id = request.data.get("group_id")
-        content = request.data.get("content")
-        post_type = request.data.get("type")
-        time_create = datetime.now()
-        new_post = Post(
-            assigned_user=request.user,
-            assigned_group=GroupPro.objects.get(id=group_id),
-            content=content,
-            time=time_create,
-            type=post_type,
-        )
-        new_post.save()
-        print(request.FILES)
-        print(request.FILES.getlist("files"))
-        count_ = 0
-        for count, x in enumerate(request.FILES.getlist("files")):
-
-            def process(f):
-                image = Image(img_url=f)
-                image.save()
-                new_post.photos.add(image)
-            count_ = count
-            process(x)
-        # print(count)
-
-        new_post.save()
-
-        new_notification = Notification(
-            assigned_post=new_post,
-            assigned_user=request.user,
-            type=0
-        )
-        new_notification.save()
-        user_list = new_post.assigned_group.members
-        
-        relation_device_id_list = []
-        for user in user_list.all():
-            print('{} == {}'.format(user.id, request.user.id))
-            if user.id == request.user.id:
-                continue
-            new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
-            new_notification_member.save()
-            user_device_list = UserDevice.objects.filter(assigned_user=user)
-            for user_device in user_device_list:
-                relation_device_id_list.append(user_device.device_id)
-        
-        send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
-        
-        return PostSerializer(new_post, context={'request': request}).data
-
+    @swagger_auto_schema(
+        operation_description="Only update content of Post",
+        responses={'200': openapi.Response('Response Description', PostSerializer)},
+    )
     def update(self, request, *args, **kwargs):
         user = request.user
         post = Post.objects.get(id=kwargs["pk"])
@@ -167,7 +134,7 @@ class PostViewSet(viewsets.ModelViewSet):
         post.__dict__.update({"time": time_update})
         post.save()
 
-        return Response({"status": "DONE"})
+        return Response(PostSerializer(post, context={'request': request}).data)
 
     def delete(self, request, *args, **kwargs):
         post = Post.objects.get(id=kwargs["pk"])
@@ -187,6 +154,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateCommentSerializer
+        elif self.action == 'update':
+            return UpdateCommentSerializer
+        else:
+            return CommentSerializer
+
     def get_queryset(self):
         super().get_queryset()
         # print("it reached here" + "!"*10)
@@ -198,14 +173,19 @@ class CommentViewSet(viewsets.ModelViewSet):
         else:
             return Comment.objects.all()
 
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
     def update(self, request, *args, **kwargs):
         comment = Comment.objects.get(id=kwargs["pk"])
         content = request.data.get("content")
 
         comment.__dict__.update({"content": content})
         comment.save()
-        return Response({"status": "Done"})
+        return Response(CommentSerializer(comment, context={'request': request}).data)
 
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
     def create(self, request, *args, **kwargs):
         user = request.user
         post_id = request.data.get("post_id")
@@ -213,7 +193,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         content = request.data.get("content")
         new_comment = Comment(assigned_user=user, assigned_post=post, content=content)
         new_comment.save()
-        return Response({"status": "Done"})
+        return Response(CommentSerializer(comment, context={'request': request}).data)
 
     def delete(self, request, *args, **kwargs):
         comment = Comment.objects.get(id=kwargs["pk"])
@@ -226,15 +206,25 @@ class ReactionViewSet(viewsets.ModelViewSet):
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
 
+    def get_serializer_class(self):
+        if self.action in ['create', 'update']:
+            return CreateUpdateReactionSerializer
+        else:
+            return ReactionSerializer
 
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', ReactionSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
     def update(self, request, *args, **kwargs):
         reaction = Reaction.objects.get(id=kwargs["pk"])
         content = request.data.get("type")
 
         reaction.__dict__.update({"type": content})
         reaction.save()
-        return Response({"status": "Done"})
+        return Response(ReactionSerializer(context={'request': request}).data)
 
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', ReactionSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
     def create(self, request, *args, **kwargs):
         user = request.user
         post_id = request.data.get("post_id")
@@ -243,7 +233,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
         new_reaction = Reaction(assigned_user=user, assigned_post=post, type=content)
         new_reaction.save()
         ReactionSender.create_noti(request, new_reaction)
-        return Response({"reaction_id": new_reaction.id})
+        return Response(ReactionSerializer(context={'request': request}).data)
 
 
 
@@ -252,23 +242,75 @@ class PollViewSet(viewsets.ModelViewSet):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreatePollSerializer
+        elif self.action == 'update':
+            return UpdatePollSerializer
+        else:
+            return PollSerializer
+    
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', PollSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', PollSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+
 
 class TickViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Tick.objects.all()
     serializer_class = TickSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateTickSerializer
+        else:
+            return TickSerializer
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TickSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
     def create(self, request, *args, **kwargs):
         user = request.user
         poll_id = request.data.get('poll_id')
         new_tick = Tick(assigned_user=user, assigned_poll=Poll.objects.get(id=poll_id))
         new_tick.save()
-        return Response({'tick_id': new_tick.id})
+        return Response(TickSerializer(new_tick, context={'request': request}).data)
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateCommentSerializer
+        else:
+            return CommentSerializer
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
+    def create(self, request, *args, **kawrgs):
+        user = request.user
+        content = request.data.get('content')
+        post_id = request.data.get('assigned_post')
+        assigned_post = Post.objects.get(id=post_id)
+        instance = Comment(assigned_user=user, assigned_post=assigned_post)
+        return Response(CommentSerializer(instace, context={'request': request}).data)
+    
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
+    def update(self, request, pk):
+        content = request.data.get('content')
+        instance = Comment.objects.get(id=pk)
+        instance.update
+
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -324,13 +366,34 @@ class PointViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PointSerializer
 
+    def get_serializer_class(self):
+        if self.action in ['create', 'update']:
+            return CreatePointSerializer
+        else:
+            return PointSerializer
+
     def get_queryset(self):
         return Point.objects.all()
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', PointSerializer)})
+    def create(self, *args, **kwargs):
+        return super().create(*args, **kwargs)
+
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', PointSerializer)})
+    def update(self, *args, **kwargs):
+        return super().update(*args, **kwargs)
 
 class TargetViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = TargetSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateTargetSerializer
+        elif self.action == 'update':
+            return UpdateTargetSerializer
+        else:
+            return TargetSerializer
     def get_queryset(self):
         request = self.request
         user = self.request.user
@@ -345,9 +408,27 @@ class TargetViewSet(viewsets.ModelViewSet):
                 query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
         return query_set
 
+        @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
+        @parser_classes((MultiPartParser, JSONParser))
+        def create(self, *args, **kwargs):
+            return super().create(*args, **kwargs)
+        
+        @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
+        @parser_classes((MultiPartParser, JSONParser))
+        def update(self, *args, **kwargs):
+            return super().update(*args, **kwargs)
+
 class BonusPointViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = BonusPointSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateBonusPointSerializer
+        elif self.action == 'update':
+            return UpdateBonusPointSerializer
+        else:
+            return BonusPointSerializer
 
     def get_queryset(self):
         request = self.request
@@ -374,6 +455,16 @@ class BonusPointViewSet(viewsets.ModelViewSet):
                 query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
         return Response(BonusPointSerializer(query_set, many=True).data)
 
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', BonusPointSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
+    def create(self, *args, **kwargs):
+        return super().create(*args, **kwargs)
+        
+    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', BonusPointSerializer)})
+    @parser_classes((MultiPartParser, JSONParser))
+    def update(self, *args, **kwargs):
+        return super().update(*args, **kwargs)
+
 @swagger_auto_schema(
     method='POST',
     operation_description='Create a basic user',
@@ -396,7 +487,7 @@ class BonusPointViewSet(viewsets.ModelViewSet):
         '200': openapi.Response('Response Description', CustomMemberSerializer),
     }
 )
-@api_view(['GET','POST'])
+@api_view(['POST'])
 @permission_classes((AllowAny,))
 @parser_classes([MultiPartParser, ])
 def create_user(request):
@@ -482,8 +573,6 @@ def create_post(request):
         type=post_type,
     )
     new_post.save()
-    print(request.FILES)
-    print(request.FILES.getlist("files"))
     count_ = 0
     for count, x in enumerate(request.FILES.getlist("files")):
 
