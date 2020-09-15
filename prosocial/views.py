@@ -489,7 +489,7 @@ class BonusPointViewSet(viewsets.ModelViewSet):
 )
 @api_view(['POST'])
 @permission_classes((AllowAny,))
-@parser_classes([MultiPartParser, ])
+@parser_classes([MultiPartParser, JSONParser, ])
 def create_user(request):
     print(request.method)
     if request.method == 'GET':
@@ -498,8 +498,8 @@ def create_user(request):
         })
     # print(request.data['username'])
     # return Response({"status": "Accepted Request"})
-    username = request.POST['username']
-    password = request.POST['password']
+    username = request.data.get('username')
+    password = request.data.get('password')
     check_queryset = CustomMember.objects.filter(username=username)
     print(check_queryset)
     if len(check_queryset) > 0:
