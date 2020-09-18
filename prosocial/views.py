@@ -502,6 +502,15 @@ def create_user(request):
         })
     new_mem = CustomMember(username=username, password=password)
     new_mem.save()
+
+    # add new user to General
+
+    try:
+        general_group = GroupPro.objects.get(name='General')
+        general_group.members.add(new_mem)
+        general_group.save()
+    except:
+        print('error')
     return Response(CustomMemberSerializer(new_mem, context={'request': request}).data)
 
 
