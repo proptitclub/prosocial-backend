@@ -469,23 +469,17 @@ class BonusPointViewSet(viewsets.ModelViewSet):
     method='POST',
     operation_description='Create a basic user',
     operation_id='Create User',
-    manual_parameters=[
-        openapi.Parameter(
-            name='username',
-            in_=openapi.IN_FORM,
-            type=openapi.TYPE_STRING,
-            description='Username',
-        ),
-        openapi.Parameter(
-            name='password',
-            in_=openapi.IN_FORM,
-            type=openapi.TYPE_STRING,
-            description='Password'
-        )
-    ],
     responses={
         '200': openapi.Response('Response Description', CustomMemberSerializer),
-    }
+    },
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT, 
+        properties={
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        }
+    ),
+    query_serializer=CreateUserSerializer,
 )
 @api_view(['POST'])
 @permission_classes((AllowAny,))

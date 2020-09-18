@@ -632,3 +632,12 @@ class UpdateBonusPointSerializer(serializers.ModelSerializer):
         })
         instance.save()
         return instance
+
+
+class CreateUserSerializer(serializers.Serializer):
+    class Meta:
+        model = CustomMember
+        fields = [
+            "username",
+            "password",
+        ]
