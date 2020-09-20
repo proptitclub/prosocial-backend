@@ -170,6 +170,15 @@ class PostViewSet(viewsets.ModelViewSet):
         )
         new_notification.save()
         user_list = new_post.assigned_group.members
+
+        polls = request.data.get('polls')
+        # print(polls)
+        dict_poll_data = json.loads(polls)
+        for poll_data in dict_poll_data:
+            print(content)
+            content = poll_data
+            new_poll = Poll(assigned_post=new_post, question=content)
+            new_poll.save()
         
         relation_device_id_list = []
         for user in user_list.all():
@@ -351,7 +360,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         post_id = request.data.get('assigned_post')
         assigned_post = Post.objects.get(id=post_id)
         instance = Comment(assigned_user=user, assigned_post=assigned_post)
-        return Response(CommentSerializer(instace, context={'request': request}).data)
+        return Response(CommentSerializer(instance, context={'request': request}).data)
     
 
     @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
