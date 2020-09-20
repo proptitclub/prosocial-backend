@@ -184,7 +184,7 @@ class PostViewSet(viewsets.ModelViewSet):
         
         send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
         
-        return PostSerializer(new_post, context={'request': request}).data
+        return Response(PostSerializer(new_post, context={'request': request}).data)
 
     def delete(self, request, *args, **kwargs):
         post = Post.objects.get(id=kwargs["pk"])
