@@ -167,12 +167,6 @@ class CommentSummary(serializers.ModelSerializer):
             "time",
         ]
 
-class CreateCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = [
-            "content",
-        ]
 
 class CreateCommentSerializer(serializers.ModelSerializer):
     assigned_post = serializers.IntegerField()
@@ -221,9 +215,11 @@ class ReactionSummary(serializers.ModelSerializer):
 
 
 class CreateUpdateReactionSerializer(serializers.ModelSerializer):
+    assigned_post = serializers.IntegerField()
     class Meta:
         model = Reaction
         fields = [
+            "assigned_post"
             "type",
         ]
 

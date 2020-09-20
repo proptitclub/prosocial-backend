@@ -286,13 +286,13 @@ class ReactionViewSet(viewsets.ModelViewSet):
     @parser_classes((MultiPartParser, JSONParser))
     def create(self, request, *args, **kwargs):
         user = request.user
-        post_id = request.data.get("post_id")
+        post_id = request.data.get("assigned_post")
         post = Post.objects.get(id=post_id)
         content = request.data.get("type")
         new_reaction = Reaction(assigned_user=user, assigned_post=post, type=content)
         new_reaction.save()
         ReactionSender.create_noti(request, new_reaction)
-        return Response(ReactionSerializer(context={'request': request}).data)
+        return Response(ReactionSerializer(new_reaction, context={'request': request}).data)
 
 
 
@@ -359,7 +359,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         content = request.data.get('content')
         post_id = request.data.get('assigned_post')
         assigned_post = Post.objects.get(id=post_id)
-        instance = Comment(assigned_user=user, assigned_post=assigned_post)
+        instance = Comment(assigned_user=user, assigned_post=assigned_post, content=content)
         instance.save()
         return Response(CommentSerializer(instance, context={'request': request}).data)
     
