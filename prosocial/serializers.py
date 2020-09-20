@@ -216,10 +216,11 @@ class ReactionSummary(serializers.ModelSerializer):
 
 class CreateUpdateReactionSerializer(serializers.ModelSerializer):
     assigned_post = serializers.IntegerField()
+
     class Meta:
         model = Reaction
         fields = [
-            "assigned_post"
+            "assigned_post",
             "type",
         ]
 
