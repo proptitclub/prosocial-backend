@@ -360,6 +360,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         post_id = request.data.get('assigned_post')
         assigned_post = Post.objects.get(id=post_id)
         instance = Comment(assigned_user=user, assigned_post=assigned_post)
+        instance.save()
         return Response(CommentSerializer(instance, context={'request': request}).data)
     
 
