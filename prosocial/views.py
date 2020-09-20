@@ -163,35 +163,37 @@ class PostViewSet(viewsets.ModelViewSet):
 
         new_post.save()
 
-        new_notification = Notification(
-            assigned_post=new_post,
-            assigned_user=request.user,
-            type=0
-        )
-        new_notification.save()
-        user_list = new_post.assigned_group.members
 
-        polls = request.data.get('polls')
-        # print(polls)
-        dict_poll_data = json.loads(polls)
-        for poll_data in dict_poll_data:
-            print(content)
-            content = poll_data
-            new_poll = Poll(assigned_post=new_post, question=content)
-            new_poll.save()
+        CreatingPostSender.create_noti(request, new_post)
+        # new_notification = Notification(
+        #     assigned_post=new_post,
+        #     assigned_user=request.user,
+        #     type=0
+        # )
+        # new_notification.save()
+        # user_list = new_post.assigned_group.members
+
+        # polls = request.data.get('polls')
+        # # print(polls)
+        # dict_poll_data = json.loads(polls)
+        # for poll_data in dict_poll_data:
+        #     print(content)
+        #     content = poll_data
+        #     new_poll = Poll(assigned_post=new_post, question=content)
+        #     new_poll.save()
         
-        relation_device_id_list = []
-        for user in user_list.all():
-            print('{} == {}'.format(user.id, request.user.id))
-            if user.id == request.user.id:
-                continue
-            new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
-            new_notification_member.save()
-            user_device_list = UserDevice.objects.filter(assigned_user=user)
-            for user_device in user_device_list:
-                relation_device_id_list.append(user_device.device_id)
+        # relation_device_id_list = []
+        # for user in user_list.all():
+        #     print('{} == {}'.format(user.id, request.user.id))
+        #     if user.id == request.user.id:
+        #         continue
+        #     new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
+        #     new_notification_member.save()
+        #     user_device_list = UserDevice.objects.filter(assigned_user=user)
+        #     for user_device in user_device_list:
+        #         relation_device_id_list.append(user_device.device_id)
         
-        send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
+        # send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
         
         return Response(PostSerializer(new_post, context={'request': request}).data)
 
@@ -336,7 +338,7 @@ class TickViewSet(viewsets.ModelViewSet):
     @parser_classes((MultiPartParser, JSONParser))
     def create(self, request, *args, **kwargs):
         user = request.user
-        poll_id = request.data.get('poll_id')
+        poll_id = request.data.get('assigned_poll')
         new_tick = Tick(assigned_user=user, assigned_poll=Poll.objects.get(id=poll_id))
         new_tick.save()
         return Response(TickSerializer(new_tick, context={'request': request}).data)

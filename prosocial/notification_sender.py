@@ -24,8 +24,8 @@ class NotificationSender:
     serializer = NotificationSerializer
     
     @staticmethod
-    def serialize_and_send(request, noti_mem) -> None:
-        payload = NotificationSender.create_payload(request, noti_mem)
+    def serialize_and_send(request, noti_mem, message) -> None:
+        payload = NotificationSender.create_payload(request, noti_mem, message)
         if payload == None:
             print("User device is not exist for this user")
             return
@@ -41,7 +41,7 @@ class NotificationSender:
         return
     
     @staticmethod
-    def create_payload(request, noti_mem) -> dict:
+    def create_payload(request, noti_mem, message) -> dict:
         try:
             user_device = UserDevice.objects.get(assigned_user=noti_mem.assigned_user)
         except:
@@ -51,7 +51,7 @@ class NotificationSender:
             "app_id": APP_ID,
             "include_player_ids": [user_device.device_id],
             "contents": {
-                "vi": 'đéo thích cho message đấy như loèn',
+                "vi": message,
             },
             "data": content
         }
@@ -64,16 +64,17 @@ class CreatingPostSender(NotificationSender):
     message_template = "{} đã đăng một bài viết trong nhóm {}"
 
     @staticmethod
-    def create_noti(obj: Post) -> None:
+    def create_noti(request, obj: Post) -> None:
         post = obj
         assigned_group = post.assigned_group
-        members_take_noti = (assigned_group.members | assigned_group.admins).distinct()
-        new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj.assigned_post, type=0)
+        members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
+        new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj, type=0)
         new_noti.save()
         for member in members_take_noti:
-            new_member_noti = NotificationMember(assigned_member=member, assigned_notification=new_noti)
+            new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
+            message = CreatingPostSender.message_template.format(member.display_name, obj.assigned_group.name)
             new_member_noti.save()
-            CreatingPostSender.serialize_and_send(new_member_noti)
+            CreatingPostSender.serialize_and_send(request, new_member_noti, message)
         
         return
 
@@ -91,8 +92,9 @@ class ReactionSender(NotificationSender):
         for member in members_take_noti:
             print(member.id, member.display_name, member.username)
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
+            message = ReactionSender.message_template.format(member.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
-            ReactionSender.serialize_and_send(request, new_member_noti)
+            ReactionSender.serialize_and_send(request, new_member_noti, message)
 
         return
 
@@ -111,7 +113,8 @@ class CommentSender(NotificationSender):
         for member in members_take_noti:
             print(member.id, member.display_name, member.username)
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
+            message = CommentSender.message_template.format(member.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
-            ReactionSender.serialize_and_send(request, new_member_noti)
+            ReactionSender.serialize_and_send(request, new_member_noti, message)
 
         return
