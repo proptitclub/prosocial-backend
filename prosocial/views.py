@@ -136,6 +136,56 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return Response(PostSerializer(post, context={'request': request}).data)
 
+    def create(self, request, *args, **kwargs):
+        # print(request.method)
+        group_id = request.data.get("group_id")
+        content = request.data.get("content")
+        post_type = request.data.get("type")
+        time_create = datetime.now()
+        new_post = Post(
+            assigned_user=request.user,
+            assigned_group=GroupPro.objects.get(id=group_id),
+            content=content,
+            time=time_create,
+            type=post_type,
+        )
+        new_post.save()
+        count_ = 0
+        for count, x in enumerate(request.FILES.getlist("files")):
+
+            def process(f):
+                image = Image(img_url=f)
+                image.save()
+                new_post.photos.add(image)
+            count_ = count
+            process(x)
+        # print(count)
+
+        new_post.save()
+
+        new_notification = Notification(
+            assigned_post=new_post,
+            assigned_user=request.user,
+            type=0
+        )
+        new_notification.save()
+        user_list = new_post.assigned_group.members
+        
+        relation_device_id_list = []
+        for user in user_list.all():
+            print('{} == {}'.format(user.id, request.user.id))
+            if user.id == request.user.id:
+                continue
+            new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
+            new_notification_member.save()
+            user_device_list = UserDevice.objects.filter(assigned_user=user)
+            for user_device in user_device_list:
+                relation_device_id_list.append(user_device.device_id)
+        
+        send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
+        
+        return PostSerializer(new_post, context={'request': request}).data
+
     def delete(self, request, *args, **kwargs):
         post = Post.objects.get(id=kwargs["pk"])
         reactions_list = Reaction.objects.filter(assigned_post=post)
@@ -517,7 +567,7 @@ def create_user(request):
 # self define swagger field
 
 @swagger_auto_schema(
-    method='post',
+    method='POST',
     operation_description='Create a post, post has 2 type',
     operation_id='Create a post',
     manual_parameters=[
@@ -562,8 +612,10 @@ def create_user(request):
     }
 )
 @api_view(['POST'])
+@permission_classes((AllowAny,))
 @parser_classes([MultiPartParser, ])
 def create_post(request):
+    # print(request.method)
     group_id = request.data.get("group_id")
     content = request.data.get("content")
     post_type = request.data.get("type")

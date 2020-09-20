@@ -152,6 +152,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "content", 
             "assigned_post", 
             "assigned_user",
+            "time",
         ]
 
 class CommentSummary(serializers.ModelSerializer):
@@ -163,6 +164,7 @@ class CommentSummary(serializers.ModelSerializer):
             "id",
             "content",
             "assigned_user",
+            "time",
         ]
 
 class CreateCommentSerializer(serializers.ModelSerializer):
