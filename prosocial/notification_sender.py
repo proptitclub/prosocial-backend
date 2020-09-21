@@ -90,7 +90,6 @@ class ReactionSender(NotificationSender):
         new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
         for member in members_take_noti:
-            print(member.id, member.display_name, member.username)
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = ReactionSender.message_template.format(member.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
@@ -111,7 +110,6 @@ class CommentSender(NotificationSender):
         new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
         for member in members_take_noti:
-            print(member.id, member.display_name, member.username)
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CommentSender.message_template.format(member.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
