@@ -177,7 +177,6 @@ class PostViewSet(viewsets.ModelViewSet):
         # print(polls)
         dict_poll_data = json.loads(polls)
         for poll_data in dict_poll_data:
-            print(content)
             content = poll_data
             new_poll = Poll(assigned_post=new_post, question=content)
             new_poll.save()
