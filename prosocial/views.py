@@ -421,6 +421,7 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
         for group in attended_group:
             list_post = list_post | Post.objects.filter(assigned_group=group)
         list_post = list_post.distinct()
+        list_post = list_post.order_by('-time')
         return list_post
 
 class PointViewSet(viewsets.ModelViewSet):
