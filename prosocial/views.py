@@ -172,14 +172,17 @@ class PostViewSet(viewsets.ModelViewSet):
         # )
         # new_notification.save()
         # user_list = new_post.assigned_group.members
-
-        polls = request.data.get('polls')
-        # print(polls)
-        dict_poll_data = json.loads(polls)
-        for poll_data in dict_poll_data:
-            content = poll_data
-            new_poll = Poll(assigned_post=new_post, question=content)
-            new_poll.save()
+        if new_post.type == 1:
+            
+            polls = request.data.get('polls')
+            if polls == None:
+                polls = '{}'
+            # print(polls)
+            dict_poll_data = json.loads(polls)
+            for poll_data in dict_poll_data:
+                content = poll_data
+                new_poll = Poll(assigned_post=new_post, question=content)
+                new_poll.save()
         
         # relation_device_id_list = []
         # for user in user_list.all():
