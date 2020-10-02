@@ -225,7 +225,7 @@ class Target(models.Model):
         ],
     )
 
-    created_time = models.DateTimeField()
+    created_time = models.DateTimeField(null=True)
 
 class BonusPoint(models.Model):
     assigned_user = models.ForeignKey(
