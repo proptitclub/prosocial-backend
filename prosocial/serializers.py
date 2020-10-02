@@ -546,7 +546,7 @@ class CreateTargetSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        assigned_user = self.context['request'].user;
+        assigned_user = self.context['request'].user
         name = validated_data.get('name')
         
         instance = Target(assigned_user=assigned_user, name=name)

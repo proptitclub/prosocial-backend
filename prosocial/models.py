@@ -211,7 +211,7 @@ class Target(models.Model):
     name = models.CharField(max_length=256, default="")
     is_done = models.BooleanField(default=False)
     point = models.ForeignKey(
-        Point, null=False, default=None, on_delete=models.CASCADE
+        Point, null=True, default=None, on_delete=models.CASCADE
     )
 
     status = models.SmallIntegerField(
