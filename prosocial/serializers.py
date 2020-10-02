@@ -547,10 +547,10 @@ class CreateTargetSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        assigned_user_id = validated_data.get('assigned_user')
+        assigned_user = self.context['request'].user;
         name = validated_data.get('name')
         
-        instance = Point(assigned_user=CustomMember.objects.get(id=assigned_user_id), name=name)
+        instance = Point(assigned_user=assigned_user, name=name)
         instance.save()
         return instance
 
