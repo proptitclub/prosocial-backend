@@ -541,7 +541,6 @@ class CreateTargetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Target
         fields = [
-            "assigned_user",
             "name",
             "point",
         ]
@@ -550,7 +549,7 @@ class CreateTargetSerializer(serializers.ModelSerializer):
         assigned_user = self.context['request'].user;
         name = validated_data.get('name')
         
-        instance = Point(assigned_user=assigned_user, name=name)
+        instance = Target(assigned_user=assigned_user, name=name)
         instance.save()
         return instance
 
