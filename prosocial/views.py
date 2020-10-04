@@ -20,6 +20,7 @@ from .notification_sender import *
 from rest_framework.decorators import action, api_view, permission_classes, parser_classes
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.utils import timezone
 
 
 
@@ -487,7 +488,7 @@ class TargetViewSet(viewsets.ModelViewSet):
         user = request.user
         point_id = request.data.get('point')
         name = request.data.get('name')
-        target = Target(assigned_user=user, point=Point.objects.get(id=point_id), name=name)
+        target = Target(assigned_user=user, point=Point.objects.get(id=point_id), name=name, created_time=timezone.now())
         target.save()
         return Response(TargetSerializer(target, context={'request': request}).data)
 
