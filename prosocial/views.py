@@ -91,7 +91,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         request = self.request
         user = request.user
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-time')
         filtered_posts = posts
         response_info = []
         params = dict(request.query_params)
@@ -100,10 +100,10 @@ class PostViewSet(viewsets.ModelViewSet):
         if method is not None:
             if method[0] == 'byUser':
                 user = CustomMember.objects.get(id=params.get('id')[0])
-                filtered_posts = Post.objects.filter(assigned_user=user)
+                filtered_posts = Post.objects.filter(assigned_user=user).order_by('-time')
             if method[0] == 'byGroup':
                 group = GroupPro.objects.get(id=params.get('id')[0])
-                filtered_posts = Post.objects.filter(assigned_group=group)
+                filtered_posts = Post.objects.filter(assigned_group=group).order_by('-time')
 
         return filtered_posts
     
