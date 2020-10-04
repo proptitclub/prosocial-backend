@@ -495,7 +495,7 @@ class TargetViewSet(viewsets.ModelViewSet):
         instance = Target.objects.get(id = pk)
         name = request.data.get('name')
         if name != "" and name != None:
-            instance.__dict__.update({"name": name}))
+            instance.__dict__.update({"name": name})
         point = int(request.data.get('point'))
         if point != "" and point != None:
             instance.__dict__.update({"point": point})
