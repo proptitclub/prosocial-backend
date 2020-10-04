@@ -490,6 +490,21 @@ class TargetViewSet(viewsets.ModelViewSet):
         target = Target(assigned_user=user, name=name, created_time=timezone.now())
         target.save()
         return Response(TargetSerializer(target, context={'request': request}).data)
+    
+    def update(self, request, pk):
+        instance = Target.objects.get(id = pk)
+        name = request.data.get('name')
+        if name != "" and name != None:
+            instance.__dict__.update({"name": name}))
+        point = int(request.data.get('point'))
+        if point != "" and point != None:
+            instance.__dict__.update({"point": point})
+        status = int(request.data.get('status'))
+        if status != "" and status != None:
+            instance.__dict__.update({"status": status})
+        instance.save()
+        return Response(TargetSerializer(instance, context={'request': request}).data)
+        
 
 
 class BonusPointViewSet(viewsets.ModelViewSet):
