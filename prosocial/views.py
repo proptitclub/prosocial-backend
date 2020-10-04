@@ -486,9 +486,8 @@ class TargetViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         user = request.user
-        point_id = request.data.get('point')
         name = request.data.get('name')
-        target = Target(assigned_user=user, point=Point.objects.get(id=point_id), name=name, created_time=timezone.now())
+        target = Target(assigned_user=user, name=name, created_time=timezone.now())
         target.save()
         return Response(TargetSerializer(target, context={'request': request}).data)
 
