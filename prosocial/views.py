@@ -483,6 +483,15 @@ class TargetViewSet(viewsets.ModelViewSet):
         def update(self, *args, **kwargs):
             return super().update(*args, **kwargs)
 
+    def create(self, request):
+        user = request.user
+        point_id = request.get('point')
+        name = request.get('name')
+        target = Target(assigned_user=user, assigned_point=Point.objects.get(id=point_id), name=name)
+        target.save()
+        return Response(TargetSerializer(target, context={'request': request}).data)
+
+
 class BonusPointViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = BonusPointSerializer

@@ -529,6 +529,7 @@ class TargetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Target
         fields = [
+            "id",
             "assigned_user",
             "name",
             "is_done",
