@@ -327,7 +327,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
         return Response(ReactionSerializer(obj, context={'request': request}).data)
         # return super().retrieve(request, pk)
 
-    def delete(self, request, pk=None):
+    def destroy(self, request, pk=None):
         obj = Reaction.objects.get(id=int(pk))
         obj.delete()
         return Response({"detail": True})
