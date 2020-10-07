@@ -301,7 +301,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
 
         reaction.__dict__.update({"type": content})
         reaction.save()
-        return Response(ReactionSerializer(context={'request': request}).data)
+        return Response(ReactionSerializer(obj, context={'request': request}).data)
 
 
     @swagger_auto_schema(responses={'200': openapi.Response('Response Description', ReactionSerializer)})
@@ -320,6 +320,12 @@ class ReactionViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(operation_description='List reactions, if you want to list by post, add "?postId=<post_id>"')
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+    def retrieve(self, request, pk=None):
+        # print(pk)
+        obj = Reaction.objects.get(id=int(pk))
+        return Response(ReactionSerializer(obj, context={'request': request}).data)
+        # return super().retrieve(request, pk)
 
 class PollViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
