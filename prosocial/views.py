@@ -266,7 +266,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class ReactionViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
 
@@ -276,6 +276,23 @@ class ReactionViewSet(viewsets.ModelViewSet):
         else:
             return ReactionSerializer
 
+    def get_queryset(self):
+        super().get_queryset()
+        request = self.request
+        user = self.request.user
+        params = dict(request.query_params)
+        post_id = params.get('postId')
+        query_set = Target.objects.all()
+        # print(method)
+        if post_id is not None:
+            if post_id[0] != '':
+                post_id_num = int(post_id[0])
+                print(post_id_num)
+                post = Post.objects.get(id=post_id_num)
+                query_set = Reaction.objects.filter(assigned_post=post)
+        return query_set
+
+    
     @swagger_auto_schema(responses={'200': openapi.Response('Response Description', ReactionSerializer)})
     @parser_classes((MultiPartParser, JSONParser))
     def update(self, request, *args, **kwargs):
@@ -300,6 +317,9 @@ class ReactionViewSet(viewsets.ModelViewSet):
         return Response(ReactionSerializer(new_reaction, context={'request': request}).data)
 
 
+    @swagger_auto_schema(operation_description='List reactions, if you want to list by post, add "?postId=<post_id>"')
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 class PollViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
