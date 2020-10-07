@@ -82,7 +82,7 @@ class GroupSerializer(serializers.ModelSerializer):
             "description", 
             "members", 
             "admins", 
-            "cover"
+            "cover",
         ]
 
 class CreateGroupSerializer(serializers.ModelSerializer):
@@ -220,6 +220,7 @@ class CreateUpdateReactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reaction
         fields = [
+            "id",
             "assigned_post",
             "type",
         ]
@@ -469,22 +470,33 @@ class PostSerializer(serializers.ModelSerializer):
     assigned_group = AssignedGroupSummary()
     comments = serializers.SerializerMethodField(read_only=True)
     photos = ImageSerializer(many=True)
-    reactions = serializers.SerializerMethodField(read_only=True)
     polls = serializers.SerializerMethodField()
+    reaction_id = serializers.SerializerMethodField()
+    reaction_number = serializers.SerializerMethodField()
 
     
     def get_comments(self, obj):
         request = self.context.get('request')
         return CommentSummary(Comment.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
     
-    
-    def get_reactions(self, obj):
-        request = self.context.get('request')
-        return ReactionSerializerSummary(Reaction.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
-    
     def get_polls(self, obj):
         request = self.context.get('request')
         return PollSummary(Poll.objects.filter(assigned_post=obj), many=True, context={'request':request}).data
+
+    def get_reaction_id(self, obj):
+        request = self.context.get('request')
+        user = request.user
+        try:
+            reaction = Reaction.objects.filter(assigned_post=obj, assigned_user=user)[0]
+            print(reaction)
+            return reaction.id
+        except:
+            return -1
+
+    def get_reaction_number(self, obj):
+        request = self.context.get('request')
+        reactions = Reaction.objects.filter(assigned_post=obj)
+        return len(reactions)
 
     class Meta:
         model = Post
@@ -498,8 +510,9 @@ class PostSerializer(serializers.ModelSerializer):
             'update_time', # in post model
             'type', # in post model
             'photos',
-            'reactions',
             'polls',
+            'reaction_id',
+            'reaction_number',
         ]
 
 class UpdatePostSerializer(serializers.ModelSerializer):
