@@ -78,7 +78,7 @@ class PostViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    pagination_class = SmallResultSetPagination
+    # pagination_class = SmallResultSetPagination
     # parser_classes = (FormParser, )
 
     def get_serializer_class(self):
@@ -448,7 +448,7 @@ class NotificationMemberViewSet(viewsets.ModelViewSet):
 class NewsFeedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSummary
-    pagination_class = SmallResultSetPagination
+    # pagination_class = SmallResultSetPagination
 
     def get_queryset(self):
         user = self.request.user
