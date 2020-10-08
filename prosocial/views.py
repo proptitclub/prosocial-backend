@@ -21,6 +21,7 @@ from rest_framework.decorators import action, api_view, permission_classes, pars
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.utils import timezone
+from .pagination import SmallResultSetPagination
 
 
 
@@ -77,6 +78,7 @@ class PostViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = SmallResultSetPagination
     # parser_classes = (FormParser, )
 
     def get_serializer_class(self):
@@ -446,6 +448,7 @@ class NotificationMemberViewSet(viewsets.ModelViewSet):
 class NewsFeedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSummary
+    pagination_class = SmallResultSetPagination
 
     def get_queryset(self):
         user = self.request.user
