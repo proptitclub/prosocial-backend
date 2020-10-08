@@ -195,6 +195,7 @@ class UpdateCommentSerializer(serializers.ModelSerializer):
 
 class ReactionSerializer(serializers.ModelSerializer):
     # assigned_post = serializers.SerializerMethodField()
+    assigned_user = AssignedUserSummary()
 
     def get_assigned_post(self, obj):
         return obj.assigned_post.id
@@ -202,14 +203,16 @@ class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reaction
         fields = [
-            # "url", 
+            "url", 
             "id", 
             "assigned_user", 
-            # "assigned_post", 
+            "assigned_post", 
             "type",
         ]
 
 class ReactionSummary(serializers.ModelSerializer):
+    assigned_user = AssignedUserSummary()
+
     class Meta:
         model = Reaction
         fields = [

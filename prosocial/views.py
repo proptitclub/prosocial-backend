@@ -173,13 +173,14 @@ class PostViewSet(viewsets.ModelViewSet):
         # )
         # new_notification.save()
         # user_list = new_post.assigned_group.members
-        if new_post.type == 1:
-            
+        if int(new_post.type) == 1:
             polls = request.data.get('polls')
+            print(polls)
             if polls == None:
                 polls = '{}'
             # print(polls)
             dict_poll_data = json.loads(polls)
+            print(dict_poll_data)
             for poll_data in dict_poll_data:
                 content = poll_data
                 new_poll = Poll(assigned_post=new_post, question=content)
@@ -282,7 +283,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
         user = self.request.user
         params = dict(request.query_params)
         post_id = params.get('postId')
-        query_set = Target.objects.all()
+        query_set = Reaction.objects.all()
         # print(method)
         if post_id is not None:
             if post_id[0] != '':
@@ -323,7 +324,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         # print(pk)
-        obj = Reaction.objects.get(id=int(pk))
+        obj = Reaction.objects.get(id=pk)
         return Response(ReactionSerializer(obj, context={'request': request}).data)
         # return super().retrieve(request, pk)
 
