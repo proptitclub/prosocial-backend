@@ -624,7 +624,8 @@ def create_user(request):
         return Response({
             "error": "username has already existed"
         })
-    new_mem = CustomMember(username=username, password=password)
+    new_mem = CustomMember(username=username)
+    new_mem.set_password(password)
     new_mem.save()
 
     # add new user to General
