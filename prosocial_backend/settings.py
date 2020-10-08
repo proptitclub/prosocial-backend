@@ -197,6 +197,10 @@ DJOSER = {
     "SERIALIZERS": {
         "user": "prosocial.serializers.CustomMemberSerializer",
         "current_user": "prosocial.serializers.CustomMemberSerializer",
+    },
+    "HIDE_USERS": False,
+    "PERMISSIONS": {
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
     }
 }
 
