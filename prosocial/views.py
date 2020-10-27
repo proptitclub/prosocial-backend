@@ -78,7 +78,7 @@ class PostViewSet(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # pagination_class = SmallResultSetPagination
+    pagination_class = SmallResultSetPagination
     # parser_classes = (FormParser, )
 
     def get_serializer_class(self):
@@ -380,35 +380,35 @@ class TickViewSet(viewsets.ModelViewSet):
         new_tick.save()
         return Response(TickSerializer(new_tick, context={'request': request}).data)
 
-class CommentViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+# class CommentViewSet(viewsets.ModelViewSet):
+#     permission_classes = (IsAuthenticated,)
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
 
-    def get_serializer_class(self):
-        if self.action == 'create':
-            return CreateCommentSerializer
-        else:
-            return CommentSerializer
+#     def get_serializer_class(self):
+#         if self.action == 'create':
+#             return CreateCommentSerializer
+#         else:
+#             return CommentSerializer
 
-    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
-    @parser_classes((MultiPartParser, JSONParser))
-    def create(self, request, *args, **kawrgs):
-        user = request.user
-        content = request.data.get('content')
-        post_id = request.data.get('assigned_post')
-        assigned_post = Post.objects.get(id=post_id)
-        instance = Comment(assigned_user=user, assigned_post=assigned_post, content=content)
-        instance.save()
-        return Response(CommentSerializer(instance, context={'request': request}).data)
+#     @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
+#     @parser_classes((MultiPartParser, JSONParser))
+#     def create(self, request, *args, **kawrgs):
+#         user = request.user
+#         content = request.data.get('content')
+#         post_id = request.data.get('assigned_post')
+#         assigned_post = Post.objects.get(id=post_id)
+#         instance = Comment(assigned_user=user, assigned_post=assigned_post, content=content)
+#         instance.save()
+#         return Response(CommentSerializer(instance, context={'request': request}).data)
     
 
-    @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
-    @parser_classes((MultiPartParser, JSONParser))
-    def update(self, request, pk):
-        content = request.data.get('content')
-        instance = Comment.objects.get(id=pk)
-        instance.update
+#     @swagger_auto_schema(responses={'200': openapi.Response('Response Description', CommentSerializer)})
+#     @parser_classes((MultiPartParser, JSONParser))
+#     def update(self, request, pk):
+#         content = request.data.get('content')
+#         instance = Comment.objects.get(id=pk)
+#         instance.update
 
 
 
@@ -448,7 +448,7 @@ class NotificationMemberViewSet(viewsets.ModelViewSet):
 class NewsFeedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSummary
-    # pagination_class = SmallResultSetPagination
+    pagination_class = SmallResultSetPagination
 
     def get_queryset(self):
         user = self.request.user
