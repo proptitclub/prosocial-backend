@@ -57,6 +57,7 @@ urlpatterns = (
     [
         path("admin/", admin.site.urls),
         path("", include(ROUTER.urls)),
+        path("rank/", views.get_rank, name="rank-json"),
         path("auth/", include("djoser.urls")),
         path("auth/", include("djoser.urls.jwt")),
         path("users/create/", views.create_user),

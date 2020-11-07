@@ -22,6 +22,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.utils import timezone
 from .pagination import SmallResultSetPagination
+from django.http import JsonResponse
 
 
 
@@ -509,15 +510,19 @@ class TargetViewSet(viewsets.ModelViewSet):
                 query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
         return query_set
 
-        @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
-        @parser_classes((MultiPartParser, JSONParser))
-        def create(self, *args, **kwargs):
-            return super().create(*args, **kwargs)
-        
-        @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
-        @parser_classes((MultiPartParser, JSONParser))
-        def update(self, *args, **kwargs):
-            return super().update(*args, **kwargs)
+    # @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
+    # @parser_classes((MultiPartParser, JSONParser))
+    # def create(self, *args, **kwargs):
+    #     return super().create(*args, **kwargs)
+    
+    # @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
+    # @parser_classes((MultiPartParser, JSONParser))
+    # def update(self, *args, **kwargs):
+    #     return super().update(*args, **kwargs)
+
+    @swagger_auto_schema(operation_description='If you want to get all Target, dont give any parameters, if you want to get current month target, give "?method=currentMonth" to url')
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def create(self, request):
         user = request.user
@@ -738,3 +743,57 @@ def create_post(request):
     send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
     
     return PostSerializer(new_post, context={'request': request}).data
+
+@swagger_auto_schema(
+    method='GET',
+    operation_description='"?method=allTime" if you want to get all time rank, "?method=currentMonth" if you want to get current month rank'
+)
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
+def get_rank(request):
+    method = request.GET.get('method')
+    print(method)
+    result_pair = []
+    users = CustomMember.objects.filter()
+    if method == "allTime":
+        for user in users:
+            score = 0
+            # Get point from target
+            targets = Target.objects.filter(assigned_user=user, is_done=True)
+            for target in targets:
+                score += target.point.score
+            
+            # get point from bonus point
+            bonus_points = BonusPoint.objects.filter(assigned_user=user)
+            for bonus_point in bonus_points:
+                score += bonus_point.score
+            
+            user_data = AssignedUserSummary(user).data
+            result_pair.append({
+                "user": user_data,
+                "score": score,
+            })
+    elif method == "currentMonth":
+        for user in users:
+            score = 0
+            cur_month = datetime.today().replace(day=1)
+            targets = Target.objects.filter(assigned_user=user, is_done=True, created_time__gt=cur_month)
+            for target in targets:
+                score += target.point.score
+
+            bonus_points = BonusPoint.objects.filter(assigned_user=user, created_time__gt=cur_month)
+            for bonus_point in bonus_points:
+                score += bonus_point.score
+
+            user_data = AssignedUserSummary(user).data
+            result_pair.append({
+                "user": user_data,
+                "score": score,
+            })
+    def take_score(obj):
+        return obj.get('score')
+    list.sort(result_pair, key=take_score, reverse=True)
+    return JsonResponse(result_pair, safe=False)
+    
+        
+    
