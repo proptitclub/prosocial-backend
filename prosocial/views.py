@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, DjangoMultiPartParser, JSONParser
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer
 from .serializers import *
 from datetime import datetime
 from .models import *
@@ -17,7 +18,7 @@ from rest_framework import generics
 import requests
 import json
 from .notification_sender import *
-from rest_framework.decorators import action, api_view, permission_classes, parser_classes
+from rest_framework.decorators import action, api_view, permission_classes, parser_classes, renderer_classes
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.utils import timezone
@@ -504,10 +505,13 @@ class TargetViewSet(viewsets.ModelViewSet):
         query_set = Target.objects.all()
         # print(method)
         if method is not None:
+            if method[0] == 'userCurrentMonth':
+                cur_month = datetime.today().replace(day=1)
+                query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
             if method[0] == 'currentMonth':
                 cur_month = datetime.today().replace(day=1)
-                print(user)
-                query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
+                query_set = Target.objects.filter(created_time__gt=cur_month)
+
         return query_set
 
     # @swagger_auto_schema(responses={'200': openapi.Response('Response Description', TargetSerializer)})
@@ -520,7 +524,9 @@ class TargetViewSet(viewsets.ModelViewSet):
     # def update(self, *args, **kwargs):
     #     return super().update(*args, **kwargs)
 
-    @swagger_auto_schema(operation_description='If you want to get all Target, dont give any parameters, if you want to get current month target, give "?method=currentMonth" to url')
+    @swagger_auto_schema(operation_description='If you want to get all Target, dont give any parameters, '
+            'if you want to get current month target of authenticated user, give "?method=userCurrentMonth" to url'
+            '. If you want all target in currentMonth, give "?method=currentMonth"')
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
@@ -538,7 +544,7 @@ class TargetViewSet(viewsets.ModelViewSet):
             instance.__dict__.update({"name": name})
         point = int(request.data.get('point'))
         if point != "" and point != None:
-            instance.__dict__.update({"point": point})
+            instance.__dict__.update({"point": Point.objects.get(id=point)})
         status = int(request.data.get('status'))
         if status != "" and status != None:
             instance.__dict__.update({"status": status})
@@ -645,7 +651,6 @@ def create_user(request):
 
 
 # self define swagger field
-
 @swagger_auto_schema(
     method='POST',
     operation_description='Create a post, post has 2 type',
@@ -750,9 +755,9 @@ def create_post(request):
 )
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
+@renderer_classes([CamelCaseJSONRenderer])
 def get_rank(request):
     method = request.GET.get('method')
-    print(method)
     result_pair = []
     users = CustomMember.objects.filter()
     if method == "allTime":
@@ -773,6 +778,7 @@ def get_rank(request):
                 "user": user_data,
                 "score": score,
             })
+            print(type(user_data))
     elif method == "currentMonth":
         for user in users:
             score = 0
@@ -785,7 +791,8 @@ def get_rank(request):
             for bonus_point in bonus_points:
                 score += bonus_point.score
 
-            user_data = AssignedUserSummary(user).data
+            user_data = AssignedUserSummary(user)
+            print(type(user_data))
             result_pair.append({
                 "user": user_data,
                 "score": score,
@@ -793,7 +800,7 @@ def get_rank(request):
     def take_score(obj):
         return obj.get('score')
     list.sort(result_pair, key=take_score, reverse=True)
-    return JsonResponse(result_pair, safe=False)
+    return Response(result_pair)
     
         
     
