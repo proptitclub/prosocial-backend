@@ -257,7 +257,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     @parser_classes((MultiPartParser, JSONParser))
     def create(self, request, *args, **kwargs):
         user = request.user
-        post_id = request.data.get("post_id")
+        post_id = request.data.get("assigned_post")
         post = Post.objects.get(id=post_id)
         content = request.data.get("content")
         new_comment = Comment(assigned_user=user, assigned_post=post, content=content)
