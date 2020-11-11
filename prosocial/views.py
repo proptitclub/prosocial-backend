@@ -503,14 +503,24 @@ class TargetViewSet(viewsets.ModelViewSet):
         params = dict(request.query_params)
         method = params.get('method')
         query_set = Target.objects.all()
+        user_id = params.get('user')
         # print(method)
         if method is not None:
             if method[0] == 'userCurrentMonth':
                 cur_month = datetime.today().replace(day=1)
-                query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
+                if user_id[0] is not None:
+                    member = CustomMember.objects.get(id=int(user_id))
+                    query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=member)
+                else:
+                    query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=user)
             if method[0] == 'currentMonth':
                 cur_month = datetime.today().replace(day=1)
-                query_set = Target.objects.filter(created_time__gt=cur_month)
+                if user_id[0] is not None:
+                    member = CustomMember.objects.get(id=int(user_id))
+                    query_set = Target.objects.filter(created_time__gt=cur_month, assigned_user=member)
+                else:
+                    query_set = Target.objects.filter(created_time__gt=cur_month)
+
 
         return query_set
 
@@ -526,7 +536,8 @@ class TargetViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(operation_description='If you want to get all Target, dont give any parameters, '
             'if you want to get current month target of authenticated user, give "?method=userCurrentMonth" to url'
-            '. If you want all target in currentMonth, give "?method=currentMonth"')
+            '. If you want all target in currentMonth, give "?method=currentMonth".
+            ' if you want to take other person target, put id=<user_id> behind')
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
