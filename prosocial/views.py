@@ -544,10 +544,16 @@ class TargetViewSet(viewsets.ModelViewSet):
             instance.__dict__.update({"name": name})
         point = int(request.data.get('point'))
         if point != "" and point != None:
-            instance.__dict__.update({"point": Point.objects.get(id=point)})
+            if request.user.is_staff == True:
+                instance.__dict__.update({"point": Point.objects.get(id=point)})
+            else:
+                return JsonResponse({'error': 'You has no permission to do this'})
         status = int(request.data.get('status'))
         if status != "" and status != None:
-            instance.__dict__.update({"status": status})
+            if request.user.is_staff == True:
+                instance.__dict__.update({"status": status})
+            else:
+                return JsonResponse({'error': 'You has no permission to do this'})
         instance.save()
         return Response(TargetSerializer(instance, context={'request': request}).data)
         
