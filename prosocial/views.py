@@ -262,7 +262,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         content = request.data.get("content")
         new_comment = Comment(assigned_user=user, assigned_post=post, content=content)
         new_comment.save()
-        return Response(CommentSerializer(comment, context={'request': request}).data)
+        return Response(CommentSerializer(new_comment, context={'request': request}).data)
 
     def delete(self, request, *args, **kwargs):
         comment = Comment.objects.get(id=kwargs["pk"])
@@ -550,17 +550,23 @@ class TargetViewSet(viewsets.ModelViewSet):
     
     def update(self, request, pk):
         instance = Target.objects.get(id = pk)
+        if request.FILES.get("result_image") != None:
+            instance.__dict__.update({"result_image": request.FILES.get('result_image')})
         name = request.data.get('name')
         if name != "" and name != None:
             instance.__dict__.update({"name": name})
-        point = int(request.data.get('point'))
-        if point != "" and point != None:
+        point_obj = request.data.get('point')
+        if point_obj != "" and point_obj != None:
+            point_obj = json.loads(point_obj)
+            point = int(point_obj.get('id'))
+            print("POINT ID: {}".format(point))
             if request.user.is_staff == True:
                 instance.__dict__.update({"point": Point.objects.get(id=point)})
             else:
                 return JsonResponse({'error': 'You has no permission to do this'})
-        status = int(request.data.get('status'))
+        status = request.data.get('status')
         if status != "" and status != None:
+            status = int(request.data.get('status'))
             if request.user.is_staff == True:
                 instance.__dict__.update({"status": status})
             else:
@@ -652,7 +658,7 @@ def create_user(request):
         return Response({
             "error": "username has already existed"
         })
-    new_mem = CustomMember(username=username)
+    new_mem = CustomMember(username=username,user_gender=1,phone_number="000000000",display_name="New User",facebook="",role=1)
     new_mem.set_password(password)
     new_mem.save()
 

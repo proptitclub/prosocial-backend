@@ -225,6 +225,10 @@ class Target(models.Model):
         ],
     )
 
+    result_image = models.FileField(
+        upload_to=custom_media_path, max_length=100, default="default.jpg"
+    )
+
     created_time = models.DateTimeField(null=True)
 
 class BonusPoint(models.Model):

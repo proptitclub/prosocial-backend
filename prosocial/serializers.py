@@ -557,6 +557,7 @@ class TargetSerializer(serializers.ModelSerializer):
             "point",
             "status",
             "created_time",
+            "result_image"
         ]
 
 class CreateTargetSerializer(serializers.ModelSerializer):
@@ -584,25 +585,27 @@ class UpdateTargetSerializer(serializers.ModelSerializer):
             "name",
             "is_done",
             "point",
-            "status"
+            "status",
+            "result_image"
         ]
 
-    def update(self, instance, validated_data):
-        name = validated_data.get('name')
-        is_done = validated_data.get('is_done')
-        point = Point.objects.get(id=validated_data.get('point'))
-        status = validated_data.get('status')
+    # def update(self, instance, validated_data):
+    #     name = validated_data.get('name')
+    #     is_done = validated_data.get('is_done')
+    #     point = Point.objects.get(id=validated_data.get('point'))
+    #     status = validated_data.get('status')
+    #     result_image = validated_data.get()
 
-        instance.__dict__.update(
-            {
-                'name': name,
-                'is_done': is_done,
-                'point': point,
-                'status': status
-            }
-        )
-        instance.save()
-        return instance
+    #     instance.__dict__.update(
+    #         {
+    #             'name': name,
+    #             'is_done': is_done,
+    #             'point': point,
+    #             'status': status
+    #         }
+    #     )
+    #     instance.save()
+    #     return instance
 
 class BonusPointSerializer(serializers.ModelSerializer):
     assigned_user = AssignedUserSummary(read_only=True)
