@@ -40,3 +40,4 @@ class TargetStatusType(Enum):
     NOT_SCORED = 0
     SCORED = 1
     CONFIRM = 2
+    REJECTED = -1

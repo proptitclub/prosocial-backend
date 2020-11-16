@@ -44,7 +44,7 @@ def send_to_onesignal_worker(app_id, include_player_ids, contents):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = CustomMember.objects.all()
     serializer_class = CustomMemberSerializer
 
@@ -56,7 +56,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = GroupPro.objects.all()
     serializer_class = GroupSerializer
 
@@ -77,7 +77,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = SmallResultSetPagination
