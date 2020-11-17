@@ -561,7 +561,8 @@ class TargetViewSet(viewsets.ModelViewSet):
             point = int(point_obj.get('id'))
             print("POINT ID: {}".format(point))
             if request.user.is_staff == True:
-                instance.__dict__.update({"point": Point.objects.get(id=point)})
+                instance.__dict__.update({"point_id": Point.objects.get(id=point).id})
+                # print(instance.__dict__)
             else:
                 return JsonResponse({'error': 'You has no permission to do this'})
         status = request.data.get('status')
