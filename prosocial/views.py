@@ -271,7 +271,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class ReactionViewSet(viewsets.ModelViewSet):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     queryset = Reaction.objects.all()
     serializer_class = ReactionSerializer
 
