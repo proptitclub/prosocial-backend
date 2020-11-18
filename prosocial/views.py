@@ -571,13 +571,16 @@ class TargetViewSet(viewsets.ModelViewSet):
                 instance.__dict__.update({"status": status})
             else:
                 return JsonResponse({'error': 'You has no permission to do this'})
-        is_done = request.data.get('isDone')
+        is_done = request.data.get('is_done')
+        print(is_done)
         if is_done != "" and is_done != None:
-            is_done = bool(is_done)
+            # is_done = bool(is_done)
+            print(is_done)
             if request.user.is_staff == True:
                 instance.__dict__.update({"is_done": is_done})
             else:
                 return JsonResponse({"error": "You has no permission to do this"})
+        print(instance.__dict__)
         instance.save()
         return Response(TargetSerializer(instance, context={'request': request}).data)
         
