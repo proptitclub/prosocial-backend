@@ -580,7 +580,7 @@ class TargetViewSet(viewsets.ModelViewSet):
                 instance.__dict__.update({"is_done": is_done})
             else:
                 return JsonResponse({"error": "You has no permission to do this"})
-        print(instance.__dict__)
+        # print(instance.__dict__)
         instance.save()
         return Response(TargetSerializer(instance, context={'request': request}).data)
         
