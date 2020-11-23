@@ -23,7 +23,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.utils import timezone
 from .pagination import SmallResultSetPagination
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 
 
 
@@ -837,3 +837,44 @@ def get_rank(request):
     
         
     
+# def auto_gen_user(requests):
+#     if requests.method != "POST":
+#         return HttpResponseNotFound()
+#     else:
+#         with open("username.txt", "r") as f:
+#             lines = f.readlines()
+#             for line in lines:
+#                 print(line)
+#                 username = line
+#                 check_queryset = CustomMember.objects.filter(username=username)
+#                 print(check_queryset)
+#                 if len(check_queryset) > 0:
+#                     return Response({
+#                         "error": "username has already existed"
+#                     })
+#                 new_mem = CustomMember(
+#                     username=username,
+#                     user_gender=1,
+#                     phone_number="000000000",
+#                     display_name="New User",
+#                     facebook="",role=1)
+#                 password = "000000"
+#                 new_mem.set_password(password)
+#                 new_mem.save()
+
+
+
+
+# @api_view(['POST'])
+# @permission_classes((IsAuthenticated,))
+# @parser_classes([MultiPartParser, ])
+# def change_pass_word(requests):
+#     try:
+#         user = requests.user
+#         password = requests.data.get('password')
+#         user.set_password(password)
+#         user.save()
+#     except:
+#         return JsonResponse({"status": "Fail"})
+    
+#     return JsonResponse({"status": "Success"})
