@@ -880,3 +880,28 @@ def change_pass_word(requests):
     return JsonResponse({"status": "Success"})
 
 
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser, ])
+def create_device_member(requests):
+    try:
+        user = requests.user
+        device_id = requests.data.get('device_id')
+        new_ud = UserDevice(assigned_user=user, device_id=device_id)
+        new_ud.save()
+    except:
+        return JsonResponse({"status": "Fail"})
+    return JsonResponse({"status": "Success"})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def delete_device_member(requests):
+    try:
+        user = requests.user
+        device_id = requests.data.get('device_id')
+        ud = UserDevice.objects.filter(device_id=device_id)[0]
+        ud.delete()
+    except:
+        return JsonResponse({"status": "Fail"})
+    return JsonResponse({"status": "Success"})

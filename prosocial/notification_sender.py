@@ -14,10 +14,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import requests
 import json
+from firebase_admin import messaging
 
-APP_ID = '913dba2c-9869-4355-a68e-5be7321465c9'
-REST_API_ONESIGNAL_ID = 'ZDg4NTNmNmItYzYxNi00ZjhiLWJmYmQtM2RiOGQ2ZjJhN2Iy'
-REST_API_URL = 'https://onesignal.com/api/v1/notifications'
+
 
 
 class NotificationSender:

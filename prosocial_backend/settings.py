@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+import firebase_admin
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
@@ -204,6 +207,12 @@ SIMPLE_JWT = {
     # 'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     # 'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("/home/hanhnd/workspace/django/prosocial-backend/prosocial-e83d9-firebase-adminsdk-wm5af-6f3f396355.json")
+FIREBASE_APP = firebase_admin.initialize_app(cred)
 
 
 DJOSER = {
