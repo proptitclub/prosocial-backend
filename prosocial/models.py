@@ -151,7 +151,7 @@ class UserDevice(models.Model):
     assigned_user = models.ForeignKey(
         CustomMember, on_delete=models.CASCADE, null=False, default=None
     )
-    device_id = models.CharField(max_length=128)
+    device_id = models.CharField(max_length=1000)
 
     def __str__(self):
         return self.assigned_user.display_name

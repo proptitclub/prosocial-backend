@@ -889,7 +889,8 @@ def create_device_member(requests):
         device_id = requests.data.get('device_id')
         new_ud = UserDevice(assigned_user=user, device_id=device_id)
         new_ud.save()
-    except:
+    except Exception as inst:
+        print(inst)
         return JsonResponse({"status": "Fail"})
     return JsonResponse({"status": "Success"})
 
@@ -902,6 +903,7 @@ def delete_device_member(requests):
         device_id = requests.data.get('device_id')
         ud = UserDevice.objects.filter(device_id=device_id)[0]
         ud.delete()
-    except:
+    except Exception as inst:
+        print(inst)
         return JsonResponse({"status": "Fail"})
     return JsonResponse({"status": "Success"})
