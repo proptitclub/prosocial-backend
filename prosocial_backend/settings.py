@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "prosocial",
+    "channels",
+    "chat",
     "rest_framework",
     "rest_framework_simplejwt",
     "djoser",
@@ -57,7 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -81,7 +83,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "prosocial_backend.wsgi.application"
+# WSGI_APPLICATION = "prosocial_backend.wsgi.application"
+ASGI_APPLICATION = "prosocial_backend.routing.application"
+
 
 
 # Database
@@ -142,6 +146,15 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATOR_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 3
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
 
 # Internationalization
@@ -206,11 +219,11 @@ DJOSER = {
 
 ROOT_URL = 'http://apis.aiforce.xyz/'
 
-sentry_sdk.init(
-    dsn="https://988770b86f7649f0b6f1d3a3ccc955dd@o404403.ingest.sentry.io/5268077",
-    integrations=[DjangoIntegration()],
+# sentry_sdk.init(
+#     dsn="https://988770b86f7649f0b6f1d3a3ccc955dd@o404403.ingest.sentry.io/5268077",
+#     integrations=[DjangoIntegration()],
 
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
+#     # If you wish to associate users to errors (assuming you are using
+#     # django.contrib.auth) you may enable sending PII data.
+#     send_default_pii=True
+# )

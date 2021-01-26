@@ -103,7 +103,7 @@ class CommentSender(NotificationSender):
     message_template = "{} đã bình luận về một bài viết trong nhóm {}"
 
     @staticmethod
-    def create_noti(obj: Comment) -> None:
+    def create_noti(request, obj: Comment) -> None:
         post = obj.assigned_post
         assigned_group = post.assigned_group
         members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()

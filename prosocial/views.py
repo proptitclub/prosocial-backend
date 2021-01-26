@@ -170,13 +170,13 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
         CreatingPostSender.create_noti(request, new_post)
-        # new_notification = Notification(
-        #     assigned_post=new_post,
-        #     assigned_user=request.user,
-        #     type=0
-        # )
-        # new_notification.save()
-        # user_list = new_post.assigned_group.members
+        new_notification = Notification(
+            assigned_post=new_post,
+            assigned_user=request.user,
+            type=0
+        )
+        new_notification.save()
+        user_list = new_post.assigned_group.members
         if int(new_post.type) == 1:
             polls = request.data.get('polls')
             print(polls)
@@ -190,18 +190,18 @@ class PostViewSet(viewsets.ModelViewSet):
                 new_poll = Poll(assigned_post=new_post, question=content)
                 new_poll.save()
         
-        # relation_device_id_list = []
-        # for user in user_list.all():
-        #     print('{} == {}'.format(user.id, request.user.id))
-        #     if user.id == request.user.id:
-        #         continue
-        #     new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
-        #     new_notification_member.save()
-        #     user_device_list = UserDevice.objects.filter(assigned_user=user)
-        #     for user_device in user_device_list:
-        #         relation_device_id_list.append(user_device.device_id)
+        relation_device_id_list = []
+        for user in user_list.all():
+            print('{} == {}'.format(user.id, request.user.id))
+            if user.id == request.user.id:
+                continue
+            new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
+            new_notification_member.save()
+            user_device_list = UserDevice.objects.filter(assigned_user=user)
+            for user_device in user_device_list:
+                relation_device_id_list.append(user_device.device_id)
         
-        # send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
+        send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
         
         return Response(PostSerializer(new_post, context={'request': request}).data)
 
@@ -806,7 +806,7 @@ def get_rank(request):
             for bonus_point in bonus_points:
                 score += bonus_point.score
             
-            user_data = AssignedUserSummary(user).data
+            user_data = AssignedUserSummary(user, context={"request": request}).data
             result_pair.append({
                 "user": user_data,
                 "score": score,
@@ -824,7 +824,7 @@ def get_rank(request):
             for bonus_point in bonus_points:
                 score += bonus_point.score
 
-            user_data = AssignedUserSummary(user)
+            user_data = AssignedUserSummary(user, context={"request": request}).data
             print(type(user_data))
             result_pair.append({
                 "user": user_data,
@@ -837,44 +837,46 @@ def get_rank(request):
     
         
     
-# def auto_gen_user(requests):
-#     if requests.method != "POST":
-#         return HttpResponseNotFound()
-#     else:
-#         with open("username.txt", "r") as f:
-#             lines = f.readlines()
-#             for line in lines:
-#                 print(line)
-#                 username = line
-#                 check_queryset = CustomMember.objects.filter(username=username)
-#                 print(check_queryset)
-#                 if len(check_queryset) > 0:
-#                     return Response({
-#                         "error": "username has already existed"
-#                     })
-#                 new_mem = CustomMember(
-#                     username=username,
-#                     user_gender=1,
-#                     phone_number="000000000",
-#                     display_name="New User",
-#                     facebook="",role=1)
-#                 password = "000000"
-#                 new_mem.set_password(password)
-#                 new_mem.save()
+def auto_gen_user(requests):
+    if requests.method != "POST":
+        return HttpResponseNotFound()
+    else:
+        with open("username.txt", "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                print(line)
+                username = line
+                check_queryset = CustomMember.objects.filter(username=username)
+                print(check_queryset)
+                if len(check_queryset) > 0:
+                    return Response({
+                        "error": "username has already existed"
+                    })
+                new_mem = CustomMember(
+                    username=username,
+                    user_gender=1,
+                    phone_number="000000000",
+                    display_name="New User",
+                    facebook="",role=1)
+                password = "000000"
+                new_mem.set_password(password)
+                new_mem.save()
 
 
 
 
-# @api_view(['POST'])
-# @permission_classes((IsAuthenticated,))
-# @parser_classes([MultiPartParser, ])
-# def change_pass_word(requests):
-#     try:
-#         user = requests.user
-#         password = requests.data.get('password')
-#         user.set_password(password)
-#         user.save()
-#     except:
-#         return JsonResponse({"status": "Fail"})
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser, ])
+def change_pass_word(requests):
+    try:
+        user = requests.user
+        password = requests.data.get('password')
+        user.set_password(password)
+        user.save()
+    except:
+        return JsonResponse({"status": "Fail"})
     
-#     return JsonResponse({"status": "Success"})
+    return JsonResponse({"status": "Success"})
+
+

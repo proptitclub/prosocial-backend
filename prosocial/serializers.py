@@ -461,6 +461,8 @@ class PostSummary(serializers.ModelSerializer):
         ]
 
 class CreatePostSerializer(serializers.ModelSerializer):
+    def get_comment_number(self, obj):
+        return 0
     class Meta:
         model = Post
         fields = [
@@ -471,6 +473,7 @@ class CreatePostSerializer(serializers.ModelSerializer):
             'type',
             'photos',
             'polls',
+            'comment_number'
         ]
 
 class PostSerializer(serializers.ModelSerializer):
@@ -505,6 +508,7 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         reactions = Reaction.objects.filter(assigned_post=obj)
         return len(reactions)
+
 
     class Meta:
         model = Post

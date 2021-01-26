@@ -12,6 +12,7 @@ from django.views.generic import TemplateView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
+import chat.views as chat_views
 
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
@@ -29,6 +30,9 @@ ROUTER.register(r"notificationmember", views.NotificationMemberViewSet, basename
 ROUTER.register(r"point", views.PointViewSet, basename='point')
 ROUTER.register(r'bonuspoint', views.BonusPointViewSet, basename='bonuspoint')
 ROUTER.register(r'target', views.TargetViewSet, basename='target')
+
+ROUTER_CHAT = routers.DefaultRouter()
+ROUTER_CHAT.register(r"rooms", chat_views.RoomViewSet)
 
 api_info = openapi.Info(
     title="Snippets API",
@@ -57,6 +61,7 @@ urlpatterns = (
     [
         path("admin/", admin.site.urls),
         path("", include(ROUTER.urls)),
+        path("chat-api/", include(ROUTER_CHAT.urls)),
         path("rank/", views.get_rank, name="rank-json"),
         path("auth/", include("djoser.urls")),
         path("auth/", include("djoser.urls.jwt")),
@@ -64,6 +69,7 @@ urlpatterns = (
         path("posts2/create/", views.create_post),
         url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
         url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        path("chat/", include('chat.urls')),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
