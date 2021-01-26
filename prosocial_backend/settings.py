@@ -211,7 +211,7 @@ SIMPLE_JWT = {
 import firebase_admin
 from firebase_admin import credentials
 
-cred = credentials.Certificate("/home/hanhnd/workspace/django/prosocial-backend/prosocial-e83d9-firebase-adminsdk-wm5af-6f3f396355.json")
+cred = credentials.Certificate("/var/prosocial-backend/prosocial-e83d9-firebase-adminsdk-wm5af-6f3f396355.json")
 FIREBASE_APP = firebase_admin.initialize_app(cred)
 
 
