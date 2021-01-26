@@ -14,7 +14,10 @@ import os
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 import firebase_admin
+from dotenv import load_dotenv
 
+load_dotenv(verbose=True)
+FIREBASE_TOKEN = os.getenv("FIREBASE_TOKEN")
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -211,7 +214,7 @@ SIMPLE_JWT = {
 import firebase_admin
 from firebase_admin import credentials
 
-cred = credentials.Certificate("/var/prosocial-backend/prosocial-e83d9-firebase-adminsdk-wm5af-6f3f396355.json")
+cred = credentials.Certificate(FIREBASE_TOKEN)
 FIREBASE_APP = firebase_admin.initialize_app(cred)
 
 
