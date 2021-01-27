@@ -100,7 +100,7 @@ class CreatingPostSender(NotificationSender):
         new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj, type=0)
         new_noti.save()
         for member in members_take_noti:
-            new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
+            new_member_noti = NotificationMember(assigned_user=request.user.display_name, assigned_notification=new_noti)
             message = CreatingPostSender.message_template.format(member.display_name, obj.assigned_group.name)
             new_member_noti.save()
             CreatingPostSender.serialize_and_send(request, new_member_noti, message)

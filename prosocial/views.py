@@ -169,7 +169,6 @@ class PostViewSet(viewsets.ModelViewSet):
         new_post.save()
 
 
-        CreatingPostSender.create_noti(request, new_post)
         new_notification = Notification(
             assigned_post=new_post,
             assigned_user=request.user,
@@ -201,6 +200,8 @@ class PostViewSet(viewsets.ModelViewSet):
             for user_device in user_device_list:
                 relation_device_id_list.append(user_device.device_id)
         
+        # CreatingPostSender.create_noti(request, new_post)
+
         CreatingPostSender.create_noti(request, new_post)
         
         return Response(PostSerializer(new_post, context={'request': request}).data)
