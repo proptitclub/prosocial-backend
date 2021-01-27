@@ -201,7 +201,7 @@ class PostViewSet(viewsets.ModelViewSet):
             for user_device in user_device_list:
                 relation_device_id_list.append(user_device.device_id)
         
-        send_to_onesignal_worker(APP_ID, relation_device_id_list, 'Đây là notification từ post {}'.format(new_post.id))
+        CreatingPostSender.create_noti(request, new_post)
         
         return Response(PostSerializer(new_post, context={'request': request}).data)
 
@@ -233,8 +233,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         super().get_queryset()
-        # print("it reached here" + "!"*10)
-        # print(self.kwargs)
         post_id = self.request.query_params.get('post_id', None)
         if post_id != None:
             post = Post.objects.get(id=post_id)
@@ -906,4 +904,9 @@ def delete_device_member(requests):
     except Exception as inst:
         print(inst)
         return JsonResponse({"status": "Fail"})
+    return JsonResponse({"status": "Success"})
+
+
+def test_noti(requests):
+    sendTestNotification()
     return JsonResponse({"status": "Success"})

@@ -65,6 +65,7 @@ urlpatterns = (
         path("rank/", views.get_rank, name="rank-json"),
         path("device/create", views.create_device_member, name="create_device"),
         path("device/delete", views.delete_device_member, name="delete_device"),
+        path("test/testnoti", views.test_noti, name="testnoti"),
         path("auth/", include("djoser.urls")),
         path("auth/", include("djoser.urls.jwt")),
         path("users/create/", views.create_user),

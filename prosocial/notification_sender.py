@@ -16,6 +16,32 @@ import requests
 import json
 from firebase_admin import messaging
 
+serverToken = 'AAAAv0K4lCM:APA91bEw20L-m4dDUyV0WmjCh5OQNdhkjXJ_UHrtihYYyWMBRfDDkxkOrANbSt60D5Oahg7tZFpSAczaVONimoDePT4IrVWyLjchMRidVlkbTWTiPYk9q4rbKgvDTOhZmBu8xinJpnyB'
+
+def sendTestNotification(user, text):
+    devices = UserDevice.objects.filter(assigned_user=user)
+    for device in device:
+        deviceToken = 'd9OP08P9RVO8eJKtmp-r-a:APA91bEZ7UAO5aCiHvdDDT1Jk-7PbO5rWfEDHeg2YWH2bjzaCW1gPWXvyydLygbCSztwiQWMTex9HRt8rWdq3b9jEAgtcjEaVE2rI_n_w5FqHsUa0jrjRXB6FnYZ2mTEFOm0Sm-AieOE'
+
+        headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'key=' + serverToken,
+            }
+
+        body = {
+                'notification': {'title': 'text',
+                                'body': 'New Message'
+                },
+                'to':
+                    deviceToken,
+                'priority': 'high',
+                #   'data': dataPayLoad,
+                }
+        response = requests.post("https://fcm.googleapis.com/fcm/send",headers = headers, data=json.dumps(body))
+        print(response.status_code)
+
+        print(response.text)
+
 
 
 
@@ -24,25 +50,29 @@ class NotificationSender:
     
     @staticmethod
     def serialize_and_send(request, noti_mem, message) -> None:
-        payload = NotificationSender.create_payload(request, noti_mem, message)
-        if payload == None:
-            print("User device is not exist for this user")
-            return
-        
-        header = {
-            "Content-Type": "application/json; charset=utf-8",
-        }
+        user_devices = UserDevice.objects.filter(assigned_user=noti_mem.assigned_user)
+        for user_device in user_devices:
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'key=' + serverToken
+            }
+            body = {
+                'notification': {
+                    'title': "ProPTIT Social",
+                    "body": message
+                },
+                'to': user_device.device_id,
+                'priority': 'high'
+            }
 
-        # tạm ngắt tính năng này vì chưa có phần obtain user_id
-        # req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
-
-
-        return
+            response = requests.post("https://fcm.googleapis.com/fcm/send",headers = headers, data=json.dumps(body))
+            print(response.status_code)
+            print(response.text)
     
     @staticmethod
     def create_payload(request, noti_mem, message) -> dict:
         try:
-            user_device = UserDevice.objects.get(assigned_user=noti_mem.assigned_user)
+            user_device = UserDevice.objects.filter(assigned_user=noti_mem.assigned_user)
         except:
             return None
         content = NotificationMemberSerializer(noti_mem, context={'request': request}).data
