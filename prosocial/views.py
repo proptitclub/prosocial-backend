@@ -261,6 +261,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         content = request.data.get("content")
         new_comment = Comment(assigned_user=user, assigned_post=post, content=content)
         new_comment.save()
+        CommentSender.create_noti(request, new_comment)
         return Response(CommentSerializer(new_comment, context={'request': request}).data)
 
     def delete(self, request, *args, **kwargs):
