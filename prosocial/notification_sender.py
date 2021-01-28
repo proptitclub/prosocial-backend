@@ -60,10 +60,12 @@ class NotificationSender:
                 'notification': {
                     'title': "ProPTIT Social",
                     "body": message,
-                    "postID": post_id,
                 },
                 'to': user_device.device_id,
-                'priority': 'high'
+                'priority': 'high',
+                'data': {
+                    "postID": post_id,
+                }
             }
 
             response = requests.post("https://fcm.googleapis.com/fcm/send",headers = headers, data=json.dumps(body))
