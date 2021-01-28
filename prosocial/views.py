@@ -433,6 +433,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class NotificationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = NotificationSerializer
+    pagination_class = SmallResultSetPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -489,6 +490,7 @@ class PointViewSet(viewsets.ModelViewSet):
 class TargetViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = TargetSerializer
+    pagination_class = SmallResultSetPagination
 
     def get_serializer_class(self):
         if self.action == 'create':
