@@ -490,7 +490,6 @@ class PointViewSet(viewsets.ModelViewSet):
 class TargetViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = TargetSerializer
-    pagination_class = MediumResultSetPaginator
 
     def get_serializer_class(self):
         if self.action == 'create':
