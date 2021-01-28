@@ -22,7 +22,7 @@ from rest_framework.decorators import action, api_view, permission_classes, pars
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.utils import timezone
-from .pagination import SmallResultSetPagination
+from .pagination import SmallResultSetPagination, MediumResultSetPaginator
 from django.http import JsonResponse, HttpResponseNotFound
 
 
@@ -433,7 +433,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class NotificationViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = NotificationSerializer
-    pagination_class = SmallResultSetPagination
+    pagination_class = MediumResultSetPaginator
 
     def get_queryset(self):
         user = self.request.user
@@ -490,7 +490,7 @@ class PointViewSet(viewsets.ModelViewSet):
 class TargetViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = TargetSerializer
-    pagination_class = SmallResultSetPagination
+    pagination_class = MediumResultSetPaginator
 
     def get_serializer_class(self):
         if self.action == 'create':
