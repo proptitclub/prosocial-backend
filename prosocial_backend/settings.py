@@ -57,6 +57,9 @@ INSTALLED_APPS = [
     "drf_yasg",
 ]
 
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
