@@ -11,12 +11,13 @@ import os
 
 from channels.routing import ProtocolTypeRouter
 from django.core.asgi import get_asgi_application
+from asgi_cors import asgi_cors
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "prosocial_backend.settings")
 
 django_asgi_app = get_asgi_application()
 
-application = ProtocolTypeRouter({
+application = asgi_cors(ProtocolTypeRouter({
     "http": django_asgi_app,
     # Just HTTP for now. (We can add other protocols later.)
-})
+}), allow_all=True)
