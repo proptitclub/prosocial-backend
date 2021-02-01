@@ -149,7 +149,7 @@ class CommentSender(NotificationSender):
         list_comments = (Comment.objects.filter(assigned_post=post))
         members_take_noti = CustomMember.objects.filter(id=post.assigned_user.id)
         for comment in list_comments:
-            members_take_noti = (members_take_noti | comment.assigned_user).distinct()
+            members_take_noti = (members_take_noti | CustomMember.objects.filter(id=comment.assigned_user.id)).distinct()
 
         new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
