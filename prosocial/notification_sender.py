@@ -103,6 +103,8 @@ class CreatingPostSender(NotificationSender):
         new_noti = Notification(assigned_user=request.user, assigned_post=obj, type=0)
         new_noti.save()
         for member in members_take_noti:
+            if member.id == request.user.id:
+                continue
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CreatingPostSender.message_template.format(request.user.display_name, obj.assigned_group.name)
             new_member_noti.save()
@@ -151,9 +153,11 @@ class CommentSender(NotificationSender):
         for comment in list_comments:
             members_take_noti = members_take_noti.union(CustomMember.objects.filter(id=comment.assigned_user.id)).distinct()
 
-        new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=1)
+        new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=2)
         new_noti.save()
         for member in members_take_noti:
+            if member.id == request.user.id:
+                continue
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CommentSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
