@@ -100,7 +100,7 @@ class CreatingPostSender(NotificationSender):
         post = obj
         assigned_group = post.assigned_group
         members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
-        new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj, type=0)
+        new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj, type=0)
         new_noti.save()
         for member in members_take_noti:
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
@@ -118,14 +118,15 @@ class ReactionSender(NotificationSender):
     def create_noti(request, obj: Reaction) -> None:
         post = obj.assigned_post
         assigned_group = post.assigned_group
-        members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
-        new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj.assigned_post, type=1)
+        # members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
+        member = post.assigned_user
+        new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
-        for member in members_take_noti:
-            new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
-            message = ReactionSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
-            new_member_noti.save()
-            ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
+        # save and send noti
+        new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
+        message = ReactionSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
+        new_member_noti.save()
+        ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
 
         return
 
@@ -144,9 +145,13 @@ class CommentSender(NotificationSender):
     @staticmethod
     def create_noti(request, obj: Comment) -> None:
         post = obj.assigned_post
-        assigned_group = post.assigned_group
-        members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
-        new_noti = Notification(assigned_user=obj.assigned_user, assigned_post=obj.assigned_post, type=1)
+        # get user that be sent comment
+        list_comments = (Comment.objects.filter(assigned_post=post))
+        members_take_noti = CustomMember.objects.filter(id=post.assigned_user.id)
+        for comment in list_comments:
+            members_take_noti = (members_take_noti | comment.assigned_user).distinct()
+
+        new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
         for member in members_take_noti:
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
