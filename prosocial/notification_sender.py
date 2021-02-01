@@ -15,7 +15,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import requests
 import json
 from firebase_admin import messaging
-import itertools
 
 serverToken = 'AAAAv0K4lCM:APA91bEw20L-m4dDUyV0WmjCh5OQNdhkjXJ_UHrtihYYyWMBRfDDkxkOrANbSt60D5Oahg7tZFpSAczaVONimoDePT4IrVWyLjchMRidVlkbTWTiPYk9q4rbKgvDTOhZmBu8xinJpnyB'
 
@@ -150,7 +149,7 @@ class CommentSender(NotificationSender):
         list_comments = (Comment.objects.filter(assigned_post=post))
         members_take_noti = CustomMember.objects.filter(id=post.assigned_user.id)
         for comment in list_comments:
-            members_take_noti = itertools.chain(members_take_noti, CustomMember.objects.filter(id=comment.assigned_user.id)).distinct()
+            members_take_noti = members_take_noti.union(CustomMember.objects.filter(id=comment.assigned_user.id)).distinct()
 
         new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
