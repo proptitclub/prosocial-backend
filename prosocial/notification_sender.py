@@ -100,7 +100,7 @@ class CreatingPostSender(NotificationSender):
         post = obj
         assigned_group = post.assigned_group
         members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
-        new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj, type=0)
+        new_noti = Notification(assigned_user=request.user, assigned_post=obj, type=0)
         new_noti.save()
         for member in members_take_noti:
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
@@ -120,7 +120,7 @@ class ReactionSender(NotificationSender):
         assigned_group = post.assigned_group
         # members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
         member = post.assigned_user
-        new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj.assigned_post, type=1)
+        new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
         # save and send noti
         new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
@@ -151,7 +151,7 @@ class CommentSender(NotificationSender):
         for comment in list_comments:
             members_take_noti = (members_take_noti | CustomMember.objects.filter(id=comment.assigned_user.id)).distinct()
 
-        new_noti = Notification(assigned_user=request.assigned_user, assigned_post=obj.assigned_post, type=1)
+        new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
         for member in members_take_noti:
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
