@@ -51,6 +51,8 @@ class CustomMemberSerializer(serializers.ModelSerializer):
             "user_gender",
             "cover",
             "class_name",
+            "first_name",
+            "last_name",
         ]
 
     def create(self, validated_data):
