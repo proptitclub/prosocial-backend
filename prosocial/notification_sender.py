@@ -104,7 +104,9 @@ class CreatingPostSender(NotificationSender):
         new_noti.save()
         for member in members_take_noti:
             if member.id == request.user.id:
+                print("member == request.user")
                 continue
+            print("member: {} - request.user: {}".format(member.id, request.user.id))
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CreatingPostSender.message_template.format(request.user.display_name, obj.assigned_group.name)
             new_member_noti.save()
@@ -124,11 +126,12 @@ class ReactionSender(NotificationSender):
         member = post.assigned_user
         new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=1)
         new_noti.save()
-        # save and send noti
-        new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
-        message = ReactionSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
-        new_member_noti.save()
-        ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
+        if member.id != request.user.id:
+            # save and send noti
+            new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
+            message = ReactionSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
+            new_member_noti.save()
+            ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
 
         return
 
@@ -158,7 +161,9 @@ class CommentSender(NotificationSender):
         new_noti.save()
         for member in members_take_noti:
             if member.id == request.user.id:
+                print("member == request.user")
                 continue
+            print("member: {} - request.user: {}".format(member.id, request.user.id))
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CommentSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()

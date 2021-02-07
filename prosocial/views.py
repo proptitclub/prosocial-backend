@@ -443,6 +443,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
 class NotificationMemberViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = NotificationMemberSerializer
+    pagination_class = MediumResultSetPaginator
 
     def get_queryset(self):
         user = self.request.user
