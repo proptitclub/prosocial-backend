@@ -6,10 +6,16 @@ from .enums import *
 class Room(models.Model):
     name = models.CharField(max_length=15)
 
+    def __str__(self):
+        return ""
+
 
 class UserRoom(models.Model):
     user = models.ForeignKey(CustomMember, on_delete=models.CASCADE, default=None, null=False)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, default=None, null=False)
+
+    def __str__(self):
+        return ""
 
 class Message(models.Model):
     user_room = models.ForeignKey(UserRoom, on_delete=models.CASCADE, default=None, null=False)
@@ -26,3 +32,6 @@ class Message(models.Model):
             (MessageType.TEXT.value, MessageType.TEXT.name),
         ],
     )
+
+    def __str__(self):
+        return ""

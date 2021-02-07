@@ -447,7 +447,7 @@ class NotificationMemberViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return NotificationMember.objects.filter(assigned_user=user)
+        return NotificationMember.objects.filter(assigned_user=user).order_by('-assigned_notification')
 
 class NewsFeedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
