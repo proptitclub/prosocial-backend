@@ -189,16 +189,16 @@ class PostViewSet(viewsets.ModelViewSet):
                 new_poll = Poll(assigned_post=new_post, question=content)
                 new_poll.save()
         
-        relation_device_id_list = []
-        for user in user_list.all():
-            print('{} == {}'.format(user.id, request.user.id))
-            if user.id == request.user.id:
-                continue
-            new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
-            new_notification_member.save()
-            user_device_list = UserDevice.objects.filter(assigned_user=user)
-            for user_device in user_device_list:
-                relation_device_id_list.append(user_device.device_id)
+        # relation_device_id_list = []
+        # for user in user_list.all():
+        #     print('{} == {}'.format(user.id, request.user.id))
+        #     if user.id == request.user.id:
+        #         continue
+        #     new_notification_member = NotificationMember(assigned_user=user, assigned_notification=new_notification)
+        #     new_notification_member.save()
+        #     user_device_list = UserDevice.objects.filter(assigned_user=user)
+        #     for user_device in user_device_list:
+        #         relation_device_id_list.append(user_device.device_id)
         
         # CreatingPostSender.create_noti(request, new_post)
 
