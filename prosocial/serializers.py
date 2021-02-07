@@ -53,6 +53,7 @@ class CustomMemberSerializer(serializers.ModelSerializer):
             "class_name",
             "first_name",
             "last_name",
+            "is_staff",
         ]
 
     def create(self, validated_data):
