@@ -81,6 +81,7 @@ prosocial_backend/__pycache__/
 prosocial/migrations/__pycache__/
 
 media/
+**/__pycache__/
 
 run_server.pid
 run_server.log

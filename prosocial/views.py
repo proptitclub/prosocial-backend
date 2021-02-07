@@ -169,12 +169,12 @@ class PostViewSet(viewsets.ModelViewSet):
         new_post.save()
 
 
-        new_notification = Notification(
-            assigned_post=new_post,
-            assigned_user=request.user,
-            type=0
-        )
-        new_notification.save()
+        # new_notification = Notification(
+        #     assigned_post=new_post,
+        #     assigned_user=request.user,
+        #     type=0
+        # )
+        # new_notification.save()
         user_list = new_post.assigned_group.members
         if int(new_post.type) == 1:
             polls = request.data.get('polls')
