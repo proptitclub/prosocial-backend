@@ -653,7 +653,6 @@ class BonusPointViewSet(viewsets.ModelViewSet):
 )
 @api_view(['POST'])
 @permission_classes((AllowAny,))
-@parser_classes([MultiPartParser, JSONParser, ])
 def create_user(request):
     print(request.method)
     if request.method == 'GET':
@@ -664,13 +663,31 @@ def create_user(request):
     # return Response({"status": "Accepted Request"})
     username = request.data.get('username')
     password = request.data.get('password')
+    last_name = request.data.get('last_name')
+    first_name = request.data.get('first_name')
+    date_of_birth = request.data.get('dob')
+    display_name = request.data.get('display_name')
+    user_gender = request.data.get('user_gender')
+    class_name = request.data.get('class_name')
+    email = request.data.get('email')
+    phone_number = request.data.get('phone_number')
     check_queryset = CustomMember.objects.filter(username=username)
     print(check_queryset)
     if len(check_queryset) > 0:
         return Response({
             "error": "username has already existed"
         })
-    new_mem = CustomMember(username=username,user_gender=1,phone_number="000000000",display_name="New User",facebook="",role=1)
+    new_mem = CustomMember(
+        username=username,
+        last_name=last_name,
+        first_name=first_name,
+        date_of_birth=date_of_birth,
+        display_name=display_name,
+        user_gender=user_gender,
+        class_name=class_name,
+        email=email,
+        phone_number=phone_number,
+    )
     new_mem.set_password(password)
     new_mem.save()
 

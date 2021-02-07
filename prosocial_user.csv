@@ -1,0 +1,172 @@
+username,password,firstName,lastName,dateOfBirth,displayName,userGender,className,email,phoneNumber
+thanhdt_d12,thanh310394,Thành,Đỗ Trung,1994-03-31T00:00:00Z,Đỗ Trung Thành,1,D12,,01636652736
+quylt_d12,quy160395, Quý,Lê Thể,1995-03-16T00:00:00Z,Lê Thể Quý,1, D12,,01659637337
+ tienph_d12, tien290994, Tiến, Phạm Hoàng,1994-09-29T00:00:00Z,Phạm Hoàng Tiến,1, D12,,01647290994
+huyenntt_d12,huyen141194,Huyền , Nguyễn Thị Thanh ,1994-11-14T00:00:00Z,Nguyễn Thị Thanh Huyền,2,D12,,01639352519
+namnh_d12,nam140495,Nam,Nguyễn Hoàng,1995-04-14T00:00:00Z,Nguyễn Hoàng Nam,1,D12,,0913908969
+quangtp_d12,quang180495,Quang,Trần Phú,1995-04-18T00:00:00Z,Trần Phú Quang,1,D12,,0972207299
+bangtl_d13,bang280295,Bằng,Trần Lương,1995-02-28T00:00:00Z,Trần Lương Bằng,1,D13,,0975453108
+giangttt_d13,giang080795,Giang,Trần Thị Thuỳ,1995-07-08T00:00:00Z,Trần Thị Thùy Giang,2,D13,,01632145752
+quanhq_d13,quan010895,Quân,Hoàng Quốc,1995-08-01T00:00:00Z,Hoàng Quốc Quân,1,D13,,01662987954
+tains_d13,tai200195,Tài,Nguyễn Sĩ,1995-01-20T00:00:00Z,Nguyễn Sĩ Tài,1,D13,,0906920195
+phongbv_c13,phong050394,Phong,Bùi Văn,1994-03-05T00:00:00Z,Bùi Văn Phong,1,D13,,
+dunglq_d20,dung010802,Dũng,Lê Quang,2002-08-01T00:00:00Z,Lê Quang Dũng,1,D20,sankatana02@gmail.com,0824910986
+huannd_d20,huan230102,Huấn,Nguyễn Danh ,2002-01-23T00:00:00Z,Nguyễn Danh Huấn,1,D20,danhhuan23012002@gmail.com,0565924118
+nhatnv_d20,nhat180802,Nhất,Nguyễn Văn,2002-08-18T00:00:00Z,Nguyễn Văn Nhất,1,D20,nhatnguyentc123@gmail.com,0919564828
+huongdx_d20,huong041102,Hướng,Đỗ Xuân,2002-11-04T00:00:00Z,Đỗ Xuân Hướng,1,D20,Dohuong0422@gmail.com,0964002140
+namdp_d20,nam201002,Nam,Đặng Phương,2002-10-20T00:00:00Z,Đặng Phương Nam,1,D20,phuongnamDPN2k2@gmail.com,0912692172
+haicd_d20,hai270802,Hải,Cao Duy,2002-08-27T00:00:00Z,Cao Duy Hải,1,D20,caoduyhai007@gmail.com,0356639522
+lamlt_d20,lam270802,Lam,Lê Thanh,2002-08-27T00:00:00Z,Lê Thanh Lam,2,D20,lamlee.0509@gmail.com,0862967002
+anhtv_d20,anh110102,Anh,Trần Vân,2002-01-11T00:00:00Z,Trần Vân Anh,2,D20,vanhinox@gmail.com,0382307535
+quandv_d20,quan121002,Quân,Đặng Việt,2002-10-12T00:00:00Z,Đặng Việt Quân,1,D20,dangvietquan02@gmail.com,0904616136
+hopvt_d20,hop281002,Hợp,Vũ Tuấn ,2002-10-28T00:00:00Z,Vũ Tuấn Hợp,1,D20,vth2802@gmail.com,0974400257
+hungdb_d20,hung3009,Hùng,Đinh Bá,2002-09-30T00:00:00Z,Đinh Bá Hùng,1,D20,dinhh569@gmail.com,0366766719
+phuclq_d20,phuc050802,Phúc,Lê Quang,2002-02-12T00:00:00Z,Lê Quang Phúc,1,D20,Phuc12610@gmail.com,0977909787
+thuanpt_d20,thuan120202,Thuận,Phạm Tiến,2002-08-05T00:00:00Z,Phạm Tiến Thuận,1,D20,01655480113a@gmail.com,0386974007
+huytq_d20,huy101202,Huy,Trương Quang,2002-12-10T00:00:00Z,Trương Quang Huy,1,D20,huyquanghuytruong@gmail.com,0352289040
+tiennd_d20,tien181202,Tiến,Nguyễn Đăng ,2002-12-18T00:00:00Z,Nguyễn Đăng Tiến,1,D20,nctvip02@gmail.com,0983714278
+hieupt_d20,hieu0101902,Hiếu,Phạm Trung,2002-09-01T00:00:00Z,Phạm Trung Hiếu,1,D20,trunghieu01102002@gmail.com,0966620306
+quangnv_d20,quang161102,Quang,Nguyễn Viết,2002-11-16T00:00:00Z,Nguyễn Viết Quang,1,D20,nguyenvquang1611@gmail.com,0943031221
+dungcd_d20,dung201102,Dũng,Cao Duy,2002-11-20T00:00:00Z,Cao Duy Dũng,1,D20,caoduydung101@gmail.com,0338349563
+anhnd_d20,anh230502,Anh,Nguyễn Đức,2002-05-23T00:00:00Z,Nguyễn Đức Anh,1,D20,facebook230502@gmail.com,0916574981
+hiepdh_d20,hiep031202,Hiệp,Đặng Hoàng,2002-12-03T00:00:00Z,Đặng Hoàng Hiệp,1,D20,hiepdang0312@gmail.com,0965828396
+anhnh_d20,anh081202,Ánh,Nguyễn Hồng,2002-12-08T00:00:00Z,Nguyễn Hồng Ánh,1,D20,nguyenhonganhron@gmail.com,0332172809
+dungnq_d20,dung160402,Dũng,Ngô Quang,2002-04-16T00:00:00Z,Ngô Quang Dũng,1,D20,dung0373691479@gmail.com,‭098 8948830‬
+dungpt_d20,dung010502,Dũng,Phùng Trọng ,2002-05-01T00:00:00Z,Phùng Trọng Dũng,1,D20,phungtrongdung2002@gmail.com,0987736167
+hungnt_d20, hung050102, Hùng, Nguyễn Tiến,2002-01-05T00:00:00Z,Nguyễn Tiến Hùng,1,D20,ngtienhung0501@gmail.com,0982659184
+tuanvh_d20, tuan190302, Tuấn , Võ Hữu,2002-03-19T00:00:00Z,Võ Hữu Tuấn,1,D20,dungtuan095@gmail.com,0388793168
+huyenttt_d20, huyen140402, Huyền, Trần Thị Thanh,2002-04-14T00:00:00Z,Trần Thị Thanh Huyền,2,D20,heulwen1404@gmail.com,0975728640
+thuongdth_d20, thuong251102,Thương, Đoàn Thị Hoài,2002-11-25T00:00:00Z,Đoàn Thị Hoài Thương,2,D20,doanthuong2002.nk@gmail.com,0989794228
+ vietpq_d20,viet170502,Việt , Phạm Quốc,2002-05-17T00:00:00Z,Phạm Quốc Việt,1,D20,bovietvidaihpdp@gmail.com,0983225538
+ datvh_d20, dat290802, Đạt ,Vũ Hữu,2002-08-29T00:00:00Z,Vũ Hữu Đạt,1,D20,huudatvu6139@gmail.com,0978457686
+ cuongvn_d20,cuong50502,Cường,Vũ Nguyễn,2002-05-05T00:00:00Z,Vũ Nguyễn Cường,1,D20,vucuong05052002@gmail.com,0986461557
+vuna_d20,vu200902,Vũ,Nguyễn Anh,2002-09-20T00:00:00Z,Nguyễn Anh Vũ,1,D20,Vuvovan2k2@gmail.com,0796417964
+ khanhdn_d20, khanh061002,Khánh,Đoàn Ngọc,2002-10-06T00:00:00Z,Đoàn Ngọc Khánh,1,D20,Khanhdoan6102002@gmail.com,0328854805
+ chinhnm_d20,chinh170902,Chinh,Nguyễn Mai,2002-09-17T00:00:00Z,Nguyễn Mai Chinh,2,D20,maichinh17092002@gmail.com,0979540273
+huyennt_d17,huyen260699,Huyền ,Nguyễn Thị,1999-06-26T00:00:00Z,Nguyễn Thị Huyền,2,D17,Huyensu266@gmail.com,0987094632
+lamnt_d17,lam170799,Lâm,Nguyễn Tùng,1999-07-17T00:00:00Z,Nguyễn Tùng Lâm,1,D17,lamitptit99@gmail.com,0961416930
+anhnt_d17,anh200199,Anh,Nguyễn Thế,1999-01-20T00:00:00Z,Nguyễn Thế Anh,1,D17,ntheanh201@gmail.com,0988876099
+anhlkt_d17,anh190399,Anh,Lê Khắc Tuấn,1999-03-19T00:00:00Z,Lê Khắc Tuấn Anh,1,D17,tuananh19031999@gmail.com,0945471668
+duanp_d17,duan291299,Duẩn,Phan Đức,1999-12-29T00:00:00Z,Phan Đức Duẩn ,1,D17,"ducduanphan@gmail,com",0967316908
+hanhnd_d17,hanh020299,Hạnh,Nguyễn Đức,1999-02-02T00:00:00Z,Nguyễn Đức Hạnh,1,D17,nguyenduchanh99tnvn@gmail.com,0387697588
+huytv_d17,default123,Huy,Trần Việt,,Trần Việt Huy,1,D17,viethuy99lc@gmail.com,0836260666
+cuonghq_d17,cuong111299,Cường,Hồ Quốc ,1999-12-11T00:00:00Z,Hồ Quốc Cường,1,D17,hoquoccuong99@gmail.com,0399192840
+ducpq_d17,duc200899,Đức,Phùng Quốc,1999-08-20T00:00:00Z,Phùng Quốc Đức,1,D17,phungduc094@gmail.com,0888627852
+haint_d17,hai020999,Hải ,Nguyễn Tiến,1999-09-02T00:00:00Z,Nguyễn Tiến Hải,1,D17,hai.nguyentien.0209@gmail.com,0394808900
+datnvt_d17,dat271299,Đạt,Nguyễn Viết Thành,1999-12-27T00:00:00Z,Nguyễn Viết Thành Đạt,1,D17,thanhdatnv2712@gmail.com,0762104404
+hieunm_d17,hieu180799,Hiếu,Nguyễn Minh,1999-07-18T00:00:00Z,Nguyễn Minh Hiếu,1,D17,,
+phuongdm_d17,phuong040199,Phương,Đỗ Mai,1999-01-04T00:00:00Z,Đỗ Mai Phương,2,D17,maiphuong04199@gmail.com,0397875264
+khanhtdc_d17,khanh310599,Khanh,Trần Duy Công,1999-05-31T00:00:00Z,Trần Duy Công Khanh,1,D17,,
+cuongnv_d17,cuong051299,Cường,Nguyễn Mạnh ,1999-12-05T00:00:00Z,Nguyễn Mạnh Cường,1,D17,dodo.proptit.99@gmail.com,0985178298
+sonnv_d17,default123,Sơn,Nguyễn Văn,,Nguyễn Văn Sơn,1,D17,nguyenson971999@gmail.com,0971476635
+tuenv_d18,tue241100,Tuệ,Nguyễn Văn,2000-11-24T00:00:00Z,Nguyễn Văn Tuệ,1,D18,"tue.nv2411@gmail.com
+","0989371630
+"
+maibpn_d18,mai171200,Mai,Bùi Phương Ngọc,2000-12-17T00:00:00Z,Bùi Phương Ngọc Mai,2,D18,buiphuongngocmai@gmail.com,0971233576
+quangtm_d18,quang050500,Quang,Trần Minh ,2000-05-05T00:00:00Z,Trần Minh Quang,1,D18,minhquangam@gmail.com ,0966170663
+thangtv_d18,thang161100,Thắng,Trần Văn ,2000-11-16T00:00:00Z,Trần Văn Thắng,1,D18,bareversewin2000@gmail.com,0387955109
+hoailb_d18,hoai300300,Hoài,Lê Bá ,2000-03-30T00:00:00Z,Lê Bá Hoài,1,D18,lebahoaidongson@gmail.com,0987308325
+huongnv_d18,huong240900,Hương,Nguyễn Việt ,2000-09-24T00:00:00Z,Nguyễn Việt Hương,2,D18,vhuongptit@gmail.com,0969240900
+thaonp_d18,thao240900,Thảo,Nguyễn Phương ,2000-09-24T00:00:00Z,Nguyễn Phương Thảo,2,D18,nphuongthao2409@gmail.com,0975258924
+taind_d18,tai110400,Tài,Nguyễn Đình ,2000-04-11T00:00:00Z,Nguyễn Đình Tài,1,D18,dinhtai2000@gmail.com,0986892308
+hocnv_d18,hoc100100,Học,Nguyễn Văn ,2000-01-10T00:00:00Z,Nguyễn Văn Học,1,D18,vanhoc2kvp@gmail.com,0929345164
+congvd_d18,cong110500,Công,Vũ Đình ,2000-05-11T00:00:00Z,Vũ Đình Công,1,D18,vuthanhcong110502@gmail.com,0375511200
+thanhdtt_d18,thanh040400,Thanh,Đỗ Thị Thanh ,2000-04-04T00:00:00Z,Đỗ Thị Thanh Thanh,2,D18,thanhthanh04hg@gmail.com,0364329004
+hieunv_d18,hieu300500,Hiếu,Nguyễn Văn,2000-05-30T00:00:00Z,Nguyễn Văn Hiếu,1,D18,nvhieu.nguyenhieu@gmail.com,0966520305
+linhnt_d18,linh101000,Linh,Nguyễn Thùy ,2000-10-10T00:00:00Z,Nguyễn Thùy Linh,2,D18,thuylinhptit1010@gmail.com,0333855577
+ducnh_d18,duc111100,Đức,Nguyễn Hoài,2000-11-11T00:00:00Z,Nguyễn Hoài Đức,1,D18,ezlife1111@gmail.com,0961035408
+kietnt_d18,kiet020100,Kiệt,Ngô Tuấn ,2000-01-02T00:00:00Z,Ngô Tuấn Kiệt,1,D18,tuankiet281299@gmail.com,0336391269
+thanhnt_d18,thanh180400,Thành,Nguyễn Trung ,2000-04-18T00:00:00Z,Nguyễn Trung Thành,1,D18,ntthanh1840@gmail.com,0934278831
+hoanv_d18,hoa160300,Hòa,Nguyễn Văn ,2000-06-13T00:00:00Z,Nguyễn Văn Hòa,1,D18,gam.nhosmiles2000@gmail.com,0523634176
+binhlt_d19,binh210101,Bình,Lê Thanh ,2001-01-21T00:00:00Z,Lê Thanh Bình,1,D19,thanhbinhle41@gmail.com,0975692559
+cuongbv_d19,cuong160701,Cường,Bùi Văn ,2001-07-16T00:00:00Z,Bùi Văn Cường,1,D19,cutequadu@gmailcom,0815533205
+duongbq_d19,duong100501,Dương,Bùi Quang ,2001-05-10T00:00:00Z,Bùi Quang Dương,1,D19,yeuduong0201@gmail.com,0918636809
+diepdb_d19,diep170801,Diệp,Đào Bích ,2001-08-17T00:00:00Z,Đào Bích Diệp,2,D19,diepdao1708@gmail.com,0396507285
+doanhvd_d19,doanh181001,Doanh,Vương Đình ,2001-10-18T00:00:00Z,Vương Đình Doanh,1,D19,aboveskyisspace@gmail.com,0369071970
+dungnd_d19,dung020701,Dũng,Nguyễn Duy ,2001-07-02T00:00:00Z,Nguyễn Duy Dũng,1,D19,ace02072001@gmail.com,0344547792
+dungtd_d19,dung130101,Dũng,Trần Đăng ,2001-01-13T00:00:00Z,Trần Đăng Dũng,1,D19,dangdung2301@gmail.com,0326085905
+duonglh_d19,duong240801,Dương,Lê Hồng ,2001-08-24T00:00:00Z,Lê Hồng Dương,1,D19,hongduong080501@gmail.com,0945324893
+hoactp_d19,hoa170201,Hoa,Cồ Thị Phương ,2001-02-17T00:00:00Z,Cồ Thị Phương Hoa,2,D19,phuonghoand2001@gmail.com,0948706905
+huypt_d19,huy080501,Huy,Phạm Trung ,2001-05-08T00:00:00Z,Phạm Trung Huy,1,D19,huypham8501@gmail.com,0943522228
+haoptt_d19,hao240401,Hảo,Phạm Thị Thanh ,2001-04-24T00:00:00Z,Phạm Thị Thanh Hảo,2,D19,haoptt.244@gmail.com,0355228081
+haunv_d19,hau250701,Hậu,Nguyễn Văn,2001-07-25T00:00:00Z,Nguyễn Văn Hậu,1,D19,havukaka@gmail.com ,0973353970
+hangth_d19,hang031201,Hằng,Trần Thị,2001-12-03T00:00:00Z,Trần Thị Hằng,2,D19,tranhang13129@gmail.com,0942199282
+longkd_d19,long050101,Long,Kiều Đức,2001-01-05T00:00:00Z,Kiều Đức Long,1,D19,long05012001@gmail.com,0383928392
+lucnv_d19,luc280701,Lực,Nguyễn Văn,2001-07-28T00:00:00Z,Nguyễn Văn Lực,1,D19,luccp2@gmail.com,0948040960
+maintq_d19,mai311001,Mai,Nguyễn Thị Quỳnh ,2001-10-31T00:00:00Z,Nguyễn Thị Quỳnh Mai,2,D19,quynhmai.nshd@gmail.com,0972711778
+minhhd_d19,minh090501,Minh,Hoàng Đức ,2001-05-09T00:00:00Z,Hoàng Đức Minh,1,D19,hdminh5901@gmail.com,0978244288
+minhlx_d19,minh190901,Minh,Lê Xuân ,2001-09-19T00:00:00Z,Lê Xuân Minh,1,D19,vuasanbanx@gmail.com,0869139382
+ngapt_d19,nga090501,Nga,Phạm Thị ,2001-05-09T00:00:00Z,Phạm Thị Nga,2,D19,ngaphamthi09052001@gmail.com,0934272965
+phuongnm_d19,phuong180201,Phương,Nguyễn Minh ,2001-02-18T00:00:00Z,Nguyễn Minh Phương,1,D19,phuongacma1802@gmail.com,0383009190
+thaodtt_d19,thao230301,Thảo,Đỗ Thị Thu ,2001-03-23T00:00:00Z,Đỗ Thị Thu Thảo,2,D19,dothithuthao2303@gmail.com,0976541082
+trangnth_d19,trang021101,Trang,Nguyễn Thị Huyền,2001-11-02T00:00:00Z,Nguyễn Thị Huyền Trang,2,D19,nguyentrang02112001@gmail.com,0945741873
+trangntq_d19,trang250201,Trang,Nguyễn Thị Quỳnh ,2001-02-25T00:00:00Z,Nguyễn Thị Quỳnh Trang,2,D19,quynhtrangn25201@gmail.com,0978694339
+truongbq_d19,truong071001,Trường,Bùi Quang ,2001-10-07T00:00:00Z,Bùi Quang Trường,1,D19,avengertegiac@gmail.com,0966868003
+tuannm_d19,tuan110201,Tuân,Nguyễn Mạnh ,2001-02-11T00:00:00Z,Nguyễn Mạnh Tuân,1,D19,manhtuan1122001@gmail.com,0979917465
+uyennt_d19,uyen030101,Uyên,Nguyễn Thị ,2001-03-01T00:00:00Z,Nguyễn Thị Uyên,2,D19,nguyenuyen010301@gmail.com,0987216850
+duongbv_d14,duong070496,Dương,Bùi Văn ,1996-04-07T00:00:00Z,Bùi Văn Dương,1,D14,buianhduong9x@gmail.com,0984645877
+danglh_d14,dang140396,Đăng,Lê Hải ,1996-03-14T00:00:00Z,Lê Hải Đăng,1,D14,skullou.w@gmail.com,01257538138
+ducvd_d14,duc031196,Đức,Vũ Đình ,1996-11-03T00:00:00Z,Vũ Đình Đức,1,D14,ducuk6196@gmail.com,0969903055
+ducnn_d14,duc220496,Đức,Nguyễn Nhân ,1996-04-22T00:00:00Z,Nguyễn Nhân Đức,1,D14,nhanducnguyen.ptit@gmail.com,0969862934
+haipn_d14,hai050766,Hải,Phạm Ngọc ,1996-07-05T00:00:00Z,Phạm Ngọc Hải,1,D14,phamngochai4404@gmail.com,01233431996
+hoant_d14,hoa080196,Hoà,Nguyễn Thị ,1996-01-08T00:00:00Z,Nguyễn Thị Hòa,2,D14,nguyenhoa080196@gmail.com,01666441297
+hungcd_d14,hung030696,Hưng,Chu Đình ,1996-06-03T00:00:00Z,Chu Đình Hưng,1,D14,HungCD.ptit@gmail.com,01697938868
+lanhnth_d14,lanh080496,Lanh,Nguyễn Thị Huyền ,1996-04-08T00:00:00Z,Nguyễn Thị Huyền Lanh,2,D14,lanh.ptit.tn@gmail.com,0989390159
+linhnt_14,linh151296,Linh,Ngô Thị ,1996-12-15T00:00:00Z,Ngô Thị Linh,2,D14,linhngo151296@gmail.com,0978426329
+luandt_d14,luan100496,Luân,Đỗ Thành ,1996-04-10T00:00:00Z,Đỗ Thành Luân,1,D14,thanhluancn1@gmail.com,0986921690
+nghiadv_d14,nghia060896,Nghĩa,Đặng Văn ,1996-08-06T00:00:00Z,Đặng Văn Nghĩa,1,D14,nghiadvcn@gmail.com,0965828396
+ngocnt_d14,ngoc170966,Ngọc,Nguyễn Thị ,1996-09-17T00:00:00Z,Nguyễn Thị Ngọc,2,D14,nguyenthingoc1796@gmail.com,01692023933
+phuongnt_d14,phuong100296,Phương,Nguyễn Thị ,1996-02-10T00:00:00Z,Nguyễn Thị Phương,2,D14,phuongptit96@gmail.com,01678941825
+quannt_d14,quan190895,Quân,Nguyễn Tiến ,1995-08-19T00:00:00Z,Nguyễn Tiến Quân,1,D14,vinhnt9x@gmail.com,0964846895
+quyendb_d14,quyen281296,Quyền,Đàm Bá ,1996-12-28T00:00:00Z,Đàm Bá Quyền,1,D14,dambaquyen.ptit@gmail.com,0120 859 7187
+sondt_d14,son140996,Sơn,Đào Thái,1996-09-14T00:00:00Z,Đào Thái Sơn,1,D14,dtson96@gmail.com,01675630199
+thanhtc_d14,thanh201096,Thành,Trần Công ,1996-10-20T00:00:00Z,Trần Công Thành,1,D14,thanh.ptit.96@gmail.com,01676560079
+trongtv_d14,trong231196,Trọng,Trần Văn ,1996-11-23T00:00:00Z,Trần Văn Trọng,1,D14,giatran2311@gmail. Com,01653602369
+linhhv_d15,linh040697,Linh,Hoàng Vũ ,1997-06-04T00:00:00Z,Hoàng Vũ Linh,2,D15,vulinht1997@gmail.com,0948082693
+anhpt_d15,anh310597,Anh,Phùng Tuấn ,1997-05-31T00:00:00Z,Phùng Tuấn Anh,1,D15,skt.t1.kaito.21@gmail.com,0978604001
+binhnq_d15,binh271197,Bình,Nguyễn Quốc ,1997-11-27T00:00:00Z,Nguyễn Quốc Bình,1,D15,quoccbinh@gmail.com,0972799189
+duytk_d15,duy200797,Duy,Triệu Khương ,1997-07-20T00:00:00Z,Triệu Khương Duy,1,D15,duytrkh@gmail.com,0941480882
+hiephv_d15,hiep091097,Hiệp,Hoàng Văn ,1997-10-09T00:00:00Z,Hoàng Văn Hiệp,1,D15,hoanghiep1097@gmail.com,0981535890
+phuonglt_d15,phuong010197,Phương,Lê Thị ,1997-01-01T00:00:00Z,Lê Thị Phương,2,D15,lepg.hn@gmail.com,01672180198
+thientx_d15,thien180797,Thiện,Trần Xuân ,1997-07-18T00:00:00Z,Trần Xuân Thiện,1,D15,tinhyeunn0@gmail.com,01235080762
+haunc_d15,hau260797,Hậu,Nguyễn Công,1997-07-26T00:00:00Z,Nguyễn Công Hậu,1,D15,rockband9701@gmail.com,0972718067
+ngahn_d15,nga050597,Nga,Hoàng Ngọc ,1997-05-05T00:00:00Z,Hoàng Ngọc Nga,2,D15,hoangngocnga1997ns@gmail.com,0948655597
+annth_d15,an220896,An,Nguyễn Thắng Hải,1996-08-22T00:00:00Z,Nguyễn Thắng Hải An,1,D15,HaiAn.PTIT@gmail.com,01694291984
+phuongnt_15,phuong030997,Phương,Nguyễn Thị ,1997-09-03T00:00:00Z,Nguyễn Thị Phương,2,D15,Phuongltvpp@gmail.com,0969265324
+ducna_d15,duc041297,Đức,Nguyễn Anh ,1997-12-04T00:00:00Z,Nguyễn Anh Đức,1,D15,anhducn1297@gmail.com,0964365097
+minhbc_d15,minh130297,Minh,Bùi Chí ,1997-02-13T00:00:00Z,Bùi Chí Minh,1,D15,buichiminh.cntt@gmail.com,01232456000
+cuongnlt_d15,cuong301097,Cường,Nguyễn Lê Tuấn ,1997-10-30T00:00:00Z,Nguyễn Lê Tuấn Cường,1,D15,cuongnguyenle997@gmail.com,0914070042
+khanhnhb_d15,khanh230497,Khánh,Nguyễn Hoàng Bảo ,1997-04-23T00:00:00Z,Nguyễn Hoàng Bảo Khánh,1,D15,baokhanh234@gmail.com,0978201516
+maipt_d15,mai250197,Mai,Phạm Thị ,1997-01-25T00:00:00Z,Phạm Thị Mai,2,D15,phammai2814@gmail.com,01639532814
+hungnh_d15,hung180597,Hưng,Nguyễn Huy ,1997-05-18T00:00:00Z,Nguyễn Huy Hưng,1,D15,nguyenhuyhung.ptit@gmail.com,01663600150
+phuongba_d15,phuong080897,Phương,Bùi Anh ,1997-08-08T00:00:00Z,Bùi Anh Phương,1,D15,anhphuong8897@gmail.com,0962968897
+tinhnv_d15,tinh260797,Tính,Nguyễn Văn ,1997-07-26T00:00:00Z,Nguyễn Văn Tính,1,D15,harukinnhoc@gmail.com,01654868185
+thanhlt_d15,thanh240297,Thanh,Lê Thị ,1997-02-24T00:00:00Z,Lê Thị Thanh,2,D15,nhonlee@gmail.com,01629695915
+tuanpv_d15,tuan090997,Tuấn,Phan Văn ,1997-09-09T00:00:00Z,Phan Văn Tuấn,1,D15,tuanptit09@gmail.com,01696 176 759
+dinhpd_d15,dinh070797,Định,Phạm Duy ,1997-07-07T00:00:00Z,Phạm Duy Định,1,D15,dauconchinua@gmail.com,0971125801
+huybx_d16,huy050798,Huy,Bùi Xuân ,1998-07-05T00:00:00Z,Bùi Xuân Huy,1,D16,buixuanhuy5798@gmail.com,01626303838
+dangcv_d16,dang100398,Đăng,Chu Văn ,1998-03-10T00:00:00Z,Chu Văn Đăng,1,D16,duckdonald10031998@gmail.com,01692146330
+tungdx_d16,tung261298,Tùng,Đinh Xuân ,1998-12-26T00:00:00Z,Đinh Xuân Tùng,1,D16,xtung.98@gmail.com,01664306556
+thaopdh_d16,thao221298,Thảo,Đỗ Hoàng Phương ,1998-12-22T00:00:00Z,Đỗ Hoàng Phương Thảo,2,D16,thao.johae.2212@gmail.com,01653328945
+quandh_d16,quan021097,Quân,Đỗ Hồng ,1997-10-02T00:00:00Z,Đỗ Hồng Quân,1,D16,quando23112012@gmail.com,01626016097
+khoaha_d16,khoa160297,Khoa,Hồ Anh ,1997-02-16T00:00:00Z,Hồ Anh Khoa,1,D16,hoanhkhoa00000@gmail.com,0911260477
+menht_d16,men150798,Mến,Hoàng Thị,1998-07-15T00:00:00Z,Hoàng Thị Mến,2,D16,men98ht@gmail.com,01627366387
+duonglb_d16,duong010898,Dương,Lê Bình ,1998-08-01T00:00:00Z,Lê Bình Dương,1,D16,duong98.lebinh@gmail.com,0983 236 058
+bachld_d16,bach240798,Bách,Lê Duy ,1998-07-24T00:00:00Z,Lê Duy Bách,1,D16,koroycorporation@gmail.com,0164 730 5566
+anhnl_d16,anh150498,Anh,Nguyễn Lan ,1998-04-15T00:00:00Z,Nguyễn Lan Anh,2,D16,lananh98.ptit@gmail.com,01637708090
+congnt_d16,cong020798,Công,Nguyễn Tiến ,1998-07-02T00:00:00Z,Nguyễn Tiến Công,1,D16,nguyentiencong2798@gmail.com,01626751357
+mienpt_d16,mien231198,Miền,Phạm Thị ,1998-11-23T00:00:00Z,Phạm Thị Miền,2,D16,phammien2311@gmail.com,01632212277
+vinhtv_d16,vinh250197,Vĩnh,Thiều Văn ,1997-01-25T00:00:00Z,Thiều Văn Vĩnh,1,D16,thieuvanvinh@gmail.com,01692661932
+tungvt_d16,tung260198,Tùng,Vũ Thanh ,1998-01-26T00:00:00Z,Vũ Thanh Tùng,1,D16,vuthanhtunghayquen98@gmail.com,01667126936
+lent_d16,le190198,Lệ,Ngô Thị ,1998-01-19T00:00:00Z,Ngô Thị Lệ,2,D16,ngothile1911998@gmail.com,01237563355
+duynnt_d16,duyen160297,Duyên,Nguyễn Thị ,1997-02-16T00:00:00Z,Nguyễn Thị Duyên,2,D16,ngtdduyen@gmail.com,01655891234
+linhnq_d16,linh020898,Linh,Nguyễn Quang ,1998-08-02T00:00:00Z,Nguyễn Quang Linh,1,D16,newtime5454@gmail.com,01663136659
+nghiatd_d16,nghia080398,Nghĩa,Trần Đại ,1998-03-08T00:00:00Z,Trần Đại Nghĩa,1,D16,nghia.td.ptit@gmail.com,0906068398
+thaonp_d16,thao120498,Thảo,Nguyễn Phương ,1998-04-12T00:00:00Z,Nguyễn Phương Thảo,2,D16,nguyenphuongthao12041998@gmail.com,01639737700
+huynhtt_d16,huynh010198,Huynh,Trịnh Thế ,1998-01-01T00:00:00Z,Trịnh Thế Huynh,1,D16,trinhhuynhxt@gmail.com,0986 470 688
+hungdv_d16,hung180598,Hùng,Đinh Văn ,1998-05-18T00:00:00Z,Đinh Văn Hùng,1,D16,hungptitcn1@gmail.com,0969650671
+baotc_d16,bao190998,Bảo,Trần Chí ,1998-09-19T00:00:00Z,Trần Chí Bảo,1,D16,claptax@gmail.com,01699770888
+namnd_d16,nam230196,Nam,Nguyễn Đình ,1996-01-23T00:00:00Z,Nguyễn Đình Nam,1,D16,nguyendinhnam2301@gmail.com,0964082399
+minhtd_d16,minh170897,Minh,Trịnh Đình ,1997-08-17T00:00:00Z,Trịnh Đình Minh,1,D16,trumvang1997@gmail.com,01693045353
+cuctt_d16,cuc120198,Cúc,Trần Tiểu ,1998-01-12T00:00:00Z,Trần Tiểu Cúc,2,D16,trantieucucrain121@gmail.com,01653240101
+duongcn_d16,duong091298,Dương,Cao Nam ,1998-12-09T00:00:00Z,Cao Nam Dương,1,D16,pigoggy@gmail.com,0985537098
