@@ -932,14 +932,21 @@ def test_noti(requests):
     sendTestNotification()
     return JsonResponse({"status": "Success"})
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 @parser_classes([MultiPartParser,])
 def gen_lixi(request):
     try:
         lixis = LiXi.objects.filter(assigned_user=request.user)
         if len(lixis) > 0:
-            return JsonResponse({"status": -1, "message": "Co li xi rui khong xin nua nha!!!"})
+            lixi = lixis[0]
+            return JsonResponse({
+                "status": 0,
+                "li_xi": {
+                    "assigned_user": AssignedUserSummary(lixi.assigned_user).data,
+                    "price": lixi.price,
+                }
+            })
         lixi10k = 55
         lixi20k = 5
         lixi50k = 1
@@ -974,10 +981,11 @@ def gen_lixi(request):
 def get_lixi(request):
     try:
         lixis = LiXi.objects.filter(assigned_user=request.user)
-        if len(lixis) > 1:
-            return JsonResponse({"status": -2, "message": "Nhieu li xi the dm"})
-        if len(lixis) == 0:
-            return JsonResponse({"status": -3, "message": "Ban chua co li xi, di gacha lixi di"})
+        if request.user.is_staff == False:
+            if len(lixis) > 1:
+                return JsonResponse({"status": -2, "message": "Nhieu li xi the dm"})
+            if len(lixis) == 0:
+                return JsonResponse({"status": -3, "message": "Ban chua co li xi, di gacha lixi di"})
         lixi = lixis[0]
         return JsonResponse({
             "status": 0,
