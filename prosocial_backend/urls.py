@@ -66,6 +66,8 @@ urlpatterns = (
         path("device/create", views.create_device_member, name="create_device"),
         path("device/delete", views.delete_device_member, name="delete_device"),
         path("test/testnoti", views.test_noti, name="testnoti"),
+        path("lixi/create", views.gen_lixi, name="genlixi"),
+        path("lixi/get", views.get_lixi, name="getlixi"),
         path("auth/", include("djoser.urls")),
         path("auth/", include("djoser.urls.jwt")),
         path("users/create/", views.create_user),

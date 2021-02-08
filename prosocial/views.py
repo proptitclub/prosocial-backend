@@ -24,6 +24,7 @@ from drf_yasg import openapi
 from django.utils import timezone
 from .pagination import SmallResultSetPagination, MediumResultSetPaginator
 from django.http import JsonResponse, HttpResponseNotFound
+import random
 
 
 
@@ -927,7 +928,64 @@ def delete_device_member(requests):
         return JsonResponse({"status": "Fail"})
     return JsonResponse({"status": "Success"})
 
-
 def test_noti(requests):
     sendTestNotification()
     return JsonResponse({"status": "Success"})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def gen_lixi(request):
+    try:
+        lixis = LiXi.objects.filter(assigned_user=request.user)
+        if len(lixis) > 0:
+            return JsonResponse({"status": -1, "message": "Co li xi rui khong xin nua nha!!!"})
+        lixi10k = 55
+        lixi20k = 5
+        lixi50k = 1
+        lixis = LiXi.objects.all()
+        for lixi in lixis:
+            if lixi.price == 10:
+                lixi10k -= 1
+            if lixi.price == 20:
+                lixi20k -= 1
+            if lixi.price == 50:
+                lixi50k -= 1
+        rand_arr = [50] * max(lixi50k, 0) + [20] * max(lixi20k, 0) + [10] * max(lixi10k, 0)
+        print(rand_arr)
+        
+        final_lixi = random.choice(rand_arr)
+        new_lixi = LiXi(assigned_user=request.user, price=final_lixi)
+        new_lixi.save()
+        return JsonResponse({
+            "status": 0,
+            "li_xi": {
+                "assigned_user": AssignedUserSummary(new_lixi.assigned_user).data,
+                "price": new_lixi.price,
+            }
+        })
+    except Exception as inst:
+        print(inst)
+        return JsonResponse({"status": -99})
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def get_lixi(request):
+    try:
+        lixis = LiXi.objects.filter(assigned_user=request.user)
+        if len(lixis) > 1:
+            return JsonResponse({"status": -2, "message": "Nhieu li xi the dm"})
+        if len(lixis) == 0:
+            return JsonResponse({"status": -3, "message": "Ban chua co li xi, di gacha lixi di"})
+        lixi = lixis[0]
+        return JsonResponse({
+            "status": 0,
+            "li_xi": {
+                "assigned_user": AssignedUserSummary(lixi.assigned_user).data,
+                "price": lixi.price,
+            }
+        })
+    except Exception as inst:
+        print(inst)
+        return JsonResponse({"status": -99})

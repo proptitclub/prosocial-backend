@@ -238,3 +238,12 @@ class BonusPoint(models.Model):
     score = models.IntegerField(default=0)
     description = models.CharField(max_length=256)
     created_time = models.DateTimeField(auto_now_add=True)
+
+class LiXi(models.Model):
+    assigned_user = models.ForeignKey(
+        CustomMember, null=False, default=None, on_delete=models.CASCADE
+    )
+    price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "{} - {}k".format(self.assigned_user.display_name, self.price)
