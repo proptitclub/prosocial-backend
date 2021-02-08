@@ -153,8 +153,9 @@ class UserDevice(models.Model):
     )
     device_id = models.CharField(max_length=1000)
 
-    # def __str__(self):
-    #     return self.assigned_user.display_name
+
+    class Meta:
+        unique_together = ('assigned_user', 'device_id')
 
 class Notification(models.Model):
     assigned_user = models.ForeignKey(
