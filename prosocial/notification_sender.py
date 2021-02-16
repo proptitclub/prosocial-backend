@@ -81,13 +81,13 @@ class NotificationSender:
     @staticmethod
     def filter_devices_and_sent(devices, message, post_id):
         def by_device_id(obj):
-            return (obj.username, obj.registration_time)
+            return (obj.assigned_user.id, obj.registration_time)
         devices = list(devices)
         be_sent_map = {}
         be_kept_device = []
         devices.sort(key=by_device_id)
         for device in devices:
-            be_sent_map[device.username] = device
+            be_sent_map[device.assigned_user.id] = device
         
         for key in be_sent_map:
             be_kept_device.append(be_sent_map[key])
