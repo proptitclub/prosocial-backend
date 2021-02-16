@@ -41,3 +41,7 @@ class TargetStatusType(Enum):
     SCORED = 1
     CONFIRM = 2
     REJECTED = -1
+
+@unique
+class MemberSpecialRelationshipType(Enum):
+    BLOCK = 0

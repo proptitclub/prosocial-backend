@@ -15,6 +15,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import requests
 import json
 from firebase_admin import messaging
+import threading
 
 serverToken = 'AAAAv0K4lCM:APA91bEw20L-m4dDUyV0WmjCh5OQNdhkjXJ_UHrtihYYyWMBRfDDkxkOrANbSt60D5Oahg7tZFpSAczaVONimoDePT4IrVWyLjchMRidVlkbTWTiPYk9q4rbKgvDTOhZmBu8xinJpnyB'
 
@@ -42,11 +43,60 @@ def sendTestNotification(user, text):
 
         print(response.text)
 
+class SendMultipleDeviceThread(threading.Thread):
+    def __init__(self, devices, message, post_id):
+        threading.Thread.__init__(self)
+        self.thread_id = thread_id
+        self.devices = devices
 
+    def run(self) -> None:
+        
+        for user_device in devices:
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'key=' + serverToken
+            }
+            body = {
+                'notification': {
+                    'title': "ProPTIT Social",
+                    "body": self.message,
+                },
+                'to': user_device.device_id,
+                'priority': 'high',
+                'data': {
+                    "postID": self.post_id,
+                }
+            }
 
+            response = requests.post("https://fcm.googleapis.com/fcm/send",headers = headers, data=json.dumps(body))
+            print(response.status_code)
+            print(response.text)
 
 class NotificationSender:
     serializer = NotificationSerializer
+
+    @staticmethod
+    def filter_devices_and_sent(devices, message, post_id):
+        def by_device_id(obj):
+            return (obj.device_id, -obj.registration_time)
+        be_sent_map = {}
+        be_kept_device = []
+        devices.sort(key=by_device_id)
+        for device in devices:
+            if be_sent_map.get(device.device_id) is None:
+                be_sent_map[device.device_id] = device.registration_time
+                be_kept_device.append(device)
+        
+        for device in devices:
+            if device not in be_kept_device:
+                device.delete()
+
+        send_thread = SendMultipleDeviceThread(devices, message, post_id)
+        
+        return 
+
+        
+
     
     @staticmethod
     def serialize_and_send(request, noti_mem, message, post_id) -> None:
@@ -102,6 +152,7 @@ class CreatingPostSender(NotificationSender):
         members_take_noti = (assigned_group.members.all() | assigned_group.admins.all()).distinct()
         new_noti = Notification(assigned_user=request.user, assigned_post=obj, type=0)
         new_noti.save()
+        devices = None
         for member in members_take_noti:
             if member.id == request.user.id:
                 print("member == request.user")
@@ -110,7 +161,13 @@ class CreatingPostSender(NotificationSender):
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CreatingPostSender.message_template.format(request.user.display_name, obj.assigned_group.name)
             new_member_noti.save()
-            CreatingPostSender.serialize_and_send(request, new_member_noti, message, post.id)
+            if devices is None:
+                devices = UserDevice.objects.filter(assigned_user=member)
+            else:
+                devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
+            
+            CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
+        
         
         return
 
@@ -132,6 +189,9 @@ class ReactionSender(NotificationSender):
             message = ReactionSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
             ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
+
+            devices = UserDevice.objects.filter(assigned_user=member)
+            ReactionSender.filter_devices_and_sent(devices, message, post.id)
 
         return
 
@@ -159,6 +219,7 @@ class CommentSender(NotificationSender):
 
         new_noti = Notification(assigned_user=request.user, assigned_post=obj.assigned_post, type=2)
         new_noti.save()
+        devices = None
         for member in members_take_noti:
             if member.id == request.user.id:
                 print("member == request.user")
@@ -167,6 +228,12 @@ class CommentSender(NotificationSender):
             new_member_noti = NotificationMember(assigned_user=member, assigned_notification=new_noti)
             message = CommentSender.message_template.format(request.user.display_name, obj.assigned_post.assigned_group.name)
             new_member_noti.save()
-            ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
+            # ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
+            if devices is None:
+                devices = UserDevice.objects.filter(assigned_user=member)
+            else:
+                devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
+            
+            CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
 
         return

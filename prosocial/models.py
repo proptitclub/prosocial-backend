@@ -152,6 +152,7 @@ class UserDevice(models.Model):
         CustomMember, on_delete=models.CASCADE, null=False, default=None
     )
     device_id = models.CharField(max_length=1000)
+    registration_time = models.DateTimeField(auto_now_add=True)
 
 
     class Meta:
@@ -232,6 +233,25 @@ class Target(models.Model):
 
     created_time = models.DateTimeField(null=True)
 
+
+class MemberSpecialRelationship(models.Model):
+    owner = models.ForeignKey(
+        CustomMember, null=False, default=None, on_delete=models.CASCADE, related_name='owner',
+    )
+    another = models.ForeignKey(
+        CustomMember, null=False, default=None, on_delete=models.CASCADE, related_name='another',
+    )
+
+    relation_type = models.SmallIntegerField(
+        null=False,
+        blank=False,
+        default=MemberSpecialRelationshipType.BLOCK.value,
+        choices=[
+            (MemberSpecialRelationshipType.BLOCK.value, MemberSpecialRelationshipType.BLOCK.name)
+        ],
+    )
+
+
 class BonusPoint(models.Model):
     assigned_user = models.ForeignKey(
         CustomMember, null=False, default=None, on_delete=models.CASCADE
@@ -248,3 +268,4 @@ class LiXi(models.Model):
 
     def __str__(self):
         return "{} - {}k".format(self.assigned_user.display_name, self.price)
+

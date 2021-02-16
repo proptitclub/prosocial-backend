@@ -997,3 +997,15 @@ def get_lixi(request):
     except Exception as inst:
         print(inst)
         return JsonResponse({"status": -99})
+
+
+def convert_first_last_name(request):
+    try:
+        users = CustomMember.objects.all()
+        for user in users:
+            user.first_name, user.last_name = user.last_name, user.first_name
+            user.save()
+    except Exception as inst:
+        print(inst)
+        return JsonResponse({"status": -1})
+    return JsonResponse({"status": 1})
