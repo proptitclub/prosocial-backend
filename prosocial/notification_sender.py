@@ -81,13 +81,13 @@ class NotificationSender:
     @staticmethod
     def filter_devices_and_sent(devices, message, post_id):
         def by_device_id(obj):
-            return (obj.assigned_user.id, obj.registration_time)
+            return (obj.device_id, obj.registration_time)
         devices = list(devices)
         be_sent_map = {}
         be_kept_device = []
         devices.sort(key=by_device_id)
         for device in devices:
-            be_sent_map[device.assigned_user.id] = device
+            be_sent_map[device.device_id] = device
         
 
         print(be_sent_map)
@@ -175,7 +175,7 @@ class CreatingPostSender(NotificationSender):
                 devices = devices.union(UserDevice.objects.filter(assigned_user=member)).distinct()
                 # devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
             
-            CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
+        CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
         
         return
 
@@ -199,7 +199,7 @@ class ReactionSender(NotificationSender):
             ReactionSender.serialize_and_send(request, new_member_noti, message, post.id)
 
             devices = UserDevice.objects.filter(assigned_user=member)
-            ReactionSender.filter_devices_and_sent(devices, message, post.id)
+        ReactionSender.filter_devices_and_sent(devices, message, post.id)
 
         return
 
@@ -242,6 +242,6 @@ class CommentSender(NotificationSender):
             else:
                 devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
             
-            CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
+        CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
 
         return
