@@ -89,6 +89,8 @@ class NotificationSender:
         for device in devices:
             be_sent_map[device.assigned_user.id] = device
         
+
+        print(be_sent_map)
         for key in be_sent_map:
             be_kept_device.append(be_sent_map[key])
 
