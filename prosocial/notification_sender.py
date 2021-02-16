@@ -52,7 +52,7 @@ class SendMultipleDeviceThread(threading.Thread):
 
     def run(self) -> None:
         
-        for user_device in devices:
+        for user_device in self.devices:
             headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'key=' + serverToken
