@@ -429,7 +429,20 @@ class PostSummary(serializers.ModelSerializer):
     
     def get_reactions(self, obj):
         request = self.context.get('request')
-        return ReactionSerializerSummary(Reaction.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
+        reactions = Reaction.objects.filter(assigned_post=obj)
+        filtered_reactions = []
+        blocked_users = MemberSpecialRelationship.objects.filter(owner=request.user, relation_type=0)
+        blocked_users_id = []
+
+        for blocked_user in blocked_users:
+            blocked_users_id.append(blocked_user.another.id)
+        
+        for comment in reactions:
+            if comment.assigned_user.id in blocked_users_id:
+                continue
+            else:
+                filtered_reactions.append(comment)
+        return ReactionSerializerSummary(filtered_reactions, many=True, context={'request': request}).data
     
     def get_polls(self, obj):
         request = self.context.get('request')
@@ -491,7 +504,20 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_comments(self, obj):
         request = self.context.get('request')
-        return CommentSummary(Comment.objects.filter(assigned_post=obj), many=True, context={'request': request}).data
+        comments = Comment.objects.filter(assigned_post=obj)
+        filtered_comments = []
+        blocked_users = MemberSpecialRelationship.objects.filter(owner=request.user, relation_type=0)
+        blocked_users_id = []
+
+        for blocked_user in blocked_users:
+            blocked_users_id.append(blocked_user.another.id)
+        
+        for comment in comments:
+            if comment.assigned_user.id in blocked_users_id:
+                continue
+            else:
+                filtered_comments.append(comment)
+        return CommentSummary(filtered_comments, many=True, context={'request': request}).data
     
     def get_polls(self, obj):
         request = self.context.get('request')
@@ -511,6 +537,7 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         reactions = Reaction.objects.filter(assigned_post=obj)
         return len(reactions)
+    
 
 
     class Meta:

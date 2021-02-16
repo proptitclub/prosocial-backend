@@ -110,6 +110,19 @@ class PostViewSet(viewsets.ModelViewSet):
                 group = GroupPro.objects.get(id=params.get('id')[0])
                 filtered_posts = Post.objects.filter(assigned_group=group).order_by('-time')
 
+            filtered_post = []
+            blocked_users = MemberSpecialRelationship.objects.filter(owner=user, relation_type=0)
+            blocked_users_id = []
+
+            for blocked_user in blocked_users:
+                blocked_users_id.append(blocked_user.another.id)
+            
+            for post in filtered_posts:
+                if post.assigned_user.id in blocked_users_id:
+                    continue
+                else:
+                    filtered_post.append(post)
+            return filtered_post
         return filtered_posts
     
     @action(detail=False, methods=['get'], url_path='by_user/(?P<user_id>[^/.]+)')
@@ -466,7 +479,20 @@ class NewsFeedViewSet(viewsets.ModelViewSet):
             list_post = list_post | Post.objects.filter(assigned_group=group)
         list_post = list_post.distinct()
         list_post = list_post.order_by('-time')
-        return list_post
+        
+        filtered_post = []
+        blocked_users = MemberSpecialRelationship.objects.filter(owner=user, relation_type=0)
+        blocked_users_id = []
+
+        for blocked_user in blocked_users:
+            blocked_users_id.append(blocked_user.another.id)
+        
+        for post in list_post:
+            if post.assigned_user.id in blocked_users_id:
+                continue
+            else:
+                filtered_post.append(post)
+        return filtered_post
 
 class PointViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -1009,3 +1035,18 @@ def convert_first_last_name(request):
         print(inst)
         return JsonResponse({"status": -1})
     return JsonResponse({"status": 1})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def block_user(request):
+    try:
+        request_user = request.user
+        member_want_to_block_id = request.data.get('member_id')
+        member_want_to_block = CustomMember.objects.get(id=member_want_to_block_id)
+        msrs = MemberSpecialRelationship(owner=request_user, another=member_want_to_block, relation_type=0)
+        msrs.save()
+        return JsonResponse({"status": "Success"})
+    except Exception as inst:
+        print(inst)
+        return JsonResponse({"status": "Something wrong"})
