@@ -73,6 +73,8 @@ class SendMultipleDeviceThread(threading.Thread):
             print(response.status_code)
             print(response.text)
 
+            print(user_device.display_name)
+
 class NotificationSender:
     serializer = NotificationSerializer
 
@@ -172,7 +174,6 @@ class CreatingPostSender(NotificationSender):
                 # devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
             
             CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
-        
         
         return
 
