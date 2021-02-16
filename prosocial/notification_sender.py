@@ -79,6 +79,7 @@ class NotificationSender:
     def filter_devices_and_sent(devices, message, post_id):
         def by_device_id(obj):
             return (obj.device_id, -obj.registration_time)
+        devices = list(devices)
         be_sent_map = {}
         be_kept_device = []
         devices.sort(key=by_device_id)
