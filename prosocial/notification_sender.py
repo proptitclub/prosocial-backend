@@ -46,8 +46,9 @@ def sendTestNotification(user, text):
 class SendMultipleDeviceThread(threading.Thread):
     def __init__(self, devices, message, post_id):
         threading.Thread.__init__(self)
-        self.thread_id = thread_id
         self.devices = devices
+        self.message = message
+        self.post_id = post_id
 
     def run(self) -> None:
         
