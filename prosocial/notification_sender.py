@@ -167,7 +167,8 @@ class CreatingPostSender(NotificationSender):
             if devices is None:
                 devices = UserDevice.objects.filter(assigned_user=member)
             else:
-                devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
+                devices = devices.union(UserDevice.objects.filter(assigned_user=member)).distinct()
+                # devices = (devices | UserDevice.objects.filter(assigned_user=member)).distinct()
             
             CreatingPostSender.filter_devices_and_sent(devices, message, post.id)
         
