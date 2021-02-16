@@ -73,7 +73,7 @@ class SendMultipleDeviceThread(threading.Thread):
             print(response.status_code)
             print(response.text)
 
-            print(user_device.assigned_user.display_name)
+            print(user_device.assigned_user.username)
 
 class NotificationSender:
     serializer = NotificationSerializer
