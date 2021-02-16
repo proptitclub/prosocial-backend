@@ -95,6 +95,7 @@ class NotificationSender:
                 device.delete()
 
         send_thread = SendMultipleDeviceThread(devices, message, post_id)
+        send_thread.start()
         
         return 
 
