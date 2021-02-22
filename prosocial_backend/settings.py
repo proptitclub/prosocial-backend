@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "prosocial",
-    "channels",
     "chat",
     "rest_framework",
     "rest_framework_simplejwt",
@@ -61,6 +60,7 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = default_headers + ('cache-control',)
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -68,7 +68,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -92,8 +91,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = "prosocial_backend.wsgi.application"
-ASGI_APPLICATION = "prosocial_backend.routing.application"
+WSGI_APPLICATION = "prosocial_backend.wsgi.application"
 
 
 

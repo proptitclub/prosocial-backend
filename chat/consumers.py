@@ -3,70 +3,120 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import *
+from prosocial.models import *
+import socketio
+import functools
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.decorators import permission_classes
+from rest_framework_simplejwt.tokens import TokenError
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.backends import TokenBackend
+from django.contrib.auth.models import AnonymousUser
+import redis
+from .enums import *
+
+red = redis.Redis(host='localhost', port=6379, db=0)
+
+sio = socketio.Server(
+    async_mode='gevent_uwsgi',
+    cors_allowed_origins=["http://localhost:3000", "http://proptit.social/*"],
+    logger=True,
+    engineio_logger=True,
+)
+
+def auth_deco(f):
+    def wrapper(sid=None, environ=None):
+        sid_user_id = red.get('socketio---{}'.format(sid)).decode('utf-8')
+        req_user_id = environ.get('userID')
+        room_id = environ.get('roomID')
+        print('sid_token: {}'.format(sid_user_id))
+        print('req_token: {}'.format(req_user_id))
+        if sid_user_id != req_user_id:
+            environ['valid'] = False
+            value = red.get('socketio-room---{}-{}'.format(req_user_id, room_id))
+            if value is not None:
+                environ['user_room_id'] = value
+                environ['valid'] = True
+            else:
+                environ['valid'] = False
+        else:
+            environ['valid'] = True
+
+        f(sid, environ)
+    
+    return wrapper
 
 
-class ChatConsumer(AsyncWebsocketConsumer):
-    '''
-        SYNC DEF
-    '''
-    def check_room_user(self):
-        self.room = Room.objects.get(name=self.room_name)
-        if self.room is None:
-            return False
-        return True
-
-    def save_message(self, info):
-        self.room = room.objects.get(name=self.room_name)
-        user_room = UserRoom(user=self.user, room=self.room)
-        message = Message(user_room = user_room, content = info.get('content'), type=info.get('type'))
-        message.save()
-        return message
-
-    '''
-        ASYNC DEF
-    '''
-    async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.user = self.scope['user']
-        is_allow = await database_sync_to_async(self.check_room_user)()
-
-        # is_allow = False
-        self.room_group_name = 'chat_%s' % self.room_name
-
-        # Join room group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        await self.accept()
-
-
-    async def disconnect(self, close_code):
-        # Leave room group
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
-    # Receive message from WebSocket
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        
-        message = await database_sync_to_async(self.save_message)(text_data_json)
-
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
+@sio.on('newMessage', namespace='/')
+@auth_deco
+def new_message(sid=None, environ=None):
+    print(environ.get('valid'))
+    if environ.get('valid') == True:
+        sio.emit(
+            'newMessage', 
             {
-                'type': 'chat_message',
-                'message': message
-            }
+                'data': environ.get('data'), 
+                'user_id': environ.get('userID'), 
+                'id':sid
+            }, 
+            room=environ.get('roomID')
         )
+        user_room = UserRoom.objects.get(id=int(environ.get('user_room_id')))
+        new_message = Message(
+            user_room=user_room,
+            content=environ.get('data'),
+            type=MessageType.TEXT.value,
+        )
+        new_message.save()
+    else:
+        sio.emit('newMessage', {'status': 'fail', 'id':sid}, room=sid)
+        sio.disconnect(sid)
 
-    # Receive message from room group
-    async def chat_message(self, event):
-        message = event['message']
+@sio.on('connect', namespace='/')
+def test_connect(sid=None, environ=None):
+    print(environ)
+    try:
+        auth_token = None
+        for key in environ:
+            if key == 'HTTP_AUTHORIZATION':
+                auth_token = environ[key]
+            # print("{} - {}".format(key, environ[key]))
+        # auth_token = environ.get('HTTP_AUTHORIZATION')
+        if auth_token is None:
+            print("NO TOKEN IN HEADER")
+        token_name, token_key = auth_token.split(' ')
+        if token_name == 'Bearer':
+            valid_data = TokenBackend(algorithm='HS256').decode(token_key, verify=False)
+    except Exception as e:
+        print("Error when authorization")
+        sio.emit('disconnect', {'status': -1, 'msg': "Something wrong | invalid token or no token provided"})
+        sio.disconnect(sid)
+        return
 
-        # Send message to WebSocket
-        await self.send(text_data=json.dumps(message))
+    user_id = valid_data.get('user_id')
+    user = CustomMember.objects.get(id=user_id)
+    room_id = int(environ.get('HTTP_ROOMID'))
+    room = Room.objects.get(id=room_id)
+    user_room = UserRoom.objects.filter(room=room, user=user)
+    if len(user_room) > 0:
+        # we just need to set socketio-room---user-room is exist or not
+        # so value can be anything, and be fixed
+        red.set('socketio-room---{}-{}'.format(user_id, room_id), user_room[0].id)
+    else:
+        print("Error when authorization")
+        sio.emit('disconnect', {'status': -1, 'msg': "Something wrong | invalid token or no token provided"})
+        sio.disconnect(sid)
+        return
+    sio.enter_room(sid, room.id)
+    red.set('socketio---{}'.format(sid), valid_data.get('user_id'))
+    sio.emit('connect', {'data': 'Connected', 'count': 0, 'user_id': valid_data.get('user_id')},
+                   namespace='/')
+
+@sio.on('leave room', namespace='/')
+@auth_deco
+def leave_room(sid, environ):
+    sio.leave_room(sid, int(environ.get('roomID')))
+
+@sio.on('disconnect', namespace='/')
+def disconnect(sid):
+    print('Client disconnected')

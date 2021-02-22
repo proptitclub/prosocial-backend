@@ -38,7 +38,6 @@ class TokenAuthMiddlewareInstance:
         headers = dict(self.scope['headers'])
         print("Headers", headers)
         if b'sec-websocket-protocol' in headers:
-
             try:
                 token_name, token_key = headers[b'sec-websocket-protocol'].decode().split('%space%')
                 if token_name == 'Bearer':

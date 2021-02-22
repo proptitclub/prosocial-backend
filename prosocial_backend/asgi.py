@@ -12,10 +12,13 @@ import os
 from channels.routing import ProtocolTypeRouter
 from django.core.asgi import get_asgi_application
 from asgi_cors import asgi_cors
+from socketio import ASGIApp
+from chat.consumers import sio
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "prosocial_backend.settings")
 
 django_asgi_app = get_asgi_application()
+
 
 application = asgi_cors(ProtocolTypeRouter({
     "http": django_asgi_app,

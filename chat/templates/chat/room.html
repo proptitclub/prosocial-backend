@@ -18,8 +18,9 @@
             + '/ws/chat/'
             + roomName
             + '/',
-            "Bearer%space%eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjEwMTAwODEyLCJqdGkiOiI2MDBlNDRiOGQyMjg0MDg5YWE0YmMyM2YzZTFkMzU2ZSIsInVzZXJfaWQiOjUwfQ.QqX8Z65hfYfp5FELdFuUZP53kS3LEjvSJSvF4I5xKfw"
         );
+
+        console.log(window.location.host);
 
 
         chatSocket.onmessage = function(e) {
