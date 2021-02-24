@@ -31,8 +31,7 @@ ROUTER.register(r"point", views.PointViewSet, basename='point')
 ROUTER.register(r'bonuspoint', views.BonusPointViewSet, basename='bonuspoint')
 ROUTER.register(r'target', views.TargetViewSet, basename='target')
 
-ROUTER_CHAT = routers.DefaultRouter()
-ROUTER_CHAT.register(r"rooms", chat_views.RoomViewSet)
+
 
 api_info = openapi.Info(
     title="Snippets API",
@@ -61,7 +60,6 @@ urlpatterns = (
     [
         path("admin/", admin.site.urls),
         path("", include(ROUTER.urls)),
-        path("chat-api/", include(ROUTER_CHAT.urls)),
         path("rank/", views.get_rank, name="rank-json"),
         path("device/create", views.create_device_member, name="create_device"),
         path("device/delete", views.delete_device_member, name="delete_device"),

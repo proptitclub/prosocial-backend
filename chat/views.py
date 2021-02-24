@@ -33,6 +33,9 @@ class RoomViewSet(viewsets.ModelViewSet):
     def delete(self, request, *args, **kwargs):
         return super().delete(request, *args, **kwargs)
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
 def get_room_message(request, room_name):
     room = Room.objects.get(id=room_name)
     messages = Message.objects.filter(user_room__room=room)
@@ -45,3 +48,63 @@ def get_room_message(request, room_name):
         message_response.update({"user_room": user_info})
         message_responses.append(message_response)
     return JsonResponse(message_responses, safe=False)
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def send_image(request, room_name):
+    room = Room.objects.get(id=room_name)
+    user = request.user
+    user_room = UserRoom.objects.get(user=user, room=room)
+    count_ = 0
+    message = Message(user_room=user_room)
+    for count, x in enumerate(request.FILES.getlist("files")):
+        def process(f):
+            image = Image(img_url=f)
+            image.save()
+            message.content = image.img_url
+            message.type = MessageType.IMAGE.value
+        count_ = count
+        process(x)
+    
+    message.save()
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def send_audio(request, room_name):
+    room = Room.objects.get(id=room_name)
+    user = request.user
+    user_room = UserRoom.objects.get(user=user, room=room)
+    count_ = 0
+    message = Message(user_room=user_room)
+    for count, x in enumerate(request.FILES.getlist("files")):
+        def process(f):
+            audio = Audio(img_url=f)
+            audio.save()
+            message.content = audio.img_url
+            message.type = MessageType.AUDIO.value
+        count_ = count
+        process(x)
+    
+    message.save()
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser,])
+def send_video(request, room_name):
+    room = Room.objects.get(id=room_name)
+    user = request.user
+    user_room = UserRoom.objects.get(user=user, room=room)
+    count_ = 0
+    message = Message(user_room=user_room)
+    for count, x in enumerate(request.FILES.getlist("files")):
+        def process(f):
+            video = Video(img_url=f)
+            video.save()
+            message.content = video.img_url
+            message.type = MessageType.VIDEO.value
+        count_ = count
+        process(x)
+    
+    message.save()

@@ -1,3 +1,0 @@
-curl -X POST -H "Content-Type: application/json" -d '{"callbot_id":"25","callcenter_phone":"0366568956","customer_phone":"0387697588","customer_area":"CENTRAL","input_slots":{"date": "20/07/2020"}}' http://127.0.0.1:5080/api/call/create
-
-curl -X POST -H "Content-Type: application/json" -d '{"conversation_id":"20200921105436-1c333ce5-8d0e-48e7-a620-90c95960a3d1"}' http://127.0.0.1:5080/api/call/callout_safe

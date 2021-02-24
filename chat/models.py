@@ -35,3 +35,13 @@ class Message(models.Model):
 
     def __str__(self):
         return ""
+
+class Audio(models.Model):
+    audio_url = models.FileField(
+        upload_to=custom_media_path, max_length=100, default="deafult.mp3"
+    )
+
+class Video(models.Model):
+    video_url = models.FileField(
+        upload_to=custom_media_path, max_length=100, default="default.mp4"
+    )
