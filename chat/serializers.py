@@ -8,5 +8,7 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = [
+            "url",
+            "id",
             "name",
         ]
