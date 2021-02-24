@@ -16,7 +16,7 @@ import chat.views as chat_views
 
 # Routers provide an easy way of automatically determining the URL conf.
 ROUTER = routers.DefaultRouter()
-# router.register(r"users", UserViewSet)
+ROUTER.register(r"users", views.UserViewSet)
 ROUTER.register(r"accounts", views.UserViewSet)
 ROUTER.register(r"groups", views.GroupViewSet)
 ROUTER.register(r"posts", views.PostViewSet)

@@ -16,6 +16,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from rest_framework.decorators import action, api_view, permission_classes, parser_classes, renderer_classes
+from djangorestframework_camel_case.parser import CamelCaseFormParser, CamelCaseMultiPartParser, CamelCaseJSONParser
+
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer
+
+from rest_framework.renderers import JSONRenderer
+# from djangorestframework_camel_case import CamelCaseJSONEncoder
 
 
 def index(request):
@@ -46,6 +52,7 @@ class RoomViewSet(viewsets.ModelViewSet):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 @parser_classes([MultiPartParser,])
+@renderer_classes([CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer,])
 def get_room_message(request, room_name):
     room = Room.objects.get(id=room_name)
     messages = Message.objects.filter(user_room__room=room)
@@ -57,7 +64,7 @@ def get_room_message(request, room_name):
         user_info = AssignedUserSummary(message.user_room.user, context={'request': request}).data
         message_response.update({"user_room": user_info})
         message_responses.append(message_response)
-    return JsonResponse(message_responses, safe=False)
+    return Response(message_responses)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
