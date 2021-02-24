@@ -7,6 +7,16 @@ from prosocial.serializers import *
 from django.http import JsonResponse
 from .models import *
 import json
+from rest_framework.views import APIView
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, DjangoMultiPartParser, JSONParser
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics
+from rest_framework.decorators import action, api_view, permission_classes, parser_classes, renderer_classes
+
 
 def index(request):
     return render(request, 'chat/testchat.html')
