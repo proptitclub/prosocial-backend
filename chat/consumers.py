@@ -17,7 +17,7 @@ red = redis.Redis(host='localhost', port=6379, db=0)
 
 sio = socketio.Server(
     async_mode='gevent_uwsgi',
-    cors_allowed_origins=["http://localhost:3000", "http://proptit.social/*"],
+    cors_allowed_origins=["http://localhost:3000", "http://proptit.social/*", "http://localhost:9090"],
     logger=True,
     engineio_logger=True,
 )
