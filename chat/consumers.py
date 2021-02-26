@@ -25,7 +25,7 @@ sio = socketio.Server(
 def auth_deco(f):
     def wrapper(sid=None, environ=None):
         sid_user_id = red.get('socketio---{}'.format(sid)).decode('utf-8')
-        req_user_id = environ.get('userID')
+        req_user_id = environ.get('user').get('id')
         room_id = environ.get('roomID')
         print('sid_token: {}'.format(sid_user_id))
         print('req_token: {}'.format(req_user_id))
@@ -54,7 +54,12 @@ def new_message(sid=None, environ=None):
             'newMessage', 
             {
                 'data': environ.get('data'), 
-                'user_id': environ.get('userID'), 
+                'user': 
+                {
+                    'id': environ.get('user').get('id'),
+                    'avatar': environ.get('user').get('avatar'),
+                    'display_name': environ.get('user').get('display_name'),
+                }, 
                 'id':sid
             }, 
             room=environ.get('roomID')
@@ -107,8 +112,19 @@ def test_connect(sid=None, environ=None):
         return
     sio.enter_room(sid, room.id)
     red.set('socketio---{}'.format(sid), valid_data.get('user_id'))
-    sio.emit('connect', {'data': 'Connected', 'count': 0, 'user_id': valid_data.get('user_id')},
-                   namespace='/')
+    sio.emit(
+        'connect', 
+        {
+            'data': 'Connected', 
+            'count': 0, 
+            'user': {
+                "id": valid_data.get('user_id'),
+                "avatar": 'http://' + environ.get('HTTP_HOST') + '/' + user.avatar.url,
+                "display_name": user.display_name,
+            }
+        },
+        namespace='/'
+    )
 
 @sio.on('leave room', namespace='/')
 @auth_deco

@@ -55,7 +55,7 @@ class RoomViewSet(viewsets.ModelViewSet):
 @renderer_classes([CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer,])
 def get_room_message(request, room_name):
     room = Room.objects.get(id=room_name)
-    messages = Message.objects.filter(user_room__room=room)
+    messages = Message.objects.filter(user_room__room=room).order_by('created_time')
     message_responses = []
     for message in messages:
         message_response = {}
