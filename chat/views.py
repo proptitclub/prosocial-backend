@@ -24,7 +24,7 @@ from rest_framework.renderers import JSONRenderer
 from django.core.paginator import Paginator
 # from djangorestframework_camel_case import CamelCaseJSONEncoder
 
-PAGE_SIZE = 12
+PAGE_SIZE = 30
 STATUS_ERROR = 0
 STATUS_SUCCESS = 1
 
@@ -40,6 +40,17 @@ class RoomViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+
+    def get_queryset(self):
+        if self.action == 'list':
+            user = self.request.user
+            user_rooms = UserRoom.objects.filter(user=user)
+            rooms = []
+            for user_room in user_rooms:
+                rooms.append(user_room.room)
+            return rooms
+        else:
+            return super().get_queryset()
 
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
@@ -59,14 +70,31 @@ class RoomViewSet(viewsets.ModelViewSet):
 @renderer_classes([CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer,])
 def get_room_message(request, room_name):
     room = Room.objects.get(id=room_name)
-    messages = Message.objects.filter(user_room__room=room).order_by('created_time')
+    # print(request)
+    from_message_id = request.query_params.get('fromMessageID')
+    # print(request.query_params)
+    message = []
+    total_message = Message.objects.filter(user_room__room=room).count()
+    if total_message == 0:
+        messages = []
+    elif from_message_id is None:
+        messages = Message.objects.filter(user_room__room=room).order_by('-created_time')[0:min(total_message, PAGE_SIZE)]
+        messages = messages[::-1]
+    else:
+        message_left = Message.objects.filter(user_room__room=room, id__lt=from_message_id).count()
+        messages = Message.objects.filter(user_room__room=room, id__lt=from_message_id).order_by('-created_time')[0:min(message_left, PAGE_SIZE)]
+        messages = messages[::-1]
+
+    # messages = Message.objects.filter(user_room__room=room).order_by('created_time')
     message_responses = []
     for message in messages:
         message_response = {}
+        message_response.update({"id": message.id})
         message_response.update({"type": message.type})
         message_response.update({"content": message.content})
         user_info = AssignedUserSummary(message.user_room.user, context={'request': request}).data
         message_response.update({"user_room": user_info})
+        message_response.update({"created_time": message.created_time})
         message_responses.append(message_response)
     return Response(message_responses)
 

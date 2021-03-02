@@ -50,6 +50,14 @@ def auth_deco(f):
 def new_message(sid=None, environ=None):
     print(environ.get('valid'))
     if environ.get('valid') == True:
+
+        user_room = UserRoom.objects.get(id=int(environ.get('user_room_id')))
+        new_message = Message(
+            user_room=user_room,
+            content=environ.get('data'),
+            type=MessageType.TEXT.value,
+        )
+        new_message.save()
         sio.emit(
             'newMessage', 
             {
@@ -60,17 +68,11 @@ def new_message(sid=None, environ=None):
                     'avatar': environ.get('user').get('avatar'),
                     'display_name': environ.get('user').get('display_name'),
                 }, 
-                'id':sid
+                'id':sid,
+                'createdTime':str(new_message.created_time),
             }, 
             room=environ.get('roomID')
         )
-        user_room = UserRoom.objects.get(id=int(environ.get('user_room_id')))
-        new_message = Message(
-            user_room=user_room,
-            content=environ.get('data'),
-            type=MessageType.TEXT.value,
-        )
-        new_message.save()
     else:
         sio.emit('newMessage', {'status': 'fail', 'id':sid}, room=sid)
         sio.disconnect(sid)
