@@ -21,8 +21,12 @@ from djangorestframework_camel_case.parser import CamelCaseFormParser, CamelCase
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer, CamelCaseBrowsableAPIRenderer
 
 from rest_framework.renderers import JSONRenderer
+from django.core.paginator import Paginator
 # from djangorestframework_camel_case import CamelCaseJSONEncoder
 
+PAGE_SIZE = 12
+STATUS_ERROR = 0
+STATUS_SUCCESS = 1
 
 def index(request):
     return render(request, 'chat/testchat.html')
