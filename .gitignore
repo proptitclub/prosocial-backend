@@ -80,6 +80,8 @@ prosocial_backend/__pycache__/
 
 prosocial/migrations/__pycache__/
 
+chat/__pycache__/
+
 media/
 **/__pycache__/
 
