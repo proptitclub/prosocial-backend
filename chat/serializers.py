@@ -24,9 +24,9 @@ class RoomSerializer(serializers.ModelSerializer):
         ]
 
 class MessageSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
+    user_room = serializers.SerializerMethodField()
 
-    def get_user(self, obj):
+    def get_user_room(self, obj):
         request = self.context.get('request')
         user = obj.user_room.user
         return AssignedUserSummary(user, context={"request": request}).data
@@ -35,7 +35,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = [
-            "user",
+            "user_room",
             "content",
             "created_time",
             "type",
